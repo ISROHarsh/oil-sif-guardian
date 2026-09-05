@@ -36,12 +36,38 @@ def init_db():
     if settings.DATABASE_URL.startswith("sqlite"):
         with engine.connect() as conn:
             try:
+                # Reports table migrations
                 result = conn.execute(text("PRAGMA table_info(reports)"))
                 columns = [row[1] for row in result.fetchall()]
                 if "quality_score" not in columns:
                     conn.execute(text("ALTER TABLE reports ADD COLUMN quality_score FLOAT"))
                 if "quality_grade" not in columns:
                     conn.execute(text("ALTER TABLE reports ADD COLUMN quality_grade VARCHAR(8)"))
+
+                # Reviews table migrations
+                rev_res = conn.execute(text("PRAGMA table_info(reviews)"))
+                rev_cols = [row[1] for row in rev_res.fetchall()]
+                if "reviewer_role" not in rev_cols:
+                    conn.execute(text("ALTER TABLE reviews ADD COLUMN reviewer_role VARCHAR(64)"))
+                if "decision" not in rev_cols:
+                    conn.execute(text("ALTER TABLE reviews ADD COLUMN decision VARCHAR(32)"))
+                if "final_primary_rule" not in rev_cols:
+                    conn.execute(text("ALTER TABLE reviews ADD COLUMN final_primary_rule VARCHAR(64)"))
+                if "final_secondary_rules" not in rev_cols:
+                    conn.execute(text("ALTER TABLE reviews ADD COLUMN final_secondary_rules TEXT"))
+                if "barrier_failures" not in rev_cols:
+                    conn.execute(text("ALTER TABLE reviews ADD COLUMN barrier_failures TEXT"))
+                if "statutory_tags" not in rev_cols:
+                    conn.execute(text("ALTER TABLE reviews ADD COLUMN statutory_tags TEXT"))
+                if "override_reason_code" not in rev_cols:
+                    conn.execute(text("ALTER TABLE reviews ADD COLUMN override_reason_code VARCHAR(64)"))
+                if "veto_override_approved" not in rev_cols:
+                    conn.execute(text("ALTER TABLE reviews ADD COLUMN veto_override_approved BOOLEAN DEFAULT 0"))
+                if "senior_signoff_by" not in rev_cols:
+                    conn.execute(text("ALTER TABLE reviews ADD COLUMN senior_signoff_by VARCHAR(64)"))
+                if "recalibration_flag" not in rev_cols:
+                    conn.execute(text("ALTER TABLE reviews ADD COLUMN recalibration_flag BOOLEAN DEFAULT 0"))
+
                 conn.commit()
             except Exception:
                 pass

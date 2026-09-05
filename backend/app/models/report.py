@@ -116,10 +116,20 @@ class ReviewModel(Base):
 
     id = Column(String(36), primary_key=True, default=generate_uuid)
     report_id = Column(String(36), ForeignKey("reports.id"), nullable=False, unique=True, index=True)
-    status = Column(String(16), default="PENDING", index=True)  # PENDING, CONFIRMED, MODIFIED, REJECTED
+    status = Column(String(16), default="PENDING", index=True)  # PENDING, CONFIRMED, MODIFIED, REJECTED, ESCALATED
+    decision = Column(String(32), nullable=True, default="CONFIRMED")
     reviewer_id = Column(String(64), nullable=True)
-    reviewer_notes = Column(Text, nullable=True)
+    reviewer_role = Column(String(64), nullable=True, default="HSE_OFFICER")
     final_psif_label = Column(String(16), nullable=True)
+    final_primary_rule = Column(String(64), nullable=True)
+    final_secondary_rules = Column(Text, nullable=True)  # JSON-encoded list
+    barrier_failures = Column(Text, nullable=True)  # JSON-encoded list
+    statutory_tags = Column(Text, nullable=True)  # JSON-encoded list
+    override_reason_code = Column(String(64), nullable=True)
+    veto_override_approved = Column(Boolean, default=False)
+    senior_signoff_by = Column(String(64), nullable=True)
+    recalibration_flag = Column(Boolean, default=False)
+    reviewer_notes = Column(Text, nullable=True)
     reviewed_at = Column(DateTime(timezone=True), nullable=True)
 
     report = relationship("ReportModel", back_populates="review")

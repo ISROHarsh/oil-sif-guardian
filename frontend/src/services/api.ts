@@ -33,7 +33,12 @@ import {
   HybridDecisionResponseData,
   CalibrationReportResponseData,
   WeightTuneResponseData,
-  DecisionStatusResponseData
+  DecisionStatusResponseData,
+  AdjudicationRequest,
+  HITLAdjudicationResponse,
+  PendingReviewItem,
+  ReviewHistoryItem,
+  ReviewMetricsData
 } from '../types';
 
 const API_BASE = '/api/v1';
@@ -129,6 +134,54 @@ export const api = {
       body: JSON.stringify(review),
     });
     if (!res.ok) throw new Error('Failed to submit review');
+    return await res.json();
+  },
+
+  async adjudicateReport(payload: AdjudicationRequest): Promise<HITLAdjudicationResponse> {
+    const res = await fetch(`${API_BASE}/reviews/adjudicate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ detail: 'Failed to submit adjudication' }));
+      throw new Error(err.detail || 'Failed to submit adjudication');
+    }
+    return await res.json();
+  },
+
+  async getPendingReviews(params?: {
+    priority?: string;
+    site?: string;
+    veto_only?: boolean;
+    limit?: number;
+    offset?: number;
+  }): Promise<PendingReviewItem[]> {
+    const query = new URLSearchParams();
+    if (params?.priority) query.append('priority', params.priority);
+    if (params?.site) query.append('site', params.site);
+    if (params?.veto_only) query.append('veto_only', 'true');
+    if (params?.limit) query.append('limit', params.limit.toString());
+    if (params?.offset) query.append('offset', params.offset.toString());
+
+    const res = await fetch(`${API_BASE}/reviews/pending?${query.toString()}`);
+    if (!res.ok) throw new Error('Failed to fetch pending reviews');
+    return await res.json();
+  },
+
+  async getReviewHistory(params?: { limit?: number; offset?: number }): Promise<ReviewHistoryItem[]> {
+    const query = new URLSearchParams();
+    if (params?.limit) query.append('limit', params.limit.toString());
+    if (params?.offset) query.append('offset', params.offset.toString());
+
+    const res = await fetch(`${API_BASE}/reviews/history?${query.toString()}`);
+    if (!res.ok) throw new Error('Failed to fetch review history');
+    return await res.json();
+  },
+
+  async getReviewMetrics(): Promise<ReviewMetricsData> {
+    const res = await fetch(`${API_BASE}/reviews/metrics`);
+    if (!res.ok) throw new Error('Failed to fetch review metrics');
     return await res.json();
   },
 
