@@ -17,6 +17,7 @@ from backend.app.api.v1.endpoints import (
     models,
     iogp,
     rules,
+    decision,
 )
 
 api_router = APIRouter()
@@ -34,4 +35,5 @@ api_router.include_router(extraction.router, prefix="/extraction", tags=["Safety
 api_router.include_router(models.router, prefix="/models", tags=["Contextual Models & Studio"])
 api_router.include_router(iogp.router, prefix="/iogp", tags=["IOGP Life-Saving Rules"])
 api_router.include_router(rules.router, prefix="/rules", tags=["Deterministic Safety Rules"])
+api_router.include_router(decision.router, prefix="/decision", tags=["Hybrid Decision Engine"])
 
