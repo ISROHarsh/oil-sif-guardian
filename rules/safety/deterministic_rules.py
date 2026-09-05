@@ -4,8 +4,10 @@ Codified industrial safety guardrails for fatal precursor detection.
 Adheres strictly to the 9 IOGP Life-Saving Rules and oil & gas process safety standards.
 """
 
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
+from dataclasses import asdict
 import re
+from rules.safety.catalog import CODIFIED_SAFETY_CATALOG, RuleSeverity, CodifiedRuleDefinition
 
 
 class DeterministicSafetyRuleEngine:
@@ -203,23 +205,41 @@ class DeterministicSafetyRuleEngine:
         is_benign = bool(self.re_benign.search(full_text))
 
         if is_benign:
+            admin_rule = CODIFIED_SAFETY_CATALOG.get("RULE-ADMIN-001")
+            admin_dict = asdict(admin_rule) if admin_rule else {}
             return {
                 "mandatory_high_psif": False,
                 "triggered_rules": [],
+                "triggered_rule_details": [admin_dict] if admin_dict else [],
                 "rule_reasons": ["Routine administrative or benign non-industrial activity."],
                 "suggested_rules": [],
                 "is_benign": True,
+                "severity_level": RuleSeverity.BENIGN_ADMINISTRATIVE.value,
+                "stop_work_required": False,
+                "audit_trail": [
+                    {
+                        "rule_id": "RULE-ADMIN-001",
+                        "rule_name": "Benign Administrative / Non-Industrial Routine Activity",
+                        "severity": RuleSeverity.BENIGN_ADMINISTRATIVE.value,
+                        "action_status": "NEGATIVE_CONTROL_SUPPRESSED",
+                        "status": "NEGATIVE_CONTROL_SUPPRESSED",
+                        "action_taken": "No safety escalation required."
+                    }
+                ]
             }
 
         triggered_rules: List[str] = []
         rule_reasons: List[str] = []
         mandatory_high_psif = False
         suggested_rules: List[str] = []
+        triggered_rule_ids: List[str] = []
 
         # Rule 1: Confined Space
         if self.re_cs_domain.search(text):
             suggested_rules.append("Confined Space")
             if self.re_cs_failure.search(text):
+                r_id = "RULE-CS-001"
+                triggered_rule_ids.append(r_id)
                 triggered_rules.append("RULE-CS-001: Confined Space Entry with Critical Control Compromise")
                 rule_reasons.append("Worker entered a confined space without recorded gas testing, positive blind, or standby attendant.")
                 mandatory_high_psif = True
@@ -228,6 +248,8 @@ class DeterministicSafetyRuleEngine:
         if self.re_ei_domain.search(text):
             suggested_rules.append("Energy Isolation")
             if self.re_ei_failure.search(text) and "vented gauge through bleed port to 0 psi" not in text.lower():
+                r_id = "RULE-EI-001"
+                triggered_rule_ids.append(r_id)
                 triggered_rules.append("RULE-EI-001: Live Energy Source Intervention Without Verified Isolation")
                 rule_reasons.append("Work performed on pressurized/energized equipment without verified Lockout/Tagout (LOTO) or bleed-off.")
                 mandatory_high_psif = True
@@ -238,6 +260,8 @@ class DeterministicSafetyRuleEngine:
             if any(k in text.lower() for k in ["under", "beneath", "drop zone"]):
                 suggested_rules.append("Line of Fire")
             if self.re_lift_failure.search(text) and "pallet truck" not in text.lower():
+                r_id = "RULE-LIFT-001"
+                triggered_rule_ids.append(r_id)
                 triggered_rules.append("RULE-LIFT-001: Personnel Positioned in Drop Zone or Lift Control Failure")
                 rule_reasons.append("Personnel entered active drop zone, or lift conducted with compromised rigging or bypassed load chart.")
                 mandatory_high_psif = True
@@ -248,6 +272,8 @@ class DeterministicSafetyRuleEngine:
         if self.re_wah_domain.search(text):
             suggested_rules.append("Working at Height")
             if self.re_wah_failure.search(text) and "podium ladder" not in text.lower():
+                r_id = "RULE-WAH-001"
+                triggered_rule_ids.append(r_id)
                 triggered_rules.append("RULE-WAH-001: Elevated Work Without Fall Arrest Protection")
                 rule_reasons.append("Worker at elevated position without certified full-body harness, 100% tie-off, or fall arrest lifeline.")
                 mandatory_high_psif = True
@@ -256,6 +282,8 @@ class DeterministicSafetyRuleEngine:
         if self.re_hw_domain.search(text):
             suggested_rules.append("Hot Work")
             if self.re_hw_failure.search(text):
+                r_id = "RULE-HW-001"
+                triggered_rule_ids.append(r_id)
                 triggered_rules.append("RULE-HW-001: Hot Work in Hazardous Environment Without Fire Safeguards")
                 rule_reasons.append("Open spark or thermal cutting performed in hydrocarbon area without verified continuous gas testing or fire watch.")
                 mandatory_high_psif = True
@@ -264,6 +292,8 @@ class DeterministicSafetyRuleEngine:
         if self.re_lof_domain.search(text):
             suggested_rules.append("Line of Fire")
             if self.re_lof_failure.search(text):
+                r_id = "RULE-LOF-001"
+                triggered_rule_ids.append(r_id)
                 triggered_rules.append("RULE-LOF-001: Direct Exposure in Line of Fire / Stored Energy Release")
                 rule_reasons.append("Personnel positioned directly in trajectory of pressurized release, trench collapse, or tensioned cable snapback.")
                 mandatory_high_psif = True
@@ -272,6 +302,8 @@ class DeterministicSafetyRuleEngine:
         if self.re_bsc_domain.search(text):
             suggested_rules.append("Bypassing Safety Controls")
             if self.re_bsc_failure.search(text) and "dust cover" not in text.lower():
+                r_id = "RULE-BSC-001"
+                triggered_rule_ids.append(r_id)
                 triggered_rules.append("RULE-BSC-001: Unauthorized Safety Control Defeat")
                 rule_reasons.append("Safety-critical instrument, relief device, trip interlock, or ESD was intentionally defeated or bypassed.")
                 mandatory_high_psif = True
@@ -280,6 +312,8 @@ class DeterministicSafetyRuleEngine:
         if self.re_drive_domain.search(text):
             suggested_rules.append("Driving")
             if self.re_drive_failure.search(text) and "hitch pin" not in text.lower():
+                r_id = "RULE-DRIVE-001"
+                triggered_rule_ids.append(r_id)
                 triggered_rules.append("RULE-DRIVE-001: Reckless Transport / Seatbelt Non-Compliance")
                 rule_reasons.append("Vehicle operated at dangerous speed, distracted driver, or occupants unbelted on hazardous operational roads.")
                 mandatory_high_psif = True
@@ -288,12 +322,16 @@ class DeterministicSafetyRuleEngine:
         if self.re_wa_domain.search(text):
             suggested_rules.append("Work Authorization")
             if self.re_wa_failure.search(text) and not any(k in text.lower() for k in ["signature missing", "delayed by 45"]):
+                r_id = "RULE-WA-001"
+                triggered_rule_ids.append(r_id)
                 triggered_rules.append("RULE-WA-001: Work Performed Without Valid Work Authorization")
                 rule_reasons.append("High hazard task commenced or continued under an expired, missing, or unauthorized Permit to Work (PTW).")
                 mandatory_high_psif = True
 
         # Toxic / H2S Gas Release
         if self.re_toxic_release.search(text):
+            r_id = "RULE-TOXIC-001"
+            triggered_rule_ids.append(r_id)
             triggered_rules.append("RULE-TOXIC-001: Toxic Atmosphere / Sour Gas Release")
             rule_reasons.append("Hydrogen Sulfide (H2S) or toxic gas escape detected, posing credible acute poisoning or fatality threat.")
             mandatory_high_psif = True
@@ -315,10 +353,40 @@ class DeterministicSafetyRuleEngine:
                     suggested_rules.append(rule_name)
                     break
 
+        # Enrich with Catalog Details & Audit Trail
+        triggered_rule_details: List[Dict[str, Any]] = []
+        audit_trail: List[Dict[str, Any]] = []
+        max_severity = RuleSeverity.PROCEDURAL_DEVIATION.value
+
+        for r_id in triggered_rule_ids:
+            rule_def = CODIFIED_SAFETY_CATALOG.get(r_id)
+            if rule_def:
+                detail = asdict(rule_def)
+                # Convert enum to string
+                detail["severity"] = rule_def.severity.value
+                triggered_rule_details.append(detail)
+                audit_trail.append({
+                    "rule_id": rule_def.rule_id,
+                    "rule_name": rule_def.rule_name,
+                    "severity": rule_def.severity.value,
+                    "regulatory_standard": rule_def.regulatory_standard,
+                    "stop_work_action": rule_def.stop_work_action,
+                    "action_status": "VETO_ENFORCED" if rule_def.severity == RuleSeverity.ZERO_TOLERANCE_FATAL else "ADVISORY_ISSUED"
+                })
+                if rule_def.severity == RuleSeverity.ZERO_TOLERANCE_FATAL:
+                    max_severity = RuleSeverity.ZERO_TOLERANCE_FATAL.value
+
+        if not triggered_rules:
+            max_severity = "NONE_TRIGGERED"
+
         return {
             "mandatory_high_psif": mandatory_high_psif,
             "triggered_rules": triggered_rules,
+            "triggered_rule_details": triggered_rule_details,
             "rule_reasons": rule_reasons,
             "suggested_rules": list(dict.fromkeys(suggested_rules)),
             "is_benign": False,
+            "severity_level": max_severity,
+            "stop_work_required": mandatory_high_psif,
+            "audit_trail": audit_trail
         }

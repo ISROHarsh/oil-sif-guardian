@@ -25,7 +25,11 @@ import {
   IOGPMatrixResponseData,
   IOGPEvaluationReportResponseData,
   IOGPThresholdUpdateResponseData,
-  IOGPStatusResponseData
+  IOGPStatusResponseData,
+  RuleEvaluationResponseData,
+  RuleCatalogResponseData,
+  RuleCatalogItemData,
+  RuleStatsResponseData
 } from '../types';
 
 const API_BASE = '/api/v1';
@@ -378,6 +382,39 @@ export const api = {
   async getIOGPStatus(): Promise<IOGPStatusResponseData> {
     const res = await fetch(`${API_BASE}/iogp/status`);
     if (!res.ok) throw new Error('Failed to fetch IOGP status');
+    return await res.json();
+  },
+
+  // Phase 7: Deterministic Safety Rules & Codified Catalog Endpoints
+  async evaluateRules(narrative: string, title?: string): Promise<RuleEvaluationResponseData> {
+    const res = await fetch(`${API_BASE}/rules/evaluate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ narrative, title: title || '' })
+    });
+    if (!res.ok) throw new Error('Failed to evaluate narrative against safety rules');
+    return await res.json();
+  },
+
+  async getRuleCatalog(category?: string, severity?: string): Promise<RuleCatalogResponseData> {
+    const params = new URLSearchParams();
+    if (category && category !== 'All') params.append('category', category);
+    if (severity && severity !== 'All') params.append('severity', severity);
+    const qs = params.toString() ? `?${params.toString()}` : '';
+    const res = await fetch(`${API_BASE}/rules/catalog${qs}`);
+    if (!res.ok) throw new Error('Failed to fetch codified safety rule catalog');
+    return await res.json();
+  },
+
+  async getRuleById(ruleId: string): Promise<RuleCatalogItemData> {
+    const res = await fetch(`${API_BASE}/rules/catalog/${encodeURIComponent(ruleId)}`);
+    if (!res.ok) throw new Error(`Failed to fetch rule ${ruleId}`);
+    return await res.json();
+  },
+
+  async getRuleStats(): Promise<RuleStatsResponseData> {
+    const res = await fetch(`${API_BASE}/rules/stats`);
+    if (!res.ok) throw new Error('Failed to fetch rule engine golden benchmark statistics');
     return await res.json();
   }
 };
