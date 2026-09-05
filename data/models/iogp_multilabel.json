@@ -1,0 +1,137 @@
+{
+  "rules": [
+    "Bypassing Safety Controls",
+    "Confined Space",
+    "Driving",
+    "Energy Isolation",
+    "Hot Work",
+    "Line of Fire",
+    "Safe Mechanical Lifting",
+    "Work Authorization",
+    "Working at Height"
+  ],
+  "thresholds": {
+    "Bypassing Safety Controls": 0.38,
+    "Confined Space": 0.45,
+    "Driving": 0.38,
+    "Energy Isolation": 0.42,
+    "Hot Work": 0.36,
+    "Line of Fire": 0.36,
+    "Safe Mechanical Lifting": 0.36,
+    "Work Authorization": 0.38,
+    "Working at Height": 0.36
+  },
+  "co_occurrence_counts": {
+    "Bypassing Safety Controls": {
+      "Bypassing Safety Controls": 0,
+      "Confined Space": 0,
+      "Driving": 0,
+      "Energy Isolation": 7,
+      "Hot Work": 0,
+      "Line of Fire": 0,
+      "Safe Mechanical Lifting": 3,
+      "Work Authorization": 0,
+      "Working at Height": 0
+    },
+    "Confined Space": {
+      "Bypassing Safety Controls": 0,
+      "Confined Space": 0,
+      "Driving": 0,
+      "Energy Isolation": 5,
+      "Hot Work": 0,
+      "Line of Fire": 0,
+      "Safe Mechanical Lifting": 0,
+      "Work Authorization": 6,
+      "Working at Height": 0
+    },
+    "Driving": {
+      "Bypassing Safety Controls": 0,
+      "Confined Space": 0,
+      "Driving": 0,
+      "Energy Isolation": 0,
+      "Hot Work": 0,
+      "Line of Fire": 4,
+      "Safe Mechanical Lifting": 0,
+      "Work Authorization": 0,
+      "Working at Height": 0
+    },
+    "Energy Isolation": {
+      "Bypassing Safety Controls": 7,
+      "Confined Space": 5,
+      "Driving": 0,
+      "Energy Isolation": 0,
+      "Hot Work": 0,
+      "Line of Fire": 13,
+      "Safe Mechanical Lifting": 0,
+      "Work Authorization": 3,
+      "Working at Height": 0
+    },
+    "Hot Work": {
+      "Bypassing Safety Controls": 0,
+      "Confined Space": 0,
+      "Driving": 0,
+      "Energy Isolation": 0,
+      "Hot Work": 0,
+      "Line of Fire": 0,
+      "Safe Mechanical Lifting": 0,
+      "Work Authorization": 3,
+      "Working at Height": 0
+    },
+    "Line of Fire": {
+      "Bypassing Safety Controls": 0,
+      "Confined Space": 0,
+      "Driving": 4,
+      "Energy Isolation": 13,
+      "Hot Work": 0,
+      "Line of Fire": 0,
+      "Safe Mechanical Lifting": 9,
+      "Work Authorization": 0,
+      "Working at Height": 3
+    },
+    "Safe Mechanical Lifting": {
+      "Bypassing Safety Controls": 3,
+      "Confined Space": 0,
+      "Driving": 0,
+      "Energy Isolation": 0,
+      "Hot Work": 0,
+      "Line of Fire": 9,
+      "Safe Mechanical Lifting": 0,
+      "Work Authorization": 0,
+      "Working at Height": 0
+    },
+    "Work Authorization": {
+      "Bypassing Safety Controls": 0,
+      "Confined Space": 6,
+      "Driving": 0,
+      "Energy Isolation": 3,
+      "Hot Work": 3,
+      "Line of Fire": 0,
+      "Safe Mechanical Lifting": 0,
+      "Work Authorization": 0,
+      "Working at Height": 0
+    },
+    "Working at Height": {
+      "Bypassing Safety Controls": 0,
+      "Confined Space": 0,
+      "Driving": 0,
+      "Energy Isolation": 0,
+      "Hot Work": 0,
+      "Line of Fire": 3,
+      "Safe Mechanical Lifting": 0,
+      "Work Authorization": 0,
+      "Working at Height": 0
+    }
+  },
+  "rule_prevalence": {
+    "Bypassing Safety Controls": 21,
+    "Confined Space": 16,
+    "Driving": 10,
+    "Energy Isolation": 29,
+    "Hot Work": 14,
+    "Line of Fire": 37,
+    "Safe Mechanical Lifting": 18,
+    "Work Authorization": 20,
+    "Working at Height": 14
+  },
+  "version": "1.0.0-phase6"
+}

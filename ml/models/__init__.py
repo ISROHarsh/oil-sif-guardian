@@ -12,6 +12,12 @@ from ml.models.token_attribution import (
     TokenAttributionItem,
     TokenAttributionResult,
 )
+from ml.models.iogp_multilabel import (
+    IOGPMultiLabelClassifier,
+    IOGPRuleScore,
+    IOGPMultiLabelPrediction,
+    CANONICAL_IOGP_RULES,
+)
 
 __all__ = [
     "ContextualSequenceClassifier",
@@ -20,4 +26,8 @@ __all__ = [
     "TokenAttributionEngine",
     "TokenAttributionItem",
     "TokenAttributionResult",
+    "IOGPMultiLabelClassifier",
+    "IOGPRuleScore",
+    "IOGPMultiLabelPrediction",
+    "CANONICAL_IOGP_RULES",
 ]

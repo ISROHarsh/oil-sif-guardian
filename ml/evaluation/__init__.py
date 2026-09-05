@@ -8,10 +8,18 @@ from ml.evaluation.ensemble_arbitrator import (
     ModelEvaluationReport,
     FourWayBenchmarkReport,
 )
+from ml.evaluation.multilabel_metrics import (
+    MultiLabelEvaluator,
+    MultiLabelBenchmarkReport,
+    PerRuleMetric,
+)
 
 __all__ = [
     "EnsembleArbitrator",
     "EnsembleDecision",
     "ModelEvaluationReport",
     "FourWayBenchmarkReport",
+    "MultiLabelEvaluator",
+    "MultiLabelBenchmarkReport",
+    "PerRuleMetric",
 ]

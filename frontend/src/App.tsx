@@ -13,7 +13,8 @@ import {
   Network,
   Tag,
   Target,
-  Sliders
+  Sliders,
+  Crosshair
 } from 'lucide-react';
 import { ReportIngestion } from './components/ReportIngestion';
 import { AIResultView } from './components/AIResultView';
@@ -22,13 +23,14 @@ import { AnnotationBenchmarkView } from './components/AnnotationBenchmarkView';
 import { PrecursorClusterView } from './components/PrecursorClusterView';
 import { EntityExtractionView } from './components/EntityExtractionView';
 import { ModelStudioView } from './components/ModelStudioView';
+import { IOGPMultiLabelView } from './components/IOGPMultiLabelView';
 import { HSEReviewQueue } from './components/HSEReviewQueue';
 import { CorrectiveActionsView } from './components/CorrectiveActionsView';
 import { ExecutiveDashboard } from './components/ExecutiveDashboard';
 import { ReportResponse } from './types';
 
 export const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'intake' | 'batch' | 'annotation' | 'clusters' | 'extraction' | 'models' | 'queue' | 'actions' | 'analytics'>('intake');
+  const [activeTab, setActiveTab] = useState<'intake' | 'batch' | 'annotation' | 'clusters' | 'extraction' | 'models' | 'iogp' | 'queue' | 'actions' | 'analytics'>('intake');
   const [latestReport, setLatestReport] = useState<ReportResponse | null>(null);
 
   const handleTriageComplete = (report: ReportResponse) => {
@@ -152,6 +154,18 @@ export const App: React.FC = () => {
             </button>
 
             <button
+              onClick={() => setActiveTab('iogp')}
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
+                activeTab === 'iogp'
+                  ? 'bg-amber-500 text-slate-950 shadow-md'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+              }`}
+            >
+              <Crosshair className="w-3.5 h-3.5" />
+              <span>IOGP Rules</span>
+            </button>
+
+            <button
               onClick={() => setActiveTab('queue')}
               className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
                 activeTab === 'queue'
@@ -242,6 +256,12 @@ export const App: React.FC = () => {
             Models
           </button>
           <button
+            onClick={() => setActiveTab('iogp')}
+            className={`text-xs px-2 py-1 rounded ${activeTab === 'iogp' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+          >
+            IOGP
+          </button>
+          <button
             onClick={() => setActiveTab('queue')}
             className={`text-xs px-2 py-1 rounded ${activeTab === 'queue' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
           >
@@ -297,6 +317,10 @@ export const App: React.FC = () => {
 
         {activeTab === 'models' && (
           <ModelStudioView />
+        )}
+
+        {activeTab === 'iogp' && (
+          <IOGPMultiLabelView />
         )}
 
         {activeTab === 'queue' && (
