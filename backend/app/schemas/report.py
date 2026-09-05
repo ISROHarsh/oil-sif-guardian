@@ -43,6 +43,8 @@ class ReportResponse(BaseModel):
     reporter_role: Optional[str] = None
     raw_text: str
     normalized_text: str
+    quality_score: Optional[float] = None
+    quality_grade: Optional[str] = None
     psif: Optional[PSIFSchema] = None
     life_saving_rules: List[IOGPRulePredictionSchema] = Field(default_factory=list)
     entities: Optional[EntitiesSchema] = None
@@ -68,9 +70,48 @@ class ReportListItem(BaseModel):
     psif_probability: float
     primary_rule: Optional[str] = None
     review_status: str
+    quality_score: Optional[float] = None
+    quality_grade: Optional[str] = None
     created_at: datetime
 
 
 class ReportListResponse(BaseModel):
     total: int
     items: List[ReportListItem]
+
+
+class BatchReportCreate(BaseModel):
+    reports: List[ReportCreate] = Field(min_length=1, description="List of report payloads to batch ingest")
+
+
+class BatchIngestItemResult(BaseModel):
+    index: int
+    report_id: Optional[str] = None
+    status: str  # SUCCESS, REJECTED, DUPLICATE_WARNING
+    quality_score: float
+    quality_grade: str
+    quality_issues: List[str] = Field(default_factory=list)
+    duplicate_matches: List[Dict[str, Any]] = Field(default_factory=list)
+    psif_probability: Optional[float] = None
+    priority: Optional[str] = None
+    primary_rule: Optional[str] = None
+    error_message: Optional[str] = None
+
+
+class BatchIngestResponse(BaseModel):
+    total_processed: int
+    successful_count: int
+    failed_count: int
+    duplicate_count: int
+    average_quality_score: float
+    grade_breakdown: Dict[str, int]
+    items: List[BatchIngestItemResult]
+
+
+class DataQualitySummaryResponse(BaseModel):
+    total_reports: int
+    average_quality_score: float
+    grade_distribution: Dict[str, int]
+    dimension_averages: Dict[str, float]
+    common_issues: List[Dict[str, Any]]
+

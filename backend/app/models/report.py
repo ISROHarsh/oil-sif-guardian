@@ -42,6 +42,8 @@ class ReportModel(Base):
     reporter_role = Column(String(64), nullable=True)
     raw_text = Column(Text, nullable=False)  # IMMUTABLE
     normalized_text = Column(Text, nullable=False)
+    quality_score = Column(Float, nullable=True)
+    quality_grade = Column(String(8), nullable=True)
     created_at = Column(DateTime(timezone=True), default=utc_now)
     updated_at = Column(DateTime(timezone=True), default=utc_now, onupdate=utc_now)
 

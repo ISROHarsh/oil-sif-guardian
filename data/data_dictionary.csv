@@ -1,0 +1,24 @@
+field_name,category,data_type,nullable,allowed_values,description,validation_rule,security_classification
+report_id,core,string,false,,"Unique business identifier for safety report",^OIL-\d{4}-REP-\d{6}$,INTERNAL
+report_timestamp,core,datetime,false,,"UTC timestamp when the incident occurred",ISO-8601,INTERNAL
+report_type,core,string,false,"near_miss, unsafe_act, unsafe_condition, incident, hazard_observation","Category of HSSE report",enum,INTERNAL
+site,core,string,false,,"Operational installation or field site name",min_length:3,INTERNAL
+location,core,string,true,,"Specific location, platform, or area",,INTERNAL
+department,core,string,true,,"Operational department (e.g. Drilling, Production)",,INTERNAL
+activity,core,string,true,,"Task or activity being performed at time of incident",,INTERNAL
+equipment,core,array,true,,"Machinery, tools, or process units involved",,INTERNAL
+reporter_role,core,string,true,,"Role/designation of the individual who filed the report",,INTERNAL
+existing_severity,core,string,true,"minor, moderate, serious, critical, fatal","Initial severity recorded by reporter",enum,INTERNAL
+raw_text,core,string,false,,"Original unredacted incident narrative (IMMUTABLE)",min_length:10,RESTRICTED_PII
+normalized_text,core,string,false,,"Standardized, PII-masked, abbreviation-expanded narrative",min_length:10,INTERNAL
+data_quality_score,governance,float,false,0.0-100.0,"Automated data quality score evaluating narrative depth",range:0-100,INTERNAL
+pii_redacted,governance,boolean,false,"true, false","Flag indicating whether PII was detected and masked",,INTERNAL
+is_duplicate,governance,boolean,false,"true, false","Flag indicating near-duplicate submission across shifts",,INTERNAL
+permit_to_work,supplementary,string,true,,"Permit number or authorization reference",,CONFIDENTIAL
+jsa_completed,supplementary,boolean,true,"true, false","Whether Job Safety Analysis was documented",,INTERNAL
+loto_applied,supplementary,boolean,true,"true, false","Whether Lockout/Tagout isolation was executed",,INTERNAL
+contractor_involved,supplementary,boolean,true,"true, false","Whether third-party contractor personnel were involved",,INTERNAL
+shift,supplementary,string,true,"day, night, general","Shift during which incident occurred",enum,INTERNAL
+weather_conditions,supplementary,string,true,,"Weather or environmental factors (e.g. heavy rain, night)",,INTERNAL
+immediate_action_taken,core,string,true,,"Initial containment action taken at the scene",,INTERNAL
+investigation_status,governance,string,false,"open, in_progress, completed, closed","Current status of safety investigation",enum,INTERNAL
