@@ -14,13 +14,15 @@ import {
 import { ReportIngestion } from './components/ReportIngestion';
 import { AIResultView } from './components/AIResultView';
 import { BatchIngestionView } from './components/BatchIngestionView';
+import { AnnotationBenchmarkView } from './components/AnnotationBenchmarkView';
 import { HSEReviewQueue } from './components/HSEReviewQueue';
 import { CorrectiveActionsView } from './components/CorrectiveActionsView';
 import { ExecutiveDashboard } from './components/ExecutiveDashboard';
 import { ReportResponse } from './types';
+import { Target } from 'lucide-react';
 
 export const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'intake' | 'batch' | 'queue' | 'actions' | 'analytics'>('intake');
+  const [activeTab, setActiveTab] = useState<'intake' | 'batch' | 'annotation' | 'queue' | 'actions' | 'analytics'>('intake');
   const [latestReport, setLatestReport] = useState<ReportResponse | null>(null);
 
   const handleTriageComplete = (report: ReportResponse) => {
@@ -96,6 +98,18 @@ export const App: React.FC = () => {
             </button>
 
             <button
+              onClick={() => setActiveTab('annotation')}
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
+                activeTab === 'annotation'
+                  ? 'bg-amber-500 text-slate-950 shadow-md'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+              }`}
+            >
+              <Target className="w-3.5 h-3.5" />
+              <span>Annotation & Benchmark</span>
+            </button>
+
+            <button
               onClick={() => setActiveTab('queue')}
               className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
                 activeTab === 'queue'
@@ -151,31 +165,37 @@ export const App: React.FC = () => {
         <div className="md:hidden flex items-center justify-around border-t border-slate-800/80 bg-slate-950 py-2 px-2">
           <button
             onClick={() => setActiveTab('intake')}
-            className={`text-xs px-2.5 py-1 rounded ${activeTab === 'intake' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+            className={`text-xs px-2 py-1 rounded ${activeTab === 'intake' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
           >
             Intake
           </button>
           <button
             onClick={() => setActiveTab('batch')}
-            className={`text-xs px-2.5 py-1 rounded ${activeTab === 'batch' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+            className={`text-xs px-2 py-1 rounded ${activeTab === 'batch' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
           >
             Batch
           </button>
           <button
+            onClick={() => setActiveTab('annotation')}
+            className={`text-xs px-2 py-1 rounded ${activeTab === 'annotation' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+          >
+            Benchmark
+          </button>
+          <button
             onClick={() => setActiveTab('queue')}
-            className={`text-xs px-2.5 py-1 rounded ${activeTab === 'queue' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+            className={`text-xs px-2 py-1 rounded ${activeTab === 'queue' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
           >
             Queue
           </button>
           <button
             onClick={() => setActiveTab('actions')}
-            className={`text-xs px-2.5 py-1 rounded ${activeTab === 'actions' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+            className={`text-xs px-2 py-1 rounded ${activeTab === 'actions' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
           >
             Actions
           </button>
           <button
             onClick={() => setActiveTab('analytics')}
-            className={`text-xs px-2.5 py-1 rounded ${activeTab === 'analytics' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+            className={`text-xs px-2 py-1 rounded ${activeTab === 'analytics' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
           >
             Analytics
           </button>
@@ -201,6 +221,10 @@ export const App: React.FC = () => {
 
         {activeTab === 'batch' && (
           <BatchIngestionView onSelectReportId={handleSelectReportId} />
+        )}
+
+        {activeTab === 'annotation' && (
+          <AnnotationBenchmarkView />
         )}
 
         {activeTab === 'queue' && (

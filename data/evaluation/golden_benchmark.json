@@ -1,0 +1,5358 @@
+[
+  {
+    "benchmark_id": "BM-001",
+    "title": "Crude Oil Storage Tank Entry Without Gas Test",
+    "site": "Duliajan Production Installation",
+    "location": "Crude Storage Tank TK-101",
+    "activity": "Internal Sludge Inspection",
+    "narrative": "During tank maintenance, two contractor workers entered the crude storage tank without continuous atmospheric gas testing. The entry permit had expired two hours prior and the standby attendant was absent.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Confined Space",
+      "secondary_iogp_rules": [
+        "Work Authorization"
+      ],
+      "entities": {
+        "hazards": [
+          "toxic gas",
+          "asphyxiation",
+          "flammable vapors"
+        ],
+        "energy_sources": [
+          "hydrocarbon vapors"
+        ],
+        "controls": [
+          "gas testing",
+          "confined space permit",
+          "attendant"
+        ],
+        "control_failures": [
+          "gas test",
+          "permit",
+          "attendant"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "entered the crude storage tank",
+          "start_char": 48,
+          "end_char": 78,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "without continuous atmospheric gas testing",
+          "start_char": 79,
+          "end_char": 121,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "entry permit had expired",
+          "start_char": 127,
+          "end_char": 151,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "standby attendant was absent",
+          "start_char": 176,
+          "end_char": 204,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Unventilated entry into a hydrocarbon vessel without gas verification or rescue attendant poses imminent fatality risk from asphyxiation or toxic H2S."
+    }
+  },
+  {
+    "benchmark_id": "BM-002",
+    "title": "Gas Boot Separator Cleaning with Inadequate Ventilation",
+    "site": "Moran Gathering Station",
+    "location": "Separator Skid V-201",
+    "activity": "Vessel Desanding",
+    "narrative": "Fitter entered 3-phase test separator vessel while forced air eductor blower was switched off. LEL monitor was not worn and nitrogen purge line was not disconnected.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Confined Space",
+      "secondary_iogp_rules": [
+        "Energy Isolation",
+        "Work Authorization"
+      ],
+      "entities": {
+        "hazards": [
+          "nitrogen asphyxiation",
+          "confined space"
+        ],
+        "energy_sources": [
+          "nitrogen purge gas"
+        ],
+        "controls": [
+          "eductor blower",
+          "lel monitor",
+          "line disconnection"
+        ],
+        "control_failures": [
+          "ventilation",
+          "gas detector",
+          "isolation"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "entered 3-phase test separator vessel",
+          "start_char": 7,
+          "end_char": 44,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "forced air eductor blower was switched off",
+          "start_char": 51,
+          "end_char": 93,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "LEL monitor was not worn",
+          "start_char": 95,
+          "end_char": 119,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Entering a vessel with active nitrogen line and no air induction blower presents immediate asphyxiation hazard."
+    }
+  },
+  {
+    "benchmark_id": "BM-003",
+    "title": "Drilling Mud Tank Agitator Compartment Entry",
+    "site": "Drilling Rig OIL-45",
+    "location": "Mud Tank System #3",
+    "activity": "Mud Agitator Blade Clearing",
+    "narrative": "Roustabout stepped inside active mud tank suction pit to untangle a hose around agitator shaft. LOTO electrical lock was not hung on the agitator control panel.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Confined Space",
+      "secondary_iogp_rules": [
+        "Energy Isolation",
+        "Bypassing Safety Controls"
+      ],
+      "entities": {
+        "hazards": [
+          "rotating machinery",
+          "confined space"
+        ],
+        "energy_sources": [
+          "mechanical rotational kinetic energy"
+        ],
+        "controls": [
+          "loto",
+          "confined space permit"
+        ],
+        "control_failures": [
+          "loto",
+          "lockout"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "stepped inside active mud tank suction pit",
+          "start_char": 11,
+          "end_char": 53,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "LOTO electrical lock was not hung",
+          "start_char": 96,
+          "end_char": 129,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Entry into an agitator pit without mechanical and electrical isolation can lead to lethal entanglement."
+    }
+  },
+  {
+    "benchmark_id": "BM-004",
+    "title": "Pipeline Pig Receiver Barrel Entry Without Atmospheric Clearance",
+    "site": "Tinsukia Crude Pipeline Station",
+    "location": "Pig Receiver Trap #2",
+    "activity": "Pig Scraping Extraction",
+    "narrative": "Technician leaned torso into pig receiver trap barrel to dislodge stuck smart pig tool. Hydrocarbon odor was strong and portable multigas meter had not been calibrated.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Confined Space",
+      "secondary_iogp_rules": [
+        "Work Authorization"
+      ],
+      "entities": {
+        "hazards": [
+          "toxic gas",
+          "flammable gas"
+        ],
+        "energy_sources": [
+          "crude hydrocarbon fumes"
+        ],
+        "controls": [
+          "gas test",
+          "ventilation"
+        ],
+        "control_failures": [
+          "gas test",
+          "meter calibration"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "leaned torso into pig receiver trap barrel",
+          "start_char": 11,
+          "end_char": 53,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "portable multigas meter had not been calibrated",
+          "start_char": 120,
+          "end_char": 167,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Confined space torso entry into enclosed unpurged pig trap exposes technician to lethal VOC concentration."
+    }
+  },
+  {
+    "benchmark_id": "BM-005",
+    "title": "Cellar Pit Gas Accumulation with Exhaust Fan Tripped",
+    "site": "Naharkatiya Wellhead Cluster",
+    "location": "Well NHK-180 Cellar Pit",
+    "activity": "Casing Head Flange Bolting",
+    "narrative": "Two roustabouts were inside 3-meter deep cellar pit when the portable exhaust blower stopped running. 15 ppm H2S detected on pocket monitor, but workers continued bolting without SCBA breathing apparatus.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Confined Space",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "h2s gas",
+          "confined space pit"
+        ],
+        "energy_sources": [
+          "toxic h2s"
+        ],
+        "controls": [
+          "exhaust blower",
+          "scba",
+          "evacuation"
+        ],
+        "control_failures": [
+          "blower stopped",
+          "scba omitted"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "inside 3-meter deep cellar pit",
+          "start_char": 21,
+          "end_char": 51,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "portable exhaust blower stopped running",
+          "start_char": 61,
+          "end_char": 100,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "15 ppm H2S detected",
+          "start_char": 102,
+          "end_char": 121,
+          "category": "HAZARD"
+        }
+      ],
+      "adjudication_rationale": "Deep cellar pit acts as heavy gas sink; continuing work in 15 ppm H2S with failed ventilation has high fatality risk."
+    }
+  },
+  {
+    "benchmark_id": "BM-006",
+    "title": "Boiler Steam Drum Internal Visual Inspection",
+    "site": "Digboi Refinery Utility Plant",
+    "location": "Boiler Steam Drum #1",
+    "activity": "Annual Statutory Inspection",
+    "narrative": "Inspector crawled through manhole into steam drum without physical tagout lock on main steam header block valve. Only a written sign was hung on the wheel.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Confined Space",
+      "secondary_iogp_rules": [
+        "Energy Isolation"
+      ],
+      "entities": {
+        "hazards": [
+          "superheated steam",
+          "confined space"
+        ],
+        "energy_sources": [
+          "thermal steam pressure"
+        ],
+        "controls": [
+          "physical lock",
+          "positive isolation"
+        ],
+        "control_failures": [
+          "lockout",
+          "physical isolation missing"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "crawled through manhole into steam drum",
+          "start_char": 10,
+          "end_char": 49,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "without physical tagout lock on main steam header",
+          "start_char": 50,
+          "end_char": 99,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Inadequate isolation of high-pressure steam line entering confined drum risks severe scalding fatality."
+    }
+  },
+  {
+    "benchmark_id": "BM-007",
+    "title": "Drain Sump Pit Entry for Submersible Pump Retrieval",
+    "site": "Duliajan Gas Processing Plant",
+    "location": "Oily Water Sump Pit S-4",
+    "activity": "Pump Replacement",
+    "narrative": "Helper climbed down fixed vertical ladder into 4m concrete oily water sump pit without safety harness, retrieval tripod, or gas measurement.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Confined Space",
+      "secondary_iogp_rules": [
+        "Working at Height"
+      ],
+      "entities": {
+        "hazards": [
+          "hydrocarbon vapors",
+          "asphyxiation",
+          "fall"
+        ],
+        "energy_sources": [
+          "confined toxic gas"
+        ],
+        "controls": [
+          "retrieval tripod",
+          "harness",
+          "gas test"
+        ],
+        "control_failures": [
+          "gas test",
+          "tripod missing",
+          "harness missing"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "climbed down fixed vertical ladder into 4m concrete oily water sump pit",
+          "start_char": 7,
+          "end_char": 78,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "without safety harness, retrieval tripod, or gas measurement",
+          "start_char": 79,
+          "end_char": 139,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Deep wastewater sump contains heavy combustible and asphyxiating gases; no rescue device present."
+    }
+  },
+  {
+    "benchmark_id": "BM-008",
+    "title": "Secondary Containment Trench Sludge Removal",
+    "site": "Moran Crude Offloading Terminal",
+    "location": "Manifold Trench Zone C",
+    "activity": "Trench Cleaning",
+    "narrative": "Contractor worked inside 2.2m deep unventilated pipe trench beneath hydrocarbon header. Benzene detector was unavailable and no confined space permit was filed.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Confined Space",
+      "secondary_iogp_rules": [
+        "Work Authorization"
+      ],
+      "entities": {
+        "hazards": [
+          "benzene vapors",
+          "heavy gas pooling"
+        ],
+        "energy_sources": [
+          "chemical toxic vapors"
+        ],
+        "controls": [
+          "confined space permit",
+          "benzene monitoring"
+        ],
+        "control_failures": [
+          "permit omitted",
+          "monitoring missing"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "worked inside 2.2m deep unventilated pipe trench",
+          "start_char": 11,
+          "end_char": 59,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "no confined space permit was filed",
+          "start_char": 125,
+          "end_char": 159,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Trench depths exceeding 1.2m with hydrocarbon piping are classified confined spaces; lack of testing is severe."
+    }
+  },
+  {
+    "benchmark_id": "BM-009",
+    "title": "Frac Tank Internal Inspection With Expired PTW",
+    "site": "Well Servicing Yard Tinsukia",
+    "location": "Frac Tank FT-09",
+    "activity": "Corrosion Assessment",
+    "narrative": "QC engineer entered frac tank through roof manway. The PTW expired at 17:00 and work continued until 19:30 in darkness without backup lighting or radio check.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Confined Space",
+      "secondary_iogp_rules": [
+        "Work Authorization"
+      ],
+      "entities": {
+        "hazards": [
+          "residual chemicals",
+          "confined space"
+        ],
+        "energy_sources": [
+          "confined atmospheric hazard"
+        ],
+        "controls": [
+          "ptw validity",
+          "communications",
+          "lighting"
+        ],
+        "control_failures": [
+          "expired ptw",
+          "communication absent"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "entered frac tank through roof manway",
+          "start_char": 12,
+          "end_char": 49,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "PTW expired at 17:00",
+          "start_char": 55,
+          "end_char": 75,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Working in confined tank after permit expiration without communications prevents emergency rescue."
+    }
+  },
+  {
+    "benchmark_id": "BM-010",
+    "title": "Flare Knockout Drum Inspection with Defective Attendant Comm",
+    "site": "Jorajan Oil Field",
+    "location": "Flare KO Drum D-401",
+    "activity": "Demister Pad Cleaning",
+    "narrative": "Operator inside flare KO drum attempted to communicate via two-way radio with standby attendant, but radio battery was dead. Attendant had left post to fetch water.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Confined Space",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "pyrophoric scale",
+          "toxic gas"
+        ],
+        "energy_sources": [
+          "hydrocarbon gases"
+        ],
+        "controls": [
+          "attendant presence",
+          "radio communications"
+        ],
+        "control_failures": [
+          "attendant left post",
+          "radio failure"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "inside flare KO drum",
+          "start_char": 9,
+          "end_char": 29,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "Attendant had left post to fetch water",
+          "start_char": 125,
+          "end_char": 163,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Standby attendant leaving post while worker is inside flare KO drum eliminates the last barrier to rescue."
+    }
+  },
+  {
+    "benchmark_id": "BM-011",
+    "title": "Glycol Contactor Column Entry with Unverified Blind Flange",
+    "site": "Duliajan Gas Processing Plant",
+    "location": "Glycol Dehydration Column C-102",
+    "activity": "Structured Packing Replacement",
+    "narrative": "Contractor entered column skirt bottom section. Positive physical isolation blind had not been swung into place on the fuel gas purge tie-in line.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Confined Space",
+      "secondary_iogp_rules": [
+        "Energy Isolation"
+      ],
+      "entities": {
+        "hazards": [
+          "fuel gas ingress",
+          "confined space"
+        ],
+        "energy_sources": [
+          "pressurized gas"
+        ],
+        "controls": [
+          "positive mechanical blind",
+          "isolation verification"
+        ],
+        "control_failures": [
+          "blind missing",
+          "isolation unverified"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "entered column skirt bottom section",
+          "start_char": 11,
+          "end_char": 46,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "Positive physical isolation blind had not been swung",
+          "start_char": 48,
+          "end_char": 100,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Lack of positive mechanical blinding on gas line connected to occupied vessel creates extreme gas ingress risk."
+    }
+  },
+  {
+    "benchmark_id": "BM-012",
+    "title": "Water Injection Filter Vessel Opening Without Venting Verification",
+    "site": "Naharkatiya Water Injection Plant",
+    "location": "Basket Filter Unit BF-03",
+    "activity": "Filter Element Changeout",
+    "narrative": "Technician unbolted quick-opening closure door on water injection filter. Pressure gauge read zero, but bleed needle valve was clogged with rust, retaining 120 psi internal pressure.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Confined Space",
+      "secondary_iogp_rules": [
+        "Energy Isolation",
+        "Line of Fire"
+      ],
+      "entities": {
+        "hazards": [
+          "trapped pressure",
+          "projectile closure door"
+        ],
+        "energy_sources": [
+          "pressurized water / air (120 psi)"
+        ],
+        "controls": [
+          "pressure verification",
+          "depressurization bleed"
+        ],
+        "control_failures": [
+          "pressure gauge misleading",
+          "bleed blocked"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "unbolted quick-opening closure door",
+          "start_char": 11,
+          "end_char": 46,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "retaining 120 psi internal pressure",
+          "start_char": 146,
+          "end_char": 181,
+          "category": "HAZARD"
+        },
+        {
+          "text": "bleed needle valve was clogged",
+          "start_char": 104,
+          "end_char": 134,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Opening pressurized vessel closure with trapped 120 psi energy causes sudden projectile expulsion."
+    }
+  },
+  {
+    "benchmark_id": "BM-013",
+    "title": "High-Pressure Gas Flange Unbolted Under Pressure",
+    "site": "Moran Gathering Station",
+    "location": "Manifold Skid B",
+    "activity": "Flange Unbolting",
+    "narrative": "Mechanical technician attempted to unbolt a pressurized gas line flange before closing isolation block valves. Stored energy was present without LOTO verification.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Energy Isolation",
+      "secondary_iogp_rules": [
+        "Line of Fire"
+      ],
+      "entities": {
+        "hazards": [
+          "pressurized gas release",
+          "flange blowoff"
+        ],
+        "energy_sources": [
+          "compressed natural gas"
+        ],
+        "controls": [
+          "block valve isolation",
+          "loto verification"
+        ],
+        "control_failures": [
+          "isolation omitted",
+          "loto missing"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "attempted to unbolt a pressurized gas line flange",
+          "start_char": 22,
+          "end_char": 71,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "before closing isolation block valves",
+          "start_char": 72,
+          "end_char": 109,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "Stored energy was present without LOTO",
+          "start_char": 111,
+          "end_char": 149,
+          "category": "HAZARD"
+        }
+      ],
+      "adjudication_rationale": "Unbolting live gas piping with stored energy without double-block-and-bleed isolation risks catastrophic explosion or pipe projectile."
+    }
+  },
+  {
+    "benchmark_id": "BM-014",
+    "title": "Wellhead Flowline Hot Tap Without LOTO Isolation",
+    "site": "Naharkatiya Wellhead Cluster",
+    "location": "Well NHK-204",
+    "activity": "Flowline Tie-In",
+    "narrative": "Maintenance crew unbolted wellhead casing wing valve with 1200 psi shut-in casing pressure. The master valve had not been locked out and pressure bleeder was seized.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Energy Isolation",
+      "secondary_iogp_rules": [
+        "Line of Fire"
+      ],
+      "entities": {
+        "hazards": [
+          "high pressure gas",
+          "wellhead blowout"
+        ],
+        "energy_sources": [
+          "1200 psi shut-in casing pressure"
+        ],
+        "controls": [
+          "master valve lockout",
+          "bleeder test"
+        ],
+        "control_failures": [
+          "loto missing",
+          "bleeder seized"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "unbolted wellhead casing wing valve",
+          "start_char": 17,
+          "end_char": 52,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "1200 psi shut-in casing pressure",
+          "start_char": 58,
+          "end_char": 90,
+          "category": "HAZARD"
+        },
+        {
+          "text": "master valve had not been locked out",
+          "start_char": 96,
+          "end_char": 132,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "High pressure (1200 psi) unisolated hydrocarbon wellhead manipulation carries immediate blowout and fatal projectile danger."
+    }
+  },
+  {
+    "benchmark_id": "BM-015",
+    "title": "Centrifugal Crude Oil Pump Seal Replacement Under Live System",
+    "site": "Tinsukia Crude Pump Station",
+    "location": "Mainline Pump Skid P-101B",
+    "activity": "Mechanical Seal Overhaul",
+    "narrative": "Fitter disconnected pump coupling while discharge suction valves were in cracked-open position. Electrical motor breaker had been switched off at local pushbutton, but not locked out at MCC breaker.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Energy Isolation",
+      "secondary_iogp_rules": [
+        "Bypassing Safety Controls"
+      ],
+      "entities": {
+        "hazards": [
+          "unexpected motor restart",
+          "crude spraying"
+        ],
+        "energy_sources": [
+          "415V electrical",
+          "hydraulic crude pressure"
+        ],
+        "controls": [
+          "mcc breaker loto",
+          "valve isolation"
+        ],
+        "control_failures": [
+          "pushbutton only",
+          "mcc lock omitted"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "disconnected pump coupling",
+          "start_char": 7,
+          "end_char": 33,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "not locked out at MCC breaker",
+          "start_char": 168,
+          "end_char": 197,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "valves were in cracked-open position",
+          "start_char": 58,
+          "end_char": 94,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Local pushbutton is not zero energy state; motor restart or valve bypass causes severe mechanical crushing or fire."
+    }
+  },
+  {
+    "benchmark_id": "BM-016",
+    "title": "Air Receiver Tank Drain Valve Dismantling at 150 PSI",
+    "site": "Digboi Central Workshop",
+    "location": "Compressor Room",
+    "activity": "Drain Valve Overhaul",
+    "narrative": "Mechanic hammered pipe union on bottom drain of 5000L compressed air receiver tank without venting air. Gauge indicated 150 psi.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Energy Isolation",
+      "secondary_iogp_rules": [
+        "Line of Fire"
+      ],
+      "entities": {
+        "hazards": [
+          "pneumatic explosion",
+          "pipe missile"
+        ],
+        "energy_sources": [
+          "150 psi compressed air"
+        ],
+        "controls": [
+          "depressurization",
+          "isolation check"
+        ],
+        "control_failures": [
+          "venting omitted"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "hammered pipe union on bottom drain",
+          "start_char": 9,
+          "end_char": 44,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "without venting air",
+          "start_char": 83,
+          "end_char": 102,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "Gauge indicated 150 psi",
+          "start_char": 104,
+          "end_char": 127,
+          "category": "HAZARD"
+        }
+      ],
+      "adjudication_rationale": "Shock-loading threaded fittings under 150 psi pneumatic pressure can cause lethal shrapnel detachment."
+    }
+  },
+  {
+    "benchmark_id": "BM-017",
+    "title": "Hydraulic Power Unit (HPU) Accumulator Servicing",
+    "site": "Drilling Rig OIL-78",
+    "location": "BOP Hydraulic Control Room",
+    "activity": "Bladder Replacement",
+    "narrative": "Rig mechanic loosened nitrogen precharge cap on high pressure hydraulic accumulator cylinder before dumping hydraulic fluid pressure. System stored 3000 psi.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Energy Isolation",
+      "secondary_iogp_rules": [
+        "Line of Fire"
+      ],
+      "entities": {
+        "hazards": [
+          "hydraulic injection",
+          "explosive decompression"
+        ],
+        "energy_sources": [
+          "3000 psi hydraulic stored pressure"
+        ],
+        "controls": [
+          "hydraulic dump valve",
+          "gauge zero verification"
+        ],
+        "control_failures": [
+          "pressure dump omitted"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "loosened nitrogen precharge cap",
+          "start_char": 13,
+          "end_char": 44,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "before dumping hydraulic fluid pressure",
+          "start_char": 93,
+          "end_char": 132,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "stored 3000 psi",
+          "start_char": 141,
+          "end_char": 156,
+          "category": "HAZARD"
+        }
+      ],
+      "adjudication_rationale": "Opening hydraulic components under 3000 psi stored accumulator charge carries high fatality and fluid injection risks."
+    }
+  },
+  {
+    "benchmark_id": "BM-018",
+    "title": "Live 3.3 kV Switchgear Rack-In Without Voltage Testing",
+    "site": "Duliajan Substation #5",
+    "location": "3.3kV Switchgear Cell #4",
+    "activity": "Vacuum Circuit Breaker Replacement",
+    "narrative": "Senior electrical technician racked in vacuum circuit breaker into 3.3 kV switchgear cubicle. Safety shutters were jammed open and test prods were not used to prove bus dead.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Energy Isolation",
+      "secondary_iogp_rules": [
+        "Bypassing Safety Controls"
+      ],
+      "entities": {
+        "hazards": [
+          "arc flash",
+          "electrocution"
+        ],
+        "energy_sources": [
+          "3.3 kV medium voltage"
+        ],
+        "controls": [
+          "safety shutter",
+          "proving dead test",
+          "earth switch"
+        ],
+        "control_failures": [
+          "safety shutters jammed",
+          "dead test omitted"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "racked in vacuum circuit breaker",
+          "start_char": 29,
+          "end_char": 61,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "Safety shutters were jammed open",
+          "start_char": 94,
+          "end_char": 126,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "test prods were not used to prove bus dead",
+          "start_char": 131,
+          "end_char": 173,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Racking breaker onto live 3.3kV bus with jammed shutters can generate massive arc flash explosion."
+    }
+  },
+  {
+    "benchmark_id": "BM-019",
+    "title": "Gas Lift Manifold Meter Run Orifice Plate Change",
+    "site": "Naharkatiya Gas Lift Station",
+    "location": "Header Skid #1",
+    "activity": "Orifice Plate Inspection",
+    "narrative": "Operator cracked orifice plate carrier chamber on 800 psi gas lift injection line. Equalizer valve was left open, causing high-pressure gas bypass to atmosphere.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Energy Isolation",
+      "secondary_iogp_rules": [
+        "Line of Fire"
+      ],
+      "entities": {
+        "hazards": [
+          "gas jet release",
+          "noise / impact"
+        ],
+        "energy_sources": [
+          "800 psi natural gas"
+        ],
+        "controls": [
+          "equalizer valve closed",
+          "vent valve open"
+        ],
+        "control_failures": [
+          "equalizer valve open"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "cracked orifice plate carrier chamber",
+          "start_char": 9,
+          "end_char": 46,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "800 psi gas lift injection line",
+          "start_char": 50,
+          "end_char": 81,
+          "category": "HAZARD"
+        },
+        {
+          "text": "Equalizer valve was left open",
+          "start_char": 83,
+          "end_char": 112,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "High-pressure gas line opened without proper isolation chamber sealing leads to instant gas cloud eruption."
+    }
+  },
+  {
+    "benchmark_id": "BM-020",
+    "title": "Heat Exchanger Channel Head Removal with Residual Acid",
+    "site": "Digboi Refinery Plant",
+    "location": "Crude Distillation Pre-Heat Train",
+    "activity": "Channel Head Cleaning",
+    "narrative": "Fitter unbolted channel head flange on chemical cleaning circuit. Neutralization wash had not been performed, spraying residual 15% hydrochloric acid across technician's body.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Energy Isolation",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "chemical burn",
+          "toxic spray"
+        ],
+        "energy_sources": [
+          "hazardous chemical acid"
+        ],
+        "controls": [
+          "neutralization wash",
+          "chemical suit",
+          "drain verification"
+        ],
+        "control_failures": [
+          "neutralization omitted",
+          "wash skipped"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "unbolted channel head flange",
+          "start_char": 7,
+          "end_char": 35,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "Neutralization wash had not been performed",
+          "start_char": 66,
+          "end_char": 108,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "spraying residual 15% hydrochloric acid",
+          "start_char": 110,
+          "end_char": 149,
+          "category": "HAZARD"
+        }
+      ],
+      "adjudication_rationale": "Chemical energy isolation requires complete flush and neutral testing prior to opening containment."
+    }
+  },
+  {
+    "benchmark_id": "BM-021",
+    "title": "Compressor Cylinder Head Removal with Trapped Gas",
+    "site": "Duliajan Gas Processing Plant",
+    "location": "Reciprocating Compressor K-104",
+    "activity": "Valve Plate Replacement",
+    "narrative": "Mechanic removed the last four studs on compressor suction valve cap. Cylinder was not depressurized through vent valve, causing the heavy steel cap to blow off 2 meters.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Energy Isolation",
+      "secondary_iogp_rules": [
+        "Line of Fire"
+      ],
+      "entities": {
+        "hazards": [
+          "flying projectile",
+          "gas blast"
+        ],
+        "energy_sources": [
+          "trapped gas pressure"
+        ],
+        "controls": [
+          "cylinder vent valve",
+          "cross-bolting release"
+        ],
+        "control_failures": [
+          "cylinder not depressurized"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "removed the last four studs",
+          "start_char": 9,
+          "end_char": 36,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "Cylinder was not depressurized through vent valve",
+          "start_char": 70,
+          "end_char": 119,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "heavy steel cap to blow off 2 meters",
+          "start_char": 133,
+          "end_char": 169,
+          "category": "CONSEQUENCE"
+        }
+      ],
+      "adjudication_rationale": "Trapped gas turned heavy compressor component into a projectile near worker head position."
+    }
+  },
+  {
+    "benchmark_id": "BM-022",
+    "title": "Substation Transformer Radiator Valve Leak Maintenance",
+    "site": "Moran Main Substation",
+    "location": "Step-Down Transformer TR-02",
+    "activity": "Gasket Replacement",
+    "narrative": "Contractor technician began unbolting valve flange on 33kV transformer tank. High voltage transformer was energized and no safety distance boundary barricade was installed.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Energy Isolation",
+      "secondary_iogp_rules": [
+        "Line of Fire"
+      ],
+      "entities": {
+        "hazards": [
+          "33kV electrocution",
+          "arc flash"
+        ],
+        "energy_sources": [
+          "33 kV electrical energy"
+        ],
+        "controls": [
+          "transformer de-energization",
+          "safety clearance"
+        ],
+        "control_failures": [
+          "transformer was energized",
+          "barricade missing"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "unbolting valve flange on 33kV transformer tank",
+          "start_char": 28,
+          "end_char": 75,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "High voltage transformer was energized",
+          "start_char": 77,
+          "end_char": 115,
+          "category": "HAZARD"
+        },
+        {
+          "text": "no safety distance boundary barricade",
+          "start_char": 120,
+          "end_char": 157,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Mechanical work on an energized 33kV transformer tank without clearance distance is an immediate lethal flashover hazard."
+    }
+  },
+  {
+    "benchmark_id": "BM-023",
+    "title": "Mud Pump Liner Change with Pulsation Dampener Charged",
+    "site": "Drilling Rig OIL-45",
+    "location": "Mud Pump #1",
+    "activity": "Liner Changeout",
+    "narrative": "Roughneck unscrewed liner retention cage while discharge pulsation dampener held 1500 psi nitrogen charge without relief valve bleed.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Energy Isolation",
+      "secondary_iogp_rules": [
+        "Line of Fire"
+      ],
+      "entities": {
+        "hazards": [
+          "nitrogen pressure discharge",
+          "impact"
+        ],
+        "energy_sources": [
+          "1500 psi nitrogen stored energy"
+        ],
+        "controls": [
+          "pulsation dampener bleed",
+          "isolation verification"
+        ],
+        "control_failures": [
+          "relief bleed omitted"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "unscrewed liner retention cage",
+          "start_char": 10,
+          "end_char": 40,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "held 1500 psi nitrogen charge",
+          "start_char": 76,
+          "end_char": 105,
+          "category": "HAZARD"
+        },
+        {
+          "text": "without relief valve bleed",
+          "start_char": 106,
+          "end_char": 132,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Pulsation dampeners retain lethal pneumatic kinetic energy that can violently dislodge pump liner cages."
+    }
+  },
+  {
+    "benchmark_id": "BM-024",
+    "title": "Pipeline Actuator Servicing Without Nitrogen Depressurization",
+    "site": "Jorajan Crude Trunkline",
+    "location": "Sectionalizing Valve Station SV-03",
+    "activity": "Actuator Diaphragm Replacement",
+    "narrative": "Instrument technician unfastened bonnet bolts on pneumatic emergency shutdown valve actuator. Supply regulator was turned off but 90 psi air remained trapped in the actuator chamber.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "REVIEW",
+      "primary_iogp_rule": "Energy Isolation",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "trapped pneumatic air",
+          "sudden bonnet lift"
+        ],
+        "energy_sources": [
+          "90 psi compressed air"
+        ],
+        "controls": [
+          "actuator manual bleed",
+          "safe bolt loosening"
+        ],
+        "control_failures": [
+          "air trapped in chamber"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "unfastened bonnet bolts",
+          "start_char": 22,
+          "end_char": 45,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "90 psi air remained trapped",
+          "start_char": 130,
+          "end_char": 157,
+          "category": "HAZARD"
+        }
+      ],
+      "adjudication_rationale": "Trapped pneumatic pressure caused sudden bonnet jump without direct worker trajectory; needs review."
+    }
+  },
+  {
+    "benchmark_id": "BM-025",
+    "title": "Lubricating Oil Filter Cartridge Change with Low Pressure Residual",
+    "site": "Duliajan Power House",
+    "location": "Generator G-2",
+    "activity": "Lube Oil Filter Element Replacement",
+    "narrative": "Operator changed lube oil filter while system had 5 psi residual hydrostatic head. Oil dripped onto drip tray with no spraying.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": "Energy Isolation",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "minor oil drip"
+        ],
+        "energy_sources": [
+          "low pressure oil (5 psi)"
+        ],
+        "controls": [
+          "drip tray in place"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "changed lube oil filter",
+          "start_char": 9,
+          "end_char": 32,
+          "category": "EXPOSURE"
+        }
+      ],
+      "adjudication_rationale": "Minimal 5 psi residual head resulting in contained oil drip is non-SIF."
+    }
+  },
+  {
+    "benchmark_id": "BM-026",
+    "title": "Instrument Air Gauge Zero Verification Prior to Calibration",
+    "site": "Moran Metering Skid",
+    "location": "Control Panel CP-1",
+    "activity": "Gauge Verification",
+    "narrative": "Instrument technician properly closed manifold needle valve, vented gauge through bleed port to 0 psi, and hung yellow LOTO tag before unthreading pressure gauge.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": "Energy Isolation",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "none - fully isolated"
+        ],
+        "energy_sources": [
+          "zero energy state achieved"
+        ],
+        "controls": [
+          "needle valve closed",
+          "bleed port vented",
+          "loto tag hung"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "vented gauge through bleed port to 0 psi",
+          "start_char": 61,
+          "end_char": 101,
+          "category": "CONTROL"
+        }
+      ],
+      "adjudication_rationale": "Full adherence to isolation rules with zero stored energy present; safe operational event."
+    }
+  },
+  {
+    "benchmark_id": "BM-027",
+    "title": "Suspended Casing Joint Over Rig Floor",
+    "site": "Drilling Rig OIL-45",
+    "location": "Drill Floor / Catwalk",
+    "activity": "Tubular Handling",
+    "narrative": "During rig operations, a roustabout was walking underneath the suspended load while the crane was slewing a 3-ton casing joint across the drill floor.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Safe Mechanical Lifting",
+      "secondary_iogp_rules": [
+        "Line of Fire"
+      ],
+      "entities": {
+        "hazards": [
+          "dropped heavy load",
+          "crushing"
+        ],
+        "energy_sources": [
+          "gravitational potential energy (3-ton)"
+        ],
+        "controls": [
+          "exclusion zone barricade",
+          "tag lines",
+          "rigger signal"
+        ],
+        "control_failures": [
+          "exclusion zone breached"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "walking underneath the suspended load",
+          "start_char": 40,
+          "end_char": 77,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "slewing a 3-ton casing joint",
+          "start_char": 98,
+          "end_char": 126,
+          "category": "HAZARD"
+        }
+      ],
+      "adjudication_rationale": "Walking under a 3-ton dynamic suspended load is a direct fatal line-of-fire violation without barriers."
+    }
+  },
+  {
+    "benchmark_id": "BM-028",
+    "title": "Damaged Webbing Sling Used for Compressor Skid Lift",
+    "site": "Moran Production Station",
+    "location": "Compressor Bay #2",
+    "activity": "Skid Positioning",
+    "narrative": "Crane rigger utilized a 5-ton synthetic webbing sling showing visible acid burns and cut fibers to hoist a 4.2-ton gas scrubber skid. Sling tag was illegible and color code had expired.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Safe Mechanical Lifting",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "rigging gear failure",
+          "dropped load"
+        ],
+        "energy_sources": [
+          "4.2-ton suspended load"
+        ],
+        "controls": [
+          "pre-use rigging inspection",
+          "valid color code"
+        ],
+        "control_failures": [
+          "damaged sling used",
+          "color code expired"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "synthetic webbing sling showing visible acid burns and cut fibers",
+          "start_char": 30,
+          "end_char": 95,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "hoist a 4.2-ton gas scrubber skid",
+          "start_char": 99,
+          "end_char": 132,
+          "category": "HAZARD"
+        }
+      ],
+      "adjudication_rationale": "Lifting near WLL using structurally degraded, acid-damaged sling creates imminent catastrophic dropped object risk."
+    }
+  },
+  {
+    "benchmark_id": "BM-029",
+    "title": "Crane Outriggers Set on Soft Soil Without Timbers",
+    "site": "Jorajan Well Construction Site",
+    "location": "Well Pad J-11",
+    "activity": "Mud Tank Unloading",
+    "narrative": "A 50-ton hydraulic mobile crane set outriggers directly on waterlogged soft mud without crane mats. During 8-ton lift, rear right outrigger sank 40cm, causing boom deflection.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Safe Mechanical Lifting",
+      "secondary_iogp_rules": [
+        "Line of Fire"
+      ],
+      "entities": {
+        "hazards": [
+          "crane overturning",
+          "boom collapse"
+        ],
+        "energy_sources": [
+          "50-ton crane kinetic energy",
+          "8-ton load"
+        ],
+        "controls": [
+          "crane mats / outrigger pads",
+          "ground bearing verification"
+        ],
+        "control_failures": [
+          "outrigger mats omitted",
+          "soft ground unverified"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "set outriggers directly on waterlogged soft mud without crane mats",
+          "start_char": 32,
+          "end_char": 98,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "rear right outrigger sank 40cm",
+          "start_char": 119,
+          "end_char": 149,
+          "category": "CONSEQUENCE"
+        },
+        {
+          "text": "During 8-ton lift",
+          "start_char": 100,
+          "end_char": 117,
+          "category": "HAZARD"
+        }
+      ],
+      "adjudication_rationale": "Outrigger ground failure during heavy lift leads directly to crane overturn and fatal impact."
+    }
+  },
+  {
+    "benchmark_id": "BM-030",
+    "title": "Overloading Mobile Crane Past Load Chart Capacity",
+    "site": "Digboi Refinery Revamp Area",
+    "location": "Heavy Equipment Laydown",
+    "activity": "Column Section Relocation",
+    "narrative": "Crane operator bypassed the Automatic Safe Load Indicator (ASLI) computer to lift an 18-ton reboiler shell at a 16m radius, exceeding the crane load chart rating by 28%.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Safe Mechanical Lifting",
+      "secondary_iogp_rules": [
+        "Bypassing Safety Controls"
+      ],
+      "entities": {
+        "hazards": [
+          "structural boom failure",
+          "tipover"
+        ],
+        "energy_sources": [
+          "18-ton heavy load"
+        ],
+        "controls": [
+          "asli system",
+          "lift plan compliance",
+          "radius limit"
+        ],
+        "control_failures": [
+          "asli bypassed",
+          "load chart exceeded"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "bypassed the Automatic Safe Load Indicator (ASLI)",
+          "start_char": 15,
+          "end_char": 64,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "exceeding the crane load chart rating by 28%",
+          "start_char": 124,
+          "end_char": 168,
+          "category": "HAZARD"
+        }
+      ],
+      "adjudication_rationale": "Bypassing computer limiters while exceeding structural crane capacity by 28% has catastrophic fatality potential."
+    }
+  },
+  {
+    "benchmark_id": "BM-031",
+    "title": "Blind Lift Carried Out Without Dedicated Banksman",
+    "site": "Duliajan Central Workshop Yard",
+    "location": "Yard Bay 4",
+    "activity": "Piping Bundle Transfer",
+    "narrative": "Crane operator slewed 4-ton steel pipe bundle behind concrete blast wall out of line of sight without a qualified signaller or banksman. Load struck electrical conduit.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Safe Mechanical Lifting",
+      "secondary_iogp_rules": [
+        "Line of Fire"
+      ],
+      "entities": {
+        "hazards": [
+          "uncontrolled collision",
+          "struck-by"
+        ],
+        "energy_sources": [
+          "4-ton moving load"
+        ],
+        "controls": [
+          "dedicated banksman",
+          "radio communication"
+        ],
+        "control_failures": [
+          "banksman absent",
+          "blind lift unguided"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "out of line of sight without a qualified signaller or banksman",
+          "start_char": 73,
+          "end_char": 135,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "slewed 4-ton steel pipe bundle",
+          "start_char": 15,
+          "end_char": 45,
+          "category": "HAZARD"
+        },
+        {
+          "text": "Load struck electrical conduit",
+          "start_char": 137,
+          "end_char": 167,
+          "category": "CONSEQUENCE"
+        }
+      ],
+      "adjudication_rationale": "Blind mechanical lift conducted without signaller is a major SIF precursor for ground worker crush."
+    }
+  },
+  {
+    "benchmark_id": "BM-032",
+    "title": "Air Hoist Cable Snagged on Wellhead During Rig Pull",
+    "site": "Drilling Rig OIL-78",
+    "location": "Substructure Area",
+    "activity": "BOP Ram Handling",
+    "narrative": "Air tugger wire rope was kinked and crushed with 4 broken strands near the hook thimble. Crew pulled 2.5-ton ram block through tight substructure opening without guide line.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Safe Mechanical Lifting",
+      "secondary_iogp_rules": [
+        "Line of Fire"
+      ],
+      "entities": {
+        "hazards": [
+          "wire rope snap",
+          "kinetic recoil"
+        ],
+        "energy_sources": [
+          "tensioned wire rope",
+          "2.5-ton load"
+        ],
+        "controls": [
+          "wire rope inspection",
+          "tag lines"
+        ],
+        "control_failures": [
+          "damaged rope used",
+          "tag lines missing"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "wire rope was kinked and crushed with 4 broken strands",
+          "start_char": 11,
+          "end_char": 65,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "pulled 2.5-ton ram block",
+          "start_char": 94,
+          "end_char": 118,
+          "category": "HAZARD"
+        },
+        {
+          "text": "without guide line",
+          "start_char": 154,
+          "end_char": 172,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Damaged wire rope under heavy tensile load risks sudden whipping fracture and fatal blunt force trauma."
+    }
+  },
+  {
+    "benchmark_id": "BM-033",
+    "title": "Chain Hoist Rigged Directly to Unrated Handrail",
+    "site": "Naharkatiya EPS-2",
+    "location": "Upper Walkway Platform",
+    "activity": "Motor Removal",
+    "narrative": "Maintenance fitters wrapped a chain hoist sling around platform toe-board and handrail stanchion to lift 350 kg electric motor. Handrail weld began to crack under load.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Safe Mechanical Lifting",
+      "secondary_iogp_rules": [
+        "Working at Height",
+        "Line of Fire"
+      ],
+      "entities": {
+        "hazards": [
+          "anchor failure",
+          "platform collapse"
+        ],
+        "energy_sources": [
+          "350 kg suspended mass"
+        ],
+        "controls": [
+          "certified lift beam",
+          "load calculation"
+        ],
+        "control_failures": [
+          "unrated anchor used",
+          "handrail rigged"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "wrapped a chain hoist sling around platform toe-board and handrail stanchion",
+          "start_char": 20,
+          "end_char": 96,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "lift 350 kg electric motor",
+          "start_char": 100,
+          "end_char": 126,
+          "category": "HAZARD"
+        },
+        {
+          "text": "Handrail weld began to crack",
+          "start_char": 128,
+          "end_char": 156,
+          "category": "CONSEQUENCE"
+        }
+      ],
+      "adjudication_rationale": "Rigging heavy loads to unrated safety handrails can pull down walkway grating and plunge load and workers 8 meters."
+    }
+  },
+  {
+    "benchmark_id": "BM-034",
+    "title": "Forklift Moving Oversized Tubing Bundle with Obstructed Vision",
+    "site": "Duliajan Pipe Storage Yard",
+    "location": "Tubing Rack Section 2",
+    "activity": "Tubing Dispatch",
+    "narrative": "Forklift driver travelled forward at 20 km/h with mast elevated 3 meters holding long 6-inch drill collars, completely blocking front windshield view. Ground marshal was not deployed.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Safe Mechanical Lifting",
+      "secondary_iogp_rules": [
+        "Line of Fire"
+      ],
+      "entities": {
+        "hazards": [
+          "struck by vehicle",
+          "mast tipover"
+        ],
+        "energy_sources": [
+          "heavy mobile equipment kinetic energy"
+        ],
+        "controls": [
+          "reverse travel",
+          "ground marshal",
+          "mast lowered"
+        ],
+        "control_failures": [
+          "forward blind travel",
+          "marshal omitted"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "travelled forward at 20 km/h with mast elevated 3 meters",
+          "start_char": 16,
+          "end_char": 72,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "completely blocking front windshield view",
+          "start_char": 108,
+          "end_char": 149,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "Ground marshal was not deployed",
+          "start_char": 151,
+          "end_char": 182,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Driving forklift with elevated mast and zero forward visibility in active pedestrian yard creates fatal runover hazard."
+    }
+  },
+  {
+    "benchmark_id": "BM-035",
+    "title": "Tandem Crane Lift Executed Without Lift Plan or Coordinator",
+    "site": "Moran Gas Compressor Station",
+    "location": "Compressor Foundation Base",
+    "activity": "Skid Offloading",
+    "narrative": "Two 30-ton mobile cranes performed a dual-crane tandem lift of a 22-ton compressor package. No critical lift plan was documented and operators had no unified radio frequency.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Safe Mechanical Lifting",
+      "secondary_iogp_rules": [
+        "Work Authorization"
+      ],
+      "entities": {
+        "hazards": [
+          "unequal load transfer",
+          "dual boom collapse"
+        ],
+        "energy_sources": [
+          "22-ton heavy suspended structure"
+        ],
+        "controls": [
+          "critical lift plan",
+          "appointed lift coordinator",
+          "radio sync"
+        ],
+        "control_failures": [
+          "lift plan missing",
+          "no unified radio frequency"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "dual-crane tandem lift of a 22-ton compressor package",
+          "start_char": 37,
+          "end_char": 90,
+          "category": "HAZARD"
+        },
+        {
+          "text": "No critical lift plan was documented",
+          "start_char": 92,
+          "end_char": 128,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "operators had no unified radio frequency",
+          "start_char": 133,
+          "end_char": 173,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Tandem lifts without engineering calculations and coordinator are among the highest fatality risk lifting operations."
+    }
+  },
+  {
+    "benchmark_id": "BM-036",
+    "title": "Crane Hook Safety Latch Missing During Valve Hoist",
+    "site": "Tinsukia Valve Station",
+    "location": "Pig Launcher Pit",
+    "activity": "Valve Replacement",
+    "narrative": "Crane hook safety spring latch was broken off. Rigger looped wire rope master link over hook throat without securing latch wire or mousing.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "REVIEW",
+      "primary_iogp_rule": "Safe Mechanical Lifting",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "sling detachment risk"
+        ],
+        "energy_sources": [
+          "800 kg suspended valve"
+        ],
+        "controls": [
+          "safety latch",
+          "shackle connection"
+        ],
+        "control_failures": [
+          "broken safety latch"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "hook safety spring latch was broken off",
+          "start_char": 6,
+          "end_char": 45,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Broken safety latch presents potential for sling slippage; load was held static and exclusion zone maintained."
+    }
+  },
+  {
+    "benchmark_id": "BM-037",
+    "title": "Manual Hand Pallet Truck Movement in Warehouse",
+    "site": "Duliajan Central Store",
+    "location": "Aisle 3",
+    "activity": "Packaging Material Relocation",
+    "narrative": "Store helper pulled hydraulic hand pallet truck carrying 80 kg of cardboard boxes at walking pace across smooth concrete floor.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": "Safe Mechanical Lifting",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "minor manual handling"
+        ],
+        "energy_sources": [
+          "low weight boxes (80 kg)"
+        ],
+        "controls": [
+          "proper pallet truck usage"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "hydraulic hand pallet truck carrying 80 kg",
+          "start_char": 20,
+          "end_char": 62,
+          "category": "EXPOSURE"
+        }
+      ],
+      "adjudication_rationale": "Standard light manual warehouse transport with low weight and zero high hazard energy."
+    }
+  },
+  {
+    "benchmark_id": "BM-038",
+    "title": "Overhead Crane Pre-Use Inspection Completed",
+    "site": "Moran Workshop",
+    "location": "Machine Shop Bay 1",
+    "activity": "Daily Pre-Use Check",
+    "narrative": "Certified overhead crane operator tested upper limit switch, inspected hoist wire rope, verified emergency stop button, and documented findings in crane daily logbook.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": "Safe Mechanical Lifting",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "none - check passed"
+        ],
+        "energy_sources": [
+          "inspection state"
+        ],
+        "controls": [
+          "pre-use inspection",
+          "limit switch test",
+          "logbook entry"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "tested upper limit switch",
+          "start_char": 34,
+          "end_char": 59,
+          "category": "CONTROL"
+        }
+      ],
+      "adjudication_rationale": "Proactive safety barrier verification; zero incident occurrence."
+    }
+  },
+  {
+    "benchmark_id": "BM-039",
+    "title": "Derrickman Working at 25m Without Fall Arrest Lanyard",
+    "site": "Drilling Rig OIL-45",
+    "location": "Monkey Board",
+    "activity": "Pipe Tripping Operations",
+    "narrative": "Derrickman was observed working at height on the monkey board 25 meters above ground without safety harness lanyard connected to the certified anchor point.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Working at Height",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "fatal fall from height"
+        ],
+        "energy_sources": [
+          "gravitational potential energy (25m)"
+        ],
+        "controls": [
+          "safety harness",
+          "inertia reel lifeline",
+          "anchor point"
+        ],
+        "control_failures": [
+          "lanyard not connected",
+          "100% tie-off bypassed"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "working at height on the monkey board 25 meters above ground",
+          "start_char": 24,
+          "end_char": 84,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "without safety harness lanyard connected to the certified anchor point",
+          "start_char": 85,
+          "end_char": 155,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Unrestrained positioning at 25m height on rig monkey board will result in fatal fall if slip or trip occurs."
+    }
+  },
+  {
+    "benchmark_id": "BM-040",
+    "title": "Scaffolder Dismantling Tube Scaffold Without Lifeline at 14m",
+    "site": "Digboi Refinery Crude Unit",
+    "location": "Column C-101 Scaffolding",
+    "activity": "Scaffold Dismantling",
+    "narrative": "Contractor scaffolder unbolted ledger tubes on scaffold platform 14 meters high while unclipped. Static horizontal lifeline wire rope had already been taken down.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Working at Height",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "fall to concrete grade",
+          "structural instability"
+        ],
+        "energy_sources": [
+          "gravitational potential (14m)"
+        ],
+        "controls": [
+          "100% tie-off",
+          "temporary lifeline"
+        ],
+        "control_failures": [
+          "unclipped lanyard",
+          "lifeline removed early"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "scaffold platform 14 meters high while unclipped",
+          "start_char": 47,
+          "end_char": 95,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "lifeline wire rope had already been taken down",
+          "start_char": 115,
+          "end_char": 161,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Working on unbolted scaffold tubes at 14m without fall arrest connection is an extreme fatality precursor."
+    }
+  },
+  {
+    "benchmark_id": "BM-041",
+    "title": "Storage Tank Roof Inspection on Corroded Plating",
+    "site": "Duliajan Tank Farm",
+    "location": "Tank TK-104 Roof",
+    "activity": "Roof Thickness Gauging",
+    "narrative": "Inspector walked directly across severely corroded fixed cone roof of sour crude storage tank without crawling boards or harness attached to overhead lifeline cable. Center roof plate flexed noticeably.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Working at Height",
+      "secondary_iogp_rules": [
+        "Confined Space"
+      ],
+      "entities": {
+        "hazards": [
+          "fall through roof into crude tank",
+          "toxic vapors"
+        ],
+        "energy_sources": [
+          "15m fall into hydrocarbon liquid"
+        ],
+        "controls": [
+          "crawling boards",
+          "perimeter cable lifeline"
+        ],
+        "control_failures": [
+          "boards omitted",
+          "lifeline unhooked"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "walked directly across severely corroded fixed cone roof",
+          "start_char": 10,
+          "end_char": 66,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "without crawling boards or harness attached to overhead lifeline",
+          "start_char": 94,
+          "end_char": 158,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "Center roof plate flexed noticeably",
+          "start_char": 166,
+          "end_char": 201,
+          "category": "CONSEQUENCE"
+        }
+      ],
+      "adjudication_rationale": "Walking on fragile corroded tank roof risks breakthrough fall into crude tank containing toxic vapors."
+    }
+  },
+  {
+    "benchmark_id": "BM-042",
+    "title": "Mobile Elevated Work Platform (MEWP) Operated in High Wind",
+    "site": "Moran Production Field",
+    "location": "Substation Pole Line",
+    "activity": "Lighting Fixture Maintenance",
+    "narrative": "Electrical technicians elevated aerial boom basket to 18m during 55 km/h gusting crosswinds. Anemometer alarm had been silenced and ground harness lanyard anchor was not clipped.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Working at Height",
+      "secondary_iogp_rules": [
+        "Bypassing Safety Controls"
+      ],
+      "entities": {
+        "hazards": [
+          "mewp tipover",
+          "catapult ejection"
+        ],
+        "energy_sources": [
+          "wind force",
+          "18m height potential"
+        ],
+        "controls": [
+          "wind cutoff limit",
+          "basket harness tie-off"
+        ],
+        "control_failures": [
+          "wind limit exceeded",
+          "alarm silenced",
+          "unclipped"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "elevated aerial boom basket to 18m during 55 km/h gusting crosswinds",
+          "start_char": 23,
+          "end_char": 91,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "Anemometer alarm had been silenced",
+          "start_char": 93,
+          "end_char": 127,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "harness lanyard anchor was not clipped",
+          "start_char": 139,
+          "end_char": 177,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Operating basket in high winds with unclipped workers and disabled warning leads directly to catapult ejection."
+    }
+  },
+  {
+    "benchmark_id": "BM-043",
+    "title": "Floor Grating Removed on Rig Substructure Without Barricade",
+    "site": "Drilling Rig OIL-78",
+    "location": "Rig Floor Walkway",
+    "activity": "Conductor Pipe Welding Prep",
+    "narrative": "Roustabouts lifted two sections of steel floor grating leaving an open 1m x 2m hole opening directly over 6-meter deep cellar pit. No red barrier tape, scaffolding barrier, or cover installed.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Working at Height",
+      "secondary_iogp_rules": [
+        "Line of Fire"
+      ],
+      "entities": {
+        "hazards": [
+          "fall through floor opening",
+          "cellar pit impact"
+        ],
+        "energy_sources": [
+          "6m fall onto steel valves"
+        ],
+        "controls": [
+          "physical barrier",
+          "hole cover",
+          "warning sign"
+        ],
+        "control_failures": [
+          "no barrier",
+          "open hole unguarded"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "leaving an open 1m x 2m hole opening directly over 6-meter deep cellar pit",
+          "start_char": 55,
+          "end_char": 129,
+          "category": "HAZARD"
+        },
+        {
+          "text": "No red barrier tape, scaffolding barrier, or cover installed",
+          "start_char": 131,
+          "end_char": 191,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Unguarded floor opening on rig walkway creates immediate trap for personnel walking in low light."
+    }
+  },
+  {
+    "benchmark_id": "BM-044",
+    "title": "Straight Ladder Used Without Tying Off at Top",
+    "site": "Tinsukia Pump Station",
+    "location": "Header Pipe Rack",
+    "activity": "Valve Lubrication",
+    "narrative": "Fitter ascended 7-meter aluminium extension ladder set on wet tiles at 45 degree angle. Top rung was untied and no person was footing ladder base.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Working at Height",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "ladder slip / slide",
+          "fall to concrete"
+        ],
+        "energy_sources": [
+          "7m height fall"
+        ],
+        "controls": [
+          "ladder tie-off",
+          "4:1 angle",
+          "footing base"
+        ],
+        "control_failures": [
+          "untied ladder",
+          "incorrect angle",
+          "no footing"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "ascended 7-meter aluminium extension ladder set on wet tiles at 45 degree angle",
+          "start_char": 7,
+          "end_char": 86,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "Top rung was untied and no person was footing ladder base",
+          "start_char": 88,
+          "end_char": 145,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Incorrect angle on wet tile without securing top or footing base results in catastrophic ladder kickout."
+    }
+  },
+  {
+    "benchmark_id": "BM-045",
+    "title": "Derrick Monkey Board Fingers Missing Safety Latches",
+    "site": "Drilling Rig OIL-45",
+    "location": "Derrick Monkey Board",
+    "activity": "Casing Stacking",
+    "narrative": "Three pipe finger latch retainers were missing cotter pins. 90-foot tubular pipe stands were resting against unlatched fingers while derrickman stood nearby.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Working at Height",
+      "secondary_iogp_rules": [
+        "Line of Fire"
+      ],
+      "entities": {
+        "hazards": [
+          "casing stand collapse",
+          "struck-by derrickman"
+        ],
+        "energy_sources": [
+          "tubular stands momentum"
+        ],
+        "controls": [
+          "finger safety latches",
+          "cotter pins"
+        ],
+        "control_failures": [
+          "latches unpinned"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "pipe finger latch retainers were missing cotter pins",
+          "start_char": 6,
+          "end_char": 58,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "tubular pipe stands were resting against unlatched fingers",
+          "start_char": 68,
+          "end_char": 126,
+          "category": "HAZARD"
+        }
+      ],
+      "adjudication_rationale": "Unlatched pipe stands in derrick can domino and crush derrickman or fall to drill floor."
+    }
+  },
+  {
+    "benchmark_id": "BM-046",
+    "title": "Pipe Rack Walking Without Fall Protection Line",
+    "site": "Naharkatiya Gas Compressor Station",
+    "location": "Pipe Rack Tier 2",
+    "activity": "Instrumentation Cable Pulling",
+    "narrative": "Contractor walked along top of 10-inch insulated pipeline 5 meters above ground to pull signal cable rather than constructing access scaffold.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Working at Height",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "pipe slip fall"
+        ],
+        "energy_sources": [
+          "5m elevation"
+        ],
+        "controls": [
+          "scaffolding",
+          "harness tie-off"
+        ],
+        "control_failures": [
+          "walking on pipes",
+          "no scaffold"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "walked along top of 10-inch insulated pipeline 5 meters above ground",
+          "start_char": 11,
+          "end_char": 79,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "rather than constructing access scaffold",
+          "start_char": 101,
+          "end_char": 141,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Walking rounded insulated pipes at 5m height without fall arrest has imminent slip and fall potential."
+    }
+  },
+  {
+    "benchmark_id": "BM-047",
+    "title": "Suspended Work Basket Operated with Craned Non-Manrated Line",
+    "site": "Duliajan Central Workshop",
+    "location": "Rig Yard",
+    "activity": "Mast NDT Inspection",
+    "narrative": "NDT inspector hoisted in a custom fabricated steel box suspended from crane hook. The crane was not certified for man-riding and auxiliary hoist line lacked anti-two-block device.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Working at Height",
+      "secondary_iogp_rules": [
+        "Safe Mechanical Lifting",
+        "Bypassing Safety Controls"
+      ],
+      "entities": {
+        "hazards": [
+          "man-riding basket failure",
+          "two-blocking"
+        ],
+        "energy_sources": [
+          "crane hoisting energy (15m)"
+        ],
+        "controls": [
+          "man-riding certification",
+          "anti-two-block"
+        ],
+        "control_failures": [
+          "non-certified crane",
+          "atb missing"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "hoisted in a custom fabricated steel box",
+          "start_char": 14,
+          "end_char": 54,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "crane was not certified for man-riding",
+          "start_char": 86,
+          "end_char": 124,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "lacked anti-two-block device",
+          "start_char": 150,
+          "end_char": 178,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Man-riding with non-certified crane without secondary fall arrest or ATB risks catastrophic basket freefall."
+    }
+  },
+  {
+    "benchmark_id": "BM-048",
+    "title": "Safety Harness Lanyard Clipped Below Waist Level",
+    "site": "Moran Production Installation",
+    "location": "Separation Unit Platform",
+    "activity": "Flare Line Inspection",
+    "narrative": "Worker wore certified full body harness, but hooked shock-absorbing lanyard to toe-board at foot level, creating potential freefall distance exceeding 3.5 meters.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "REVIEW",
+      "primary_iogp_rule": "Working at Height",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "excessive freefall factor"
+        ],
+        "energy_sources": [
+          "fall kinetic force"
+        ],
+        "controls": [
+          "overhead anchor connection"
+        ],
+        "control_failures": [
+          "low anchor connection"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "hooked shock-absorbing lanyard to toe-board at foot level",
+          "start_char": 45,
+          "end_char": 102,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Harness was worn and connected, but improper anchor level creates excessive impact force risk."
+    }
+  },
+  {
+    "benchmark_id": "BM-049",
+    "title": "Three-Step Podium Ladder Inspection in Store",
+    "site": "Duliajan Warehouse",
+    "location": "Small Parts Storage",
+    "activity": "Bin Stocktaking",
+    "narrative": "Storekeeper climbed 3-step platform ladder with handrails to count bolts in top shelf bin at 1.5m height.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": "Working at Height",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "low height"
+        ],
+        "energy_sources": [
+          "low elevation (1.5m)"
+        ],
+        "controls": [
+          "podium ladder handrails"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "climbed 3-step platform ladder with handrails",
+          "start_char": 12,
+          "end_char": 57,
+          "category": "CONTROL"
+        }
+      ],
+      "adjudication_rationale": "Safe low-level platform ladder within stable handrail enclosure; non-SIF."
+    }
+  },
+  {
+    "benchmark_id": "BM-050",
+    "title": "Scaffold Daily Green Tag Inspection",
+    "site": "Digboi Refinery Plant",
+    "location": "Reformer Unit Scaffold",
+    "activity": "Routine Scaffold Check",
+    "narrative": "Scaffold supervisor verified toe-boards, double guardrails, base jacks, and sole plates on 6m scaffold and signed Green Scafftag.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": "Working at Height",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "none - verified safe"
+        ],
+        "energy_sources": [
+          "statutory check"
+        ],
+        "controls": [
+          "guardrails",
+          "toe-boards",
+          "scafftag"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "signed Green Scafftag",
+          "start_char": 107,
+          "end_char": 128,
+          "category": "CONTROL"
+        }
+      ],
+      "adjudication_rationale": "Routine proactive inspection verifying all height control barriers; zero exposure."
+    }
+  },
+  {
+    "benchmark_id": "BM-051",
+    "title": "Oxy-Acetylene Cutting in Zone 1 Hazardous Area",
+    "site": "Duliajan Production Installation",
+    "location": "Separator Bank Skid",
+    "activity": "Pipe Support Modification",
+    "narrative": "Contractor welder commenced torch cutting on pipe rack in Zone 1 hazardous area near separator without continuous LEL gas test and no fire watch posted.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Hot Work",
+      "secondary_iogp_rules": [
+        "Work Authorization"
+      ],
+      "entities": {
+        "hazards": [
+          "hydrocarbon fire",
+          "vapor explosion"
+        ],
+        "energy_sources": [
+          "open flame / sparks",
+          "flammable hydrocarbons"
+        ],
+        "controls": [
+          "continuous gas test",
+          "fire watch",
+          "fire blanket"
+        ],
+        "control_failures": [
+          "gas test omitted",
+          "fire watch missing"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "commenced torch cutting on pipe rack in Zone 1 hazardous area",
+          "start_char": 18,
+          "end_char": 79,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "without continuous LEL gas test",
+          "start_char": 95,
+          "end_char": 126,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "no fire watch posted",
+          "start_char": 131,
+          "end_char": 151,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Open flame torch cutting in an unmonitored Zone 1 hydrocarbon area can ignite explosive vapor cloud instantly."
+    }
+  },
+  {
+    "benchmark_id": "BM-052",
+    "title": "Welding on Tank Roof Without Sealing PVRV Vent",
+    "site": "Moran Tank Farm",
+    "location": "Crude Oil Tank TK-102",
+    "activity": "Handrail Repair",
+    "narrative": "Welder struck electric arc on tank roof platform 2 meters away from operational pressure vacuum relief valve (PVRV) actively venting rich crude vapors.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Hot Work",
+      "secondary_iogp_rules": [
+        "Line of Fire"
+      ],
+      "entities": {
+        "hazards": [
+          "tank vapor ignition",
+          "tank explosion"
+        ],
+        "energy_sources": [
+          "electric welding arc",
+          "tank vapor headspace"
+        ],
+        "controls": [
+          "pvrv vent bagging",
+          "gas monitoring",
+          "cold repair"
+        ],
+        "control_failures": [
+          "vent unsealed",
+          "gas test inadequate"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "struck electric arc on tank roof platform",
+          "start_char": 7,
+          "end_char": 48,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "2 meters away from operational pressure vacuum relief valve",
+          "start_char": 49,
+          "end_char": 108,
+          "category": "HAZARD"
+        },
+        {
+          "text": "actively venting rich crude vapors",
+          "start_char": 116,
+          "end_char": 150,
+          "category": "HAZARD"
+        }
+      ],
+      "adjudication_rationale": "Electric arc adjacent to an active tank vapor relief valve creates direct ignition path into tank headspace."
+    }
+  },
+  {
+    "benchmark_id": "BM-053",
+    "title": "Angle Grinder Used Next to Open Slop Oil Pit",
+    "site": "Naharkatiya Oilfield Gathering Station",
+    "location": "Effluent Treatment Plant",
+    "activity": "Steel Grating Trimming",
+    "narrative": "Fitter used electric angle grinder generating shower of hot sparks directing straight into open skimmed oil pit covered with flammable sheen.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Hot Work",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "pool fire",
+          "flash fire"
+        ],
+        "energy_sources": [
+          "sparks",
+          "flammable crude skim"
+        ],
+        "controls": [
+          "fire retardant habitat",
+          "water spray curtain"
+        ],
+        "control_failures": [
+          "sparks directed into oil pit"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "used electric angle grinder generating shower of hot sparks",
+          "start_char": 7,
+          "end_char": 66,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "directing straight into open skimmed oil pit",
+          "start_char": 67,
+          "end_char": 111,
+          "category": "HAZARD"
+        }
+      ],
+      "adjudication_rationale": "Grinding sparks hitting open hydrocarbon skim will cause instantaneous surface flash fire."
+    }
+  },
+  {
+    "benchmark_id": "BM-054",
+    "title": "Hot Tap Welding on Thin-Walled Corroded Flowline",
+    "site": "Jorajan Oil Field",
+    "location": "Flowline FL-08",
+    "activity": "Hot Tap Saddle Welding",
+    "narrative": "Welder initiated bead on live 800 psi natural gas pipeline without verifying minimum ultrasonic wall thickness. Actual wall thickness was 1.8mm against 4.8mm required.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Hot Work",
+      "secondary_iogp_rules": [
+        "Energy Isolation"
+      ],
+      "entities": {
+        "hazards": [
+          "burn-through",
+          "jet fire explosion"
+        ],
+        "energy_sources": [
+          "800 psi pressurized gas",
+          "welding heat"
+        ],
+        "controls": [
+          "ut thickness survey",
+          "amperage control"
+        ],
+        "control_failures": [
+          "ut thickness survey omitted"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "initiated bead on live 800 psi natural gas pipeline",
+          "start_char": 7,
+          "end_char": 58,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "without verifying minimum ultrasonic wall thickness",
+          "start_char": 59,
+          "end_char": 110,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "Actual wall thickness was 1.8mm against 4.8mm required",
+          "start_char": 112,
+          "end_char": 166,
+          "category": "HAZARD"
+        }
+      ],
+      "adjudication_rationale": "Welding on live gas line with severe wall thinning causes burn-through and supersonic torch flame."
+    }
+  },
+  {
+    "benchmark_id": "BM-055",
+    "title": "Electric Arc Welding Grounding Clamp Attached to Live Pipe",
+    "site": "Digboi Refinery Plant",
+    "location": "Pumping Unit Area",
+    "activity": "Structural Gusset Welding",
+    "narrative": "Welder clamped welding return earth cable directly to an operational LPG piping flange bolt. Stray return currents caused localized arcing on flange gasket face.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Hot Work",
+      "secondary_iogp_rules": [
+        "Bypassing Safety Controls"
+      ],
+      "entities": {
+        "hazards": [
+          "arcing across flange",
+          "gasket failure / fire"
+        ],
+        "energy_sources": [
+          "welding return current",
+          "pressurized lpg"
+        ],
+        "controls": [
+          "direct workpiece grounding",
+          "earth path check"
+        ],
+        "control_failures": [
+          "earth clamp on live pipe"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "clamped welding return earth cable directly to an operational LPG piping",
+          "start_char": 7,
+          "end_char": 79,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "Stray return currents caused localized arcing",
+          "start_char": 93,
+          "end_char": 138,
+          "category": "CONSEQUENCE"
+        }
+      ],
+      "adjudication_rationale": "Passing high welding currents through live pressurized hydrocarbon flanges can burn through gaskets and ignite LPG."
+    }
+  },
+  {
+    "benchmark_id": "BM-056",
+    "title": "Diesel Engine Driven Welder Set Run Inside Gas Plant Zone 2",
+    "site": "Duliajan Gas Processing Plant",
+    "location": "LPG Chiller Bay",
+    "activity": "Skid Support Welding",
+    "narrative": "Contractor placed standard non-flameproof diesel welding generator 4m from gas chiller. Engine was running without spark arrestor or Chalwyn automatic overspeed air shutoff valve.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Hot Work",
+      "secondary_iogp_rules": [
+        "Bypassing Safety Controls"
+      ],
+      "entities": {
+        "hazards": [
+          "diesel runaway explosion",
+          "exhaust ignition"
+        ],
+        "energy_sources": [
+          "hot diesel exhaust",
+          "gas cloud"
+        ],
+        "controls": [
+          "spark arrestor",
+          "chalwyn valve",
+          "safe distance"
+        ],
+        "control_failures": [
+          "no spark arrestor",
+          "no overspeed shutoff"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "non-flameproof diesel welding generator 4m from gas chiller",
+          "start_char": 27,
+          "end_char": 86,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "running without spark arrestor or Chalwyn automatic overspeed",
+          "start_char": 99,
+          "end_char": 160,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Non-flameproof diesel engines near gas plants ingest fugitive gas, overspeed uncontrollably, and trigger catastrophic explosions."
+    }
+  },
+  {
+    "benchmark_id": "BM-057",
+    "title": "Torch Cutting with Degraded Oxygen and Acetylene Hoses",
+    "site": "Drilling Rig OIL-45",
+    "location": "Rig Substructure",
+    "activity": "Wellhead Casing Cutting",
+    "narrative": "Oxy-acetylene hose set had deep ozone cracking and was repaired with hose clamps and electrical tape. Flashback arrestors were missing at both torch and regulator ends.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Hot Work",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "hose rupture",
+          "cylinder flashback explosion"
+        ],
+        "energy_sources": [
+          "compressed acetylene and oxygen"
+        ],
+        "controls": [
+          "flashback arrestors",
+          "intact certified hoses"
+        ],
+        "control_failures": [
+          "tape repair on hose",
+          "flashback arrestors missing"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "repaired with hose clamps and electrical tape",
+          "start_char": 55,
+          "end_char": 100,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "Flashback arrestors were missing at both torch and regulator ends",
+          "start_char": 102,
+          "end_char": 167,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Operating oxy-acetylene without flashback arrestors and taped hoses risks cylinder explosion and shrapnel."
+    }
+  },
+  {
+    "benchmark_id": "BM-058",
+    "title": "Gas Free Inspection Missed Pyrophoric Scale in Sour Line",
+    "site": "Moran EPS",
+    "location": "Sour Gas Separator Outlet",
+    "activity": "Spool Tie-In Welding",
+    "narrative": "Cold cutting crew split pipeline containing pyrophoric iron sulfide scale deposits. When exposed to air, internal scale began smoking and self-heating without water drenching.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Hot Work",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "spontaneous pyrophoric ignition"
+        ],
+        "energy_sources": [
+          "chemical exothermal oxidation"
+        ],
+        "controls": [
+          "continuous water drench",
+          "inert purge"
+        ],
+        "control_failures": [
+          "water drenching absent"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "split pipeline containing pyrophoric iron sulfide scale deposits",
+          "start_char": 18,
+          "end_char": 82,
+          "category": "HAZARD"
+        },
+        {
+          "text": "scale began smoking and self-heating without water drenching",
+          "start_char": 114,
+          "end_char": 174,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Pyrophoric iron sulfide in sour systems self-ignites on air contact, initiating uncontrolled pipeline fires."
+    }
+  },
+  {
+    "benchmark_id": "BM-059",
+    "title": "Welding in Electrical Battery Room with Inadequate Ventilation",
+    "site": "Tinsukia Crude Station",
+    "location": "UPS Battery Room",
+    "activity": "Cable Tray Bracket Tack Welding",
+    "narrative": "Technician tack welded cable bracket inside lead-acid battery room during active battery equalizing charge. Hydrogen gas concentration was not measured.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Hot Work",
+      "secondary_iogp_rules": [
+        "Confined Space"
+      ],
+      "entities": {
+        "hazards": [
+          "hydrogen gas explosion"
+        ],
+        "energy_sources": [
+          "electric welding arc",
+          "hydrogen buildup"
+        ],
+        "controls": [
+          "forced exhaust ventilation",
+          "hydrogen detector"
+        ],
+        "control_failures": [
+          "gas test omitted",
+          "welding in battery room"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "tack welded cable bracket inside lead-acid battery room",
+          "start_char": 11,
+          "end_char": 66,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "Hydrogen gas concentration was not measured",
+          "start_char": 108,
+          "end_char": 151,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Lead-acid battery equalizing generates explosive hydrogen gas; welding arc triggers room-scale deflagration."
+    }
+  },
+  {
+    "benchmark_id": "BM-060",
+    "title": "Hot Work Spark Barrier Tarpaulin Slightly Dislodged",
+    "site": "Duliajan Production Installation",
+    "location": "Manifold Area",
+    "activity": "Structural Grinding",
+    "narrative": "Fire retardant tarpaulin had a 10cm gap at bottom corner during pipe bracket grinding. Dedicated fire watch was actively spraying water mist onto catch tray.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "REVIEW",
+      "primary_iogp_rule": "Hot Work",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "spark escape risk"
+        ],
+        "energy_sources": [
+          "grinding sparks"
+        ],
+        "controls": [
+          "fire watch present",
+          "water mist active"
+        ],
+        "control_failures": [
+          "tarpaulin gap"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "tarpaulin had a 10cm gap at bottom corner",
+          "start_char": 15,
+          "end_char": 56,
+          "category": "CONTROL_FAILURE"
+        },
+        {
+          "text": "Dedicated fire watch was actively spraying water",
+          "start_char": 87,
+          "end_char": 135,
+          "category": "CONTROL"
+        }
+      ],
+      "adjudication_rationale": "Small enclosure gap, but active fire watch with charged line was positioned; needs review."
+    }
+  },
+  {
+    "benchmark_id": "BM-061",
+    "title": "Pre-Fabrication TIG Welding in Certified Fabrication Shop",
+    "site": "Duliajan Engineering Workshop",
+    "location": "Designated Welding Bay #2",
+    "activity": "Clean Pipe Spool TIG Welding",
+    "narrative": "Welder performed TIG welding on brand new uncommissioned 4-inch carbon steel spool inside dedicated welding booth with extraction hood running and fire extinguisher at hand.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": "Hot Work",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "controlled welding arc"
+        ],
+        "energy_sources": [
+          "electric welding current"
+        ],
+        "controls": [
+          "designated welding bay",
+          "extraction hood",
+          "fire extinguisher"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "dedicated welding booth with extraction hood running",
+          "start_char": 90,
+          "end_char": 142,
+          "category": "CONTROL"
+        }
+      ],
+      "adjudication_rationale": "Work conducted in controlled permanent shop environment with zero hydrocarbon hazard."
+    }
+  },
+  {
+    "benchmark_id": "BM-062",
+    "title": "Gas Detector Bump Test Prior to Hot Work Authorization",
+    "site": "Moran Production Station",
+    "location": "Safety Office",
+    "activity": "Equipment Calibration",
+    "narrative": "Safety officer performed routine bump test on 4-gas portable monitor using certified span gas cylinder. Sensors responded within tolerance.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": "Hot Work",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "none"
+        ],
+        "energy_sources": [
+          "calibration check"
+        ],
+        "controls": [
+          "bump test protocol",
+          "certified span gas"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "routine bump test on 4-gas portable monitor",
+          "start_char": 25,
+          "end_char": 68,
+          "category": "CONTROL"
+        }
+      ],
+      "adjudication_rationale": "Safety assurance task ensuring detector readiness; non-SIF."
+    }
+  },
+  {
+    "benchmark_id": "BM-063",
+    "title": "ESD Pushbutton Mechanically Jumpered on Compressor Skid",
+    "site": "Duliajan Gas Processing Plant",
+    "location": "Compressor Hall 1",
+    "activity": "Compressor Overhaul",
+    "narrative": "Technician bypassed the high vibration emergency shutdown switch using an unapproved copper jumper wire to keep machine running during shift change.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Bypassing Safety Controls",
+      "secondary_iogp_rules": [
+        "Energy Isolation"
+      ],
+      "entities": {
+        "hazards": [
+          "uncontrolled machine destruction",
+          "gas explosion"
+        ],
+        "energy_sources": [
+          "high speed rotating compressor",
+          "pressurized gas"
+        ],
+        "controls": [
+          "vibration trip sensor",
+          "management of change"
+        ],
+        "control_failures": [
+          "jumper wire installed",
+          "esd bypassed"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "bypassed the high vibration emergency shutdown switch",
+          "start_char": 11,
+          "end_char": 64,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Bypassing rotating equipment trip sensors leads to catastrophic mechanical casing burst."
+    }
+  },
+  {
+    "benchmark_id": "BM-064",
+    "title": "High-High Level Trip Bypassed on Crude Separator",
+    "site": "Moran Gathering Station",
+    "location": "Production Separator V-101",
+    "activity": "Production Optimization",
+    "narrative": "Control room operator placed software override on LAHH (Level Alarm High High) interlock on separator to prevent plant shutdown while oil export pump was tripped.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Bypassing Safety Controls",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "liquid carryover into flare",
+          "flare knockout rupture"
+        ],
+        "energy_sources": [
+          "hydrocarbon liquid head"
+        ],
+        "controls": [
+          "lahh trip",
+          "moc authorization"
+        ],
+        "control_failures": [
+          "software override without moc"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "placed software override on LAHH",
+          "start_char": 22,
+          "end_char": 54,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Bypassing high liquid trip causes crude carryover into dry gas lines and massive flare pool fires."
+    }
+  },
+  {
+    "benchmark_id": "BM-065",
+    "title": "Crown-O-Matic Rig Hoist Saver Block Defeated",
+    "site": "Drilling Rig OIL-45",
+    "location": "Drawworks Console",
+    "activity": "Fast Tripping Out",
+    "narrative": "Driller tied off toggle cable on Crown-O-Matic safety shutoff valve with wire rope clamp so traveling block could be hoisted higher into derrick crown.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Bypassing Safety Controls",
+      "secondary_iogp_rules": [
+        "Safe Mechanical Lifting"
+      ],
+      "entities": {
+        "hazards": [
+          "crown-out collision",
+          "derrick collapse"
+        ],
+        "energy_sources": [
+          "drawworks 1500 HP mechanical power"
+        ],
+        "controls": [
+          "crown-o-matic toggle switch"
+        ],
+        "control_failures": [
+          "tied off toggle cable"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "tied off toggle cable on Crown-O-Matic safety shutoff",
+          "start_char": 8,
+          "end_char": 61,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Defeating drawworks crown-saver risks slamming traveling block into crown, dropping 50 tons of iron."
+    }
+  },
+  {
+    "benchmark_id": "BM-066",
+    "title": "Pressure Relief Valve Gag Left Installed After Hydrotest",
+    "site": "Naharkatiya Wellhead Facility",
+    "location": "Test Separator Header",
+    "activity": "Post-Hydrotest Recommissioning",
+    "narrative": "Commissioning engineer brought separator online with test clamp gag still screwed onto pressure safety valve (PSV) spindle, preventing overpressure relief.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Bypassing Safety Controls",
+      "secondary_iogp_rules": [
+        "Energy Isolation"
+      ],
+      "entities": {
+        "hazards": [
+          "vessel burst explosion"
+        ],
+        "energy_sources": [
+          "overpressurized gas"
+        ],
+        "controls": [
+          "psv relief capability",
+          "hydrotest de-isolation signoff"
+        ],
+        "control_failures": [
+          "psv gag left installed"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "test clamp gag still screwed onto pressure safety valve",
+          "start_char": 53,
+          "end_char": 108,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Gagged relief valve leaves pressure vessel completely defenseless against overpressure rupture."
+    }
+  },
+  {
+    "benchmark_id": "BM-067",
+    "title": "Gas Detector Head Covered with Plastic Bag",
+    "site": "Duliajan LPG Plant",
+    "location": "Compressor Shelter",
+    "activity": "Painting Operations",
+    "narrative": "Maintenance painters taped plastic grocery bag over fixed catalytic LEL gas detector head and left it covered overnight after finishing painting.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Bypassing Safety Controls",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "undetected gas cloud buildup"
+        ],
+        "energy_sources": [
+          "flammable gas"
+        ],
+        "controls": [
+          "fixed fire and gas system"
+        ],
+        "control_failures": [
+          "plastic bag taped over detector"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "taped plastic grocery bag over fixed catalytic LEL gas detector",
+          "start_char": 21,
+          "end_char": 84,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Blinding plant F&G detectors blinds automated emergency blowdown during gas leaks."
+    }
+  },
+  {
+    "benchmark_id": "BM-068",
+    "title": "Interlock Bypass on High Voltage Switchgear Door",
+    "site": "Digboi Power Substation",
+    "location": "Switchgear Room 2",
+    "activity": "Thermography Survey",
+    "narrative": "Electrician defeated mechanical interlock latch using screwdriver to open energized 6.6 kV breaker panel door while live busbars were exposed.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Bypassing Safety Controls",
+      "secondary_iogp_rules": [
+        "Energy Isolation"
+      ],
+      "entities": {
+        "hazards": [
+          "arc flash explosion",
+          "electrocution"
+        ],
+        "energy_sources": [
+          "6.6 kV high voltage"
+        ],
+        "controls": [
+          "door interlock",
+          "dead-front barrier"
+        ],
+        "control_failures": [
+          "defeated mechanical interlock latch"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "defeated mechanical interlock latch using screwdriver",
+          "start_char": 12,
+          "end_char": 65,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Bypassing interlocks on high voltage equipment exposes workers directly to lethal 6.6 kV arcing."
+    }
+  },
+  {
+    "benchmark_id": "BM-069",
+    "title": "BOP Remote Control Panel Master Air Valve Locked Open with Tape",
+    "site": "Drilling Rig OIL-78",
+    "location": "Rig Doghouse",
+    "activity": "Drilling Operations",
+    "narrative": "Toolpusher applied packing tape to hold down master air valve handle on remote BOP panel so rams could be activated with single action instead of two-handed safety interlock.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Bypassing Safety Controls",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "accidental bop closure",
+          "pipe shearing"
+        ],
+        "energy_sources": [
+          "hydraulic bop stored pressure"
+        ],
+        "controls": [
+          "two-handed activation interlock"
+        ],
+        "control_failures": [
+          "packing tape applied to master air valve"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "applied packing tape to hold down master air valve handle",
+          "start_char": 11,
+          "end_char": 68,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Bypassing two-handed controls on BOP panel causes accidental shearing of drillstring."
+    }
+  },
+  {
+    "benchmark_id": "BM-070",
+    "title": "Thermal Relief Valve Isolation Block Valve Closed and Uncar-Sealed",
+    "site": "Tinsukia Pump Station",
+    "location": "Meter Skid Inbound",
+    "activity": "Header Servicing",
+    "narrative": "Technician closed gate valve upstream of thermal relief valve on crude line exposed to direct sunlight and removed car-seal without authorization.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Bypassing Safety Controls",
+      "secondary_iogp_rules": [
+        "Energy Isolation"
+      ],
+      "entities": {
+        "hazards": [
+          "hydraulic thermal expansion rupture"
+        ],
+        "energy_sources": [
+          "thermal expansion hydraulic pressure"
+        ],
+        "controls": [
+          "car-seal open",
+          "thermal relief valve"
+        ],
+        "control_failures": [
+          "car-seal removed",
+          "valve closed"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "closed gate valve upstream of thermal relief valve",
+          "start_char": 11,
+          "end_char": 61,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Blocking thermal relief valves allows solar heating to pressurize liquid lines beyond burst limits."
+    }
+  },
+  {
+    "benchmark_id": "BM-071",
+    "title": "Fire Water Deluge Valve Locked in Manual Mode",
+    "site": "Moran Production Installation",
+    "location": "Deluge Skid DS-01",
+    "activity": "Valve Exercising",
+    "narrative": "Operator placed automatic deluge system valve into manual lock position to prevent accidental trip during grass trimming and forgot to return it to auto mode.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Bypassing Safety Controls",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "uncontrolled facility fire"
+        ],
+        "energy_sources": [
+          "hydrocarbon inventory"
+        ],
+        "controls": [
+          "automatic deluge activation"
+        ],
+        "control_failures": [
+          "locked in manual mode"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "placed automatic deluge system valve into manual lock",
+          "start_char": 9,
+          "end_char": 62,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Disabling automatic fire deluge leaves active processing units without automated firefighting protection."
+    }
+  },
+  {
+    "benchmark_id": "BM-072",
+    "title": "Authorised Temporary MOC Bypass Logged with Compensating Measures",
+    "site": "Duliajan Processing Plant",
+    "location": "Train 2 Gas Dehydrator",
+    "activity": "Transmitter Calibration",
+    "narrative": "Control room logged temporary 2-hour software bypass for pressure transmitter PT-204 with signed MOC, dedicated field watch, and radio communication in place.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": "Bypassing Safety Controls",
+      "secondary_iogp_rules": [
+        "Work Authorization"
+      ],
+      "entities": {
+        "hazards": [
+          "temporary transmitter calibration"
+        ],
+        "energy_sources": [
+          "instrument air"
+        ],
+        "controls": [
+          "signed moc",
+          "dedicated field watch",
+          "time limit"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [],
+      "adjudication_rationale": "Compliant, proceduralized MOC override with effective compensating human barriers."
+    }
+  },
+  {
+    "benchmark_id": "BM-073",
+    "title": "Smoke Detector Dust Cover Installed During Sweeping",
+    "site": "Administration Building",
+    "location": "Server Room",
+    "activity": "Floor Cleaning",
+    "narrative": "IT officer placed temporary dust cap on optical smoke detector for 20 minutes while vacuuming server racks and removed it immediately afterwards.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": "Bypassing Safety Controls",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "none"
+        ],
+        "energy_sources": [
+          "low"
+        ],
+        "controls": [
+          "immediate removal"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "placed temporary dust cap on optical smoke detector for 20 minutes",
+          "start_char": 11,
+          "end_char": 77,
+          "category": "CONTROL"
+        }
+      ],
+      "adjudication_rationale": "Standard non-hazardous routine maintenance activity with immediate restoration."
+    }
+  },
+  {
+    "benchmark_id": "BM-074",
+    "title": "Emergency Shutdown Switch Cover Seal Checked During Audit",
+    "site": "Naharkatiya EPS-1",
+    "location": "Control Room Console",
+    "activity": "Weekly Safety Tour",
+    "narrative": "HSE auditor inspected the tamper-evident wire seal on main ESD pushbuttons and verified all flip covers were closed and unbroken.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": "Bypassing Safety Controls",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "none"
+        ],
+        "energy_sources": [
+          "audit check"
+        ],
+        "controls": [
+          "tamper-evident seal",
+          "protective flip cover"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "inspected the tamper-evident wire seal on main ESD",
+          "start_char": 12,
+          "end_char": 62,
+          "category": "CONTROL"
+        }
+      ],
+      "adjudication_rationale": "Proactive safety audit validating control integrity; non-SIF."
+    }
+  },
+  {
+    "benchmark_id": "BM-075",
+    "title": "Crude Tanker Rollover on Narrow Rural Bund Road",
+    "site": "Jorajan Oil Field Access Route",
+    "location": "Duliajan-Digboi Link Road",
+    "activity": "Crude Haulage",
+    "narrative": "Heavy crude oil tanker driver exceeded 70 km/h on an unpaved narrow embankment in heavy rain. Tanker slid off the soft shoulder and rolled into ditch.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Driving",
+      "secondary_iogp_rules": [
+        "Line of Fire"
+      ],
+      "entities": {
+        "hazards": [
+          "vehicle rollover",
+          "crude spill",
+          "cabin crush"
+        ],
+        "energy_sources": [
+          "30-ton vehicle momentum"
+        ],
+        "controls": [
+          "speed limit compliance",
+          "ivms monitoring",
+          "seatbelt"
+        ],
+        "control_failures": [
+          "speeding",
+          "poor weather driving"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "exceeded 70 km/h on an unpaved narrow embankment",
+          "start_char": 30,
+          "end_char": 78,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Speeding a 30-ton tanker on soft embankments carries fatal rollover and rupture risk."
+    }
+  },
+  {
+    "benchmark_id": "BM-076",
+    "title": "Crew Bus Driver Using Mobile Phone at Night Without Seatbelts",
+    "site": "Moran-Duliajan Corridor",
+    "location": "National Highway 37",
+    "activity": "Night Shift Crew Transport",
+    "narrative": "Contractor crew bus carrying 18 rig workers was travelling at 85 km/h while driver was texting on phone. Most passengers were not wearing seatbelts.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Driving",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "high speed collision",
+          "mass ejection"
+        ],
+        "energy_sources": [
+          "highway vehicle kinetic energy"
+        ],
+        "controls": [
+          "hands-free policy",
+          "seatbelt enforcement",
+          "speed limiter"
+        ],
+        "control_failures": [
+          "mobile phone use",
+          "seatbelts unbuckled"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "driver was texting on phone",
+          "start_char": 76,
+          "end_char": 103,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Distracted commercial driving of passenger bus at high speed is a leading cause of mass-casualty SIFs."
+    }
+  },
+  {
+    "benchmark_id": "BM-077",
+    "title": "Heavy Crane Moving on Highway Without Escort Vehicle",
+    "site": "Tinsukia Bypass Road",
+    "location": "Bypass Intersection",
+    "activity": "Rig Mobilization",
+    "narrative": "A 100-ton all-terrain crane travelled on public road at dusk with boom overhanging front by 4 meters. Amber beacon was defective and no pilot escort vehicle was present.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Driving",
+      "secondary_iogp_rules": [
+        "Line of Fire"
+      ],
+      "entities": {
+        "hazards": [
+          "boom collision with oncoming traffic"
+        ],
+        "energy_sources": [
+          "100-ton moving mass"
+        ],
+        "controls": [
+          "escort pilot car",
+          "amber flashing beacon",
+          "route plan"
+        ],
+        "control_failures": [
+          "escort vehicle absent",
+          "beacon defective"
+        ]
+      },
+      "evidence_spans": [],
+      "adjudication_rationale": "Unmarked overhanging crane boom on public roads creates severe decapitation hazard for oncoming vehicles."
+    }
+  },
+  {
+    "benchmark_id": "BM-078",
+    "title": "Driver Fatigue After Consecutive 16-Hour Shifts",
+    "site": "Naharkatiya Field Logistics",
+    "location": "Well NHK-42 Access Road",
+    "activity": "Drilling Mud Chemical Delivery",
+    "narrative": "Flatbed truck driver fell asleep at the wheel after working 16 consecutive hours without mandatory rest period. Truck crossed centerline into oncoming traffic lane.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Driving",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "head-on collision"
+        ],
+        "energy_sources": [
+          "16-ton truck momentum"
+        ],
+        "controls": [
+          "journey management plan",
+          "fatigue hours of service limit"
+        ],
+        "control_failures": [
+          "fatigue limits violated",
+          "driver fell asleep"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "fell asleep at the wheel after working 16 consecutive hours",
+          "start_char": 21,
+          "end_char": 80,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Severe fatigue impairment leading to asleep-at-wheel episodes on two-lane roads is a critical fatal precursor."
+    }
+  },
+  {
+    "benchmark_id": "BM-079",
+    "title": "Forklift Driven on Public Highway Without Road Registration",
+    "site": "Duliajan Industrial Estate Road",
+    "location": "Station Road Cross",
+    "activity": "Casing Transport Between Yards",
+    "narrative": "Operator drove industrial forklift carrying 40-foot casing pipe on public road in dense fog. Forklift had no headlights, brake lights, or escort vehicle.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Driving",
+      "secondary_iogp_rules": [
+        "Safe Mechanical Lifting",
+        "Line of Fire"
+      ],
+      "entities": {
+        "hazards": [
+          "highway collision in fog"
+        ],
+        "energy_sources": [
+          "forklift kinetic energy"
+        ],
+        "controls": [
+          "highway trailer transport",
+          "escort vehicle"
+        ],
+        "control_failures": [
+          "forklift on public road",
+          "no lights"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "forklift carrying 40-foot casing pipe on public road in dense fog",
+          "start_char": 26,
+          "end_char": 91,
+          "category": "EXPOSURE"
+        }
+      ],
+      "adjudication_rationale": "Unlit industrial forklift on public foggy roads carrying long protruding steel pipe has extreme crash potential."
+    }
+  },
+  {
+    "benchmark_id": "BM-080",
+    "title": "Pickup Truck Rollover Protection (ROPS) Bar Removed",
+    "site": "Drilling Rig OIL-45 Access Track",
+    "location": "Rig Pad Approach",
+    "activity": "Rig Site Run",
+    "narrative": "Field pickup truck was operated on steep muddy incline after structural roll-cage bar was unbolted to carry oversized timber. Vehicle lost traction and slid backwards.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Driving",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "rollover roof crush"
+        ],
+        "energy_sources": [
+          "gravity slope rollback"
+        ],
+        "controls": [
+          "rops cage",
+          "seatbelt"
+        ],
+        "control_failures": [
+          "rops unbolted"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "structural roll-cage bar was unbolted",
+          "start_char": 61,
+          "end_char": 98,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Operating on steep mud tracks without ROPS removes life-saving protection during roll events."
+    }
+  },
+  {
+    "benchmark_id": "BM-081",
+    "title": "Trailer Hitch Pin Missing Safety Linchpin",
+    "site": "Moran Workshop Yard",
+    "location": "Logistics Staging",
+    "activity": "Generator Trailer Towing",
+    "narrative": "Tractor towed 5-ton mobile generator trailer using drop-pin hitch. R-clip safety linchpin was replaced with bent piece of tie wire.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "REVIEW",
+      "primary_iogp_rule": "Driving",
+      "secondary_iogp_rules": [
+        "Line of Fire"
+      ],
+      "entities": {
+        "hazards": [
+          "trailer detachment"
+        ],
+        "energy_sources": [
+          "5-ton towed trailer"
+        ],
+        "controls": [
+          "certified hitch pin",
+          "secondary safety chains"
+        ],
+        "control_failures": [
+          "bent wire used"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "safety linchpin was replaced with bent piece of tie wire",
+          "start_char": 74,
+          "end_char": 130,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Improper hitch pin retention risks runaway trailer, though secondary chains were hooked."
+    }
+  },
+  {
+    "benchmark_id": "BM-082",
+    "title": "Low Speed Scrape in Plant Parking Lot",
+    "site": "Duliajan HQ Office",
+    "location": "Staff Car Park",
+    "activity": "Parking Maneuver",
+    "narrative": "Company sedan driver misjudged distance while reversing into parking space at 5 km/h, scraping rear bumper against low concrete curb.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": "Driving",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "minor property damage"
+        ],
+        "energy_sources": [
+          "low speed (5 km/h)"
+        ],
+        "controls": [
+          "reverse mirror check"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "reversing into parking space at 5 km/h",
+          "start_char": 46,
+          "end_char": 84,
+          "category": "EXPOSURE"
+        }
+      ],
+      "adjudication_rationale": "Minor low-speed parking scrape with zero injury potential; non-SIF."
+    }
+  },
+  {
+    "benchmark_id": "BM-083",
+    "title": "Journey Management Plan Logged and Approved",
+    "site": "Tinsukia Base",
+    "location": "Dispatch Control",
+    "activity": "Scheduled Crew Movement",
+    "narrative": "Driver completed 12-point vehicle inspection, verified tire pressure, signed journey plan with designated rest stops, and logged departure.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": "Driving",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "none - compliant departure"
+        ],
+        "energy_sources": [
+          "controlled transport"
+        ],
+        "controls": [
+          "journey management plan",
+          "pre-trip inspection"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "signed journey plan with designated rest stops",
+          "start_char": 70,
+          "end_char": 116,
+          "category": "CONTROL"
+        }
+      ],
+      "adjudication_rationale": "Compliant proactive journey management; safe operational event."
+    }
+  },
+  {
+    "benchmark_id": "BM-084",
+    "title": "Speed Governor Calibration Verification",
+    "site": "Digboi Fleet Workshop",
+    "location": "Fleet Maintenance Bay",
+    "activity": "Statutory Speed Governor Check",
+    "narrative": "Mechanic hooked diagnostic scanner to truck ECU and confirmed speed limiter strictly enforces 60 km/h ceiling.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": "Driving",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "none"
+        ],
+        "energy_sources": [
+          "static diagnostic"
+        ],
+        "controls": [
+          "speed governor calibrated"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "confirmed speed limiter strictly enforces 60 km/h ceiling",
+          "start_char": 52,
+          "end_char": 109,
+          "category": "CONTROL"
+        }
+      ],
+      "adjudication_rationale": "Proactive vehicle safety verification; non-SIF."
+    }
+  },
+  {
+    "benchmark_id": "BM-085",
+    "title": "Deep Pipeline Trenching Without Shoring Box",
+    "site": "Jorajan Oil Field",
+    "location": "Flowline Corridor #8",
+    "activity": "Pipeline Trenching",
+    "narrative": "Excavation contractor dug a 2.5 meter deep trench in water-saturated clay soil without trench shoring box or ladder egress while workers were inside laying pipe.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Line of Fire",
+      "secondary_iogp_rules": [
+        "Confined Space"
+      ],
+      "entities": {
+        "hazards": [
+          "trench wall cave-in",
+          "suffocation under soil"
+        ],
+        "energy_sources": [
+          "soil collapse gravitational weight"
+        ],
+        "controls": [
+          "trench box shoring",
+          "sloping / benching",
+          "ladder egress"
+        ],
+        "control_failures": [
+          "shoring box omitted",
+          "ladder missing"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "dug a 2.5 meter deep trench in water-saturated clay soil without trench shoring",
+          "start_char": 22,
+          "end_char": 101,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Workers inside an unshared 2.5m trench in saturated soil face catastrophic cave-in and suffocation."
+    }
+  },
+  {
+    "benchmark_id": "BM-086",
+    "title": "Pressurized Bullplug Loosened with Pipe Wrench",
+    "site": "Naharkatiya Wellhead Cluster",
+    "location": "Wellhead Casing Wing",
+    "activity": "Wellhead Sampling Prep",
+    "narrative": "Operator stood directly in front of 2-inch threaded bullplug while applying 36-inch pipe wrench with cheater pipe on live 1500 psi line. Bullplug launched past his ear.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Line of Fire",
+      "secondary_iogp_rules": [
+        "Energy Isolation"
+      ],
+      "entities": {
+        "hazards": [
+          "missile projectile",
+          "stored pressure release"
+        ],
+        "energy_sources": [
+          "1500 psi hydraulic / gas pressure"
+        ],
+        "controls": [
+          "depressurization bleed",
+          "body positioning outside projectile path"
+        ],
+        "control_failures": [
+          "stood in line of fire",
+          "loosened live plug"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "stood directly in front of 2-inch threaded bullplug",
+          "start_char": 9,
+          "end_char": 60,
+          "category": "EXPOSURE"
+        },
+        {
+          "text": "Bullplug launched past his ear",
+          "start_char": 137,
+          "end_char": 167,
+          "category": "CONSEQUENCE"
+        }
+      ],
+      "adjudication_rationale": "Positioning body in direct line of fire of pressurized threaded fitting risks fatal impact."
+    }
+  },
+  {
+    "benchmark_id": "BM-087",
+    "title": "High-Pressure Mud Hose Restraint Snubbing Line Missing",
+    "site": "Drilling Rig OIL-45",
+    "location": "Standpipe Manifold",
+    "activity": "High Pressure Drilling Circulation",
+    "narrative": "A 4-inch rotary hose pumping drilling mud at 3200 psi lacked steel safety snubbing line clamps. Hammer union fitting suffered thread jump under pressure surge.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Line of Fire",
+      "secondary_iogp_rules": [
+        "Energy Isolation"
+      ],
+      "entities": {
+        "hazards": [
+          "whipping hose",
+          "heavy iron strike"
+        ],
+        "energy_sources": [
+          "3200 psi mud pressure kinetic whip"
+        ],
+        "controls": [
+          "whipcheck / snubbing cable",
+          "hammer union safety clamp"
+        ],
+        "control_failures": [
+          "snubbing line missing"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "pumping drilling mud at 3200 psi lacked steel safety snubbing line clamps",
+          "start_char": 21,
+          "end_char": 94,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "High-pressure mud hose failure without whip checks results in fatal whipping blows across rig floor."
+    }
+  },
+  {
+    "benchmark_id": "BM-088",
+    "title": "Winch Wire Rope Snapback Zone Occupied by Rigger",
+    "site": "Moran Pipe Yard",
+    "location": "Pipe Offloading Skid",
+    "activity": "Heavy Spool Dragging",
+    "narrative": "Contractor stood directly inside the V-angle snapback zone of a tensioned steel winch wire rope while pulling a 6-ton pipe skid across gravel.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Line of Fire",
+      "secondary_iogp_rules": [
+        "Safe Mechanical Lifting"
+      ],
+      "entities": {
+        "hazards": [
+          "cable recoil",
+          "bisection trauma"
+        ],
+        "energy_sources": [
+          "tensioned steel wire rope elastic energy"
+        ],
+        "controls": [
+          "snapback exclusion zone",
+          "deflection barrier"
+        ],
+        "control_failures": [
+          "standing in snapback zone"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "stood directly inside the V-angle snapback zone of a tensioned steel winch wire",
+          "start_char": 11,
+          "end_char": 90,
+          "category": "EXPOSURE"
+        }
+      ],
+      "adjudication_rationale": "Standing inside tensioned wire rope snapback zone causes severe amputation or fatality if rope breaks."
+    }
+  },
+  {
+    "benchmark_id": "BM-089",
+    "title": "Excavator Slewing in Blind Corner Near Ground Workers",
+    "site": "Duliajan Pipeline Right-of-Way",
+    "location": "Trench Section 4",
+    "activity": "Backfilling Operations",
+    "narrative": "Heavy tracked excavator was slewing counterweight rapidly within 50cm of laborers shoveling gravel without physical swing radius barricade.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Line of Fire",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "counterweight crush against soil pile"
+        ],
+        "energy_sources": [
+          "20-ton excavator hydraulic slew"
+        ],
+        "controls": [
+          "swing radius barricade",
+          "banksman spotter"
+        ],
+        "control_failures": [
+          "no swing barricade",
+          "laborers in pinch zone"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "slewing counterweight rapidly within 50cm of laborers",
+          "start_char": 28,
+          "end_char": 81,
+          "category": "EXPOSURE"
+        }
+      ],
+      "adjudication_rationale": "Rotating excavator counterweights in unbarricaded zones create lethal pinch points against structures."
+    }
+  },
+  {
+    "benchmark_id": "BM-090",
+    "title": "Chiksan Swivel Joint Separation During Frac Pumping",
+    "site": "Well Stimulation Pad NHK-90",
+    "location": "Manifold Trailer",
+    "activity": "Acid Fracturing",
+    "narrative": "High-pressure iron Chiksan swivel joint was vibrating violently at 4500 psi. An iron retaining ring sheared, spraying high-velocity steel fragments 10 meters.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Line of Fire",
+      "secondary_iogp_rules": [
+        "Energy Isolation"
+      ],
+      "entities": {
+        "hazards": [
+          "shrapnel blast",
+          "acid jet"
+        ],
+        "energy_sources": [
+          "4500 psi hydraulic energy"
+        ],
+        "controls": [
+          "iron restraint system",
+          "exclusion zone barricade"
+        ],
+        "control_failures": [
+          "iron restraint missing"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "spraying high-velocity steel fragments 10 meters",
+          "start_char": 109,
+          "end_char": 157,
+          "category": "CONSEQUENCE"
+        }
+      ],
+      "adjudication_rationale": "Catastrophic failure of 4500 psi iron piping sends fatal steel fragments across stimulation pad."
+    }
+  },
+  {
+    "benchmark_id": "BM-091",
+    "title": "Cathead Rope Tangle Risk During Manual Spinning",
+    "site": "Drilling Rig OIL-78",
+    "location": "Rig Floor",
+    "activity": "Drill Pipe Makeup",
+    "narrative": "Roughneck manually flipped spinning chain around drill pipe tool joint near rotating cathead spool while wearing loose oversized cotton gloves.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Line of Fire",
+      "secondary_iogp_rules": [
+        "Bypassing Safety Controls"
+      ],
+      "entities": {
+        "hazards": [
+          "entanglement",
+          "limb amputation"
+        ],
+        "energy_sources": [
+          "cathead rotational torque"
+        ],
+        "controls": [
+          "iron roughneck automated makeup",
+          "glove restriction"
+        ],
+        "control_failures": [
+          "manual spinning chain used",
+          "loose gloves"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "manually flipped spinning chain around drill pipe",
+          "start_char": 10,
+          "end_char": 59,
+          "category": "EXPOSURE"
+        }
+      ],
+      "adjudication_rationale": "Manual cathead spinning chain operations frequently lead to traumatic limb loss or fatal entanglement."
+    }
+  },
+  {
+    "benchmark_id": "BM-092",
+    "title": "Sledgehammer Used on Hardened Steel Chisel Without Eye Protection",
+    "site": "Moran Workshop",
+    "location": "Fabrication Bay",
+    "activity": "Rivet Removal",
+    "narrative": "Fitter struck mushroomed cold chisel with 10 lb sledgehammer without safety glasses or face shield. Steel sliver detached and embedded in worker cheek.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "REVIEW",
+      "primary_iogp_rule": "Line of Fire",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "high velocity steel spall"
+        ],
+        "energy_sources": [
+          "impact kinetic energy"
+        ],
+        "controls": [
+          "face shield",
+          "mushroom head dressed"
+        ],
+        "control_failures": [
+          "eye protection omitted",
+          "mushroomed chisel"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "struck mushroomed cold chisel with 10 lb sledgehammer",
+          "start_char": 7,
+          "end_char": 60,
+          "category": "EXPOSURE"
+        }
+      ],
+      "adjudication_rationale": "Projectile metal shard caused facial laceration; severe eye loss potential warrants Review."
+    }
+  },
+  {
+    "benchmark_id": "BM-093",
+    "title": "Flange Gap Check With Fingers",
+    "site": "Tinsukia Station",
+    "location": "Piping Manifold",
+    "activity": "Gasket Insertion",
+    "narrative": "Technician inserted fingers between unbolted 10-inch pipe flanges to feel alignment while crane held opposite pipe spool on nylon sling.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Line of Fire",
+      "secondary_iogp_rules": [
+        "Safe Mechanical Lifting"
+      ],
+      "entities": {
+        "hazards": [
+          "finger / hand crushing"
+        ],
+        "energy_sources": [
+          "suspended pipe spool weight"
+        ],
+        "controls": [
+          "alignment pins",
+          "flange spreader tools"
+        ],
+        "control_failures": [
+          "fingers placed in flange gap"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "inserted fingers between unbolted 10-inch pipe flanges",
+          "start_char": 11,
+          "end_char": 65,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Placing hands inside pinch point of crane-suspended pipe spools causes traumatic hand amputation."
+    }
+  },
+  {
+    "benchmark_id": "BM-094",
+    "title": "Forklift Mast Pinch Point Hazard",
+    "site": "Duliajan Store Yard",
+    "location": "Loading Dock",
+    "activity": "Pallet Stacking",
+    "narrative": "Warehouse worker reached arm through forklift mast uprights while driver was tilting mast forward to adjust pallet angle.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Line of Fire",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "shear crushing"
+        ],
+        "energy_sources": [
+          "hydraulic mast tilt"
+        ],
+        "controls": [
+          "keep clear of mast",
+          "engine off"
+        ],
+        "control_failures": [
+          "reached through mast uprights"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "reached arm through forklift mast uprights while driver was tilting mast",
+          "start_char": 17,
+          "end_char": 89,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Reaching through scissors mechanism of powered forklift mast causes immediate catastrophic crushing."
+    }
+  },
+  {
+    "benchmark_id": "BM-095",
+    "title": "Water Hose Flapping During Low Pressure Flushing",
+    "site": "Naharkatiya EPS",
+    "location": "Floor Drain",
+    "activity": "Area Washdown",
+    "narrative": "Low pressure utility water hose nozzle slipped from worker grasp, spraying wash water across pavement for 5 seconds until valve closed.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": "Line of Fire",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "water spray"
+        ],
+        "energy_sources": [
+          "30 psi tap water"
+        ],
+        "controls": [
+          "quick shutoff valve"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "utility water hose nozzle slipped",
+          "start_char": 13,
+          "end_char": 46,
+          "category": "EXPOSURE"
+        }
+      ],
+      "adjudication_rationale": "Low pressure utility water spray without injury potential; non-SIF."
+    }
+  },
+  {
+    "benchmark_id": "BM-096",
+    "title": "Warning Cones Positioned Around High Pressure Testing",
+    "site": "Duliajan Workshop",
+    "location": "Hydrotest Bay",
+    "activity": "Pressure Testing",
+    "narrative": "Hydrotest crew erected hard barricade, flashing red beacon, and danger signage 15 meters around 5000 psi test spool prior to pressurization.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": "Line of Fire",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "none - secured exclusion zone"
+        ],
+        "energy_sources": [
+          "contained hydrotest"
+        ],
+        "controls": [
+          "hard barricade",
+          "flashing beacon",
+          "exclusion zone"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "erected hard barricade, flashing red beacon, and danger signage",
+          "start_char": 15,
+          "end_char": 78,
+          "category": "CONTROL"
+        }
+      ],
+      "adjudication_rationale": "Proactive exclusion zone barrier implementation; safe operational event."
+    }
+  },
+  {
+    "benchmark_id": "BM-097",
+    "title": "Pinch Point Warning Decals Inspected on Conveyor Belt",
+    "site": "Digboi Refinery Store",
+    "location": "Baggage Conveyor",
+    "activity": "Monthly Maintenance Tour",
+    "narrative": "Safety officer inspected yellow pinch point hazard stickers on conveyor roller nip guards and verified guards were bolted tightly.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": "Line of Fire",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "none"
+        ],
+        "energy_sources": [
+          "audit check"
+        ],
+        "controls": [
+          "nip guards bolted",
+          "warning decals"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "verified guards were bolted tightly",
+          "start_char": 94,
+          "end_char": 129,
+          "category": "CONTROL"
+        }
+      ],
+      "adjudication_rationale": "Guard inspection verifying integrity of physical barrier; non-SIF."
+    }
+  },
+  {
+    "benchmark_id": "BM-098",
+    "title": "Safety Flange Shield Installed on Acid Line Flange",
+    "site": "Tinsukia Chemical Skid",
+    "location": "Acid Injection Pump",
+    "activity": "Preventative Barrier Fitting",
+    "narrative": "Technician fitted transparent polypropylene flange spray shield over hydrochloric acid line flange connection to prevent lateral spray in case of gasket failure.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": "Line of Fire",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "none - barrier applied"
+        ],
+        "energy_sources": [
+          "chemical system"
+        ],
+        "controls": [
+          "flange spray shield"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "fitted transparent polypropylene flange spray shield",
+          "start_char": 11,
+          "end_char": 63,
+          "category": "CONTROL"
+        }
+      ],
+      "adjudication_rationale": "Proactive installation of defensive barrier to prevent line-of-fire chemical sprays."
+    }
+  },
+  {
+    "benchmark_id": "BM-099",
+    "title": "Subsea Valve Overhaul Commenced Without Approved PTW",
+    "site": "Duliajan Production Installation",
+    "location": "Subsurface Manifold Bay",
+    "activity": "High-Pressure Manifold Servicing",
+    "narrative": "Contractor team commenced unbolting manifold header without valid Permit to Work (PTW). Shift supervisor signature had not been obtained and Job Safety Analysis (JSA) was absent.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Work Authorization",
+      "secondary_iogp_rules": [
+        "Energy Isolation"
+      ],
+      "entities": {
+        "hazards": [
+          "uncontrolled hydrocarbon release"
+        ],
+        "energy_sources": [
+          "high pressure gas"
+        ],
+        "controls": [
+          "ptw system",
+          "jsa review",
+          "supervisor signoff"
+        ],
+        "control_failures": [
+          "ptw missing",
+          "jsa absent"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "commenced unbolting manifold header without valid Permit to Work",
+          "start_char": 16,
+          "end_char": 80,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Major hydrocarbon intrusive work without permit or JSA bypasses all administrative and operational barriers."
+    }
+  },
+  {
+    "benchmark_id": "BM-100",
+    "title": "Night Shift Work Undertaken on Expired Day PTW",
+    "site": "Moran Production Station",
+    "location": "Compressor K-101",
+    "activity": "Lube Oil Cooler Flushing",
+    "narrative": "Maintenance crew continued intrusive work through night shift using a daytime cold work permit that had expired at 17:00. Cross-shift handover endorsement was blank.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Work Authorization",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "uncoordinated equipment restart"
+        ],
+        "energy_sources": [
+          "hydrocarbon machinery"
+        ],
+        "controls": [
+          "shift handover",
+          "ptw revalidation"
+        ],
+        "control_failures": [
+          "expired permit",
+          "handover blank"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "continued intrusive work through night shift using a daytime cold work permit that had expired",
+          "start_char": 17,
+          "end_char": 111,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Working on expired permit without cross-shift handover creates severe miscommunication and premature startup risks."
+    }
+  },
+  {
+    "benchmark_id": "BM-101",
+    "title": "Hot Work Carried Out on Cold Work Permit",
+    "site": "Digboi Refinery Unit 3",
+    "location": "Pipe Rack C-2",
+    "activity": "Bracket Replacement",
+    "narrative": "Fitter used power grinding disc generating heavy sparks under Cold Work Permit after hot work permit was rejected due to lack of gas detector availability.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Work Authorization",
+      "secondary_iogp_rules": [
+        "Hot Work"
+      ],
+      "entities": {
+        "hazards": [
+          "spark ignition in hydrocarbon area"
+        ],
+        "energy_sources": [
+          "hot sparks"
+        ],
+        "controls": [
+          "hot work permit",
+          "lel gas test"
+        ],
+        "control_failures": [
+          "work category falsified"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "used power grinding disc generating heavy sparks under Cold Work Permit",
+          "start_char": 7,
+          "end_char": 78,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Intentionally downgrading work permit to bypass hot work gas testing in refinery area is a severe violation."
+    }
+  },
+  {
+    "benchmark_id": "BM-102",
+    "title": "Contractor Self-Authorized PTW Without Asset Custodian",
+    "site": "Naharkatiya Oilfield",
+    "location": "Well NHK-55",
+    "activity": "Wellhead Tree Painting",
+    "narrative": "Contractor supervisor signed both Performing Authority and Area Authority signature boxes on PTW and began solvent washing without production operator knowledge.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Work Authorization",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "uncoordinated solvent work near live tree"
+        ],
+        "energy_sources": [
+          "chemical flammables"
+        ],
+        "controls": [
+          "area authority signoff",
+          "joint site inspection"
+        ],
+        "control_failures": [
+          "self-authorization",
+          "no asset custodian signoff"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "signed both Performing Authority and Area Authority signature boxes",
+          "start_char": 22,
+          "end_char": 89,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Self-authorization violates fundamental four-eyes permit principle, leaving facility managers unaware of ongoing work."
+    }
+  },
+  {
+    "benchmark_id": "BM-103",
+    "title": "Scope of Work Expanded into High Pressure System Without Amendment",
+    "site": "Jorajan Gas Terminal",
+    "location": "Manifold Header",
+    "activity": "Instrument Line Repair",
+    "narrative": "Permit covered low-pressure drainage line repair, but technician cut into live 600 psi fuel gas header line after misidentifying pipe tag.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Work Authorization",
+      "secondary_iogp_rules": [
+        "Energy Isolation",
+        "Line of Fire"
+      ],
+      "entities": {
+        "hazards": [
+          "gas blowout",
+          "fire"
+        ],
+        "energy_sources": [
+          "600 psi natural gas"
+        ],
+        "controls": [
+          "positive line tagging",
+          "scope boundaries",
+          "ptw walkdown"
+        ],
+        "control_failures": [
+          "scope exceeded",
+          "misidentified line"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "cut into live 600 psi fuel gas header line after misidentifying pipe tag",
+          "start_char": 65,
+          "end_char": 137,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Exceeding permit scope and cutting into live 600 psi piping without isolation carries imminent fatality potential."
+    }
+  },
+  {
+    "benchmark_id": "BM-104",
+    "title": "Toolbox Talk Bypassed Before Critical Rigging Operation",
+    "site": "Drilling Rig OIL-45",
+    "location": "Substructure",
+    "activity": "Heavy BOP Handling",
+    "narrative": "Lifting crew skipped mandatory pre-job Toolbox Talk (TBT) and JSA review due to rain delay. Rigger misunderstood hand signal and operated crane prematurely.",
+    "ground_truth": {
+      "is_psif": true,
+      "psif_priority": "HIGH",
+      "primary_iogp_rule": "Work Authorization",
+      "secondary_iogp_rules": [
+        "Safe Mechanical Lifting"
+      ],
+      "entities": {
+        "hazards": [
+          "crane collision",
+          "dropped load"
+        ],
+        "energy_sources": [
+          "crane load movement"
+        ],
+        "controls": [
+          "toolbox talk",
+          "jsa review",
+          "signal protocol"
+        ],
+        "control_failures": [
+          "tbt skipped",
+          "jsa review omitted"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "skipped mandatory pre-job Toolbox Talk (TBT) and JSA review",
+          "start_char": 13,
+          "end_char": 72,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Skipping safety briefings before critical heavy lifts leads directly to signal confusion and dropped objects."
+    }
+  },
+  {
+    "benchmark_id": "BM-105",
+    "title": "Confined Space Entry Commenced with Signature Missing",
+    "site": "Duliajan Production Installation",
+    "location": "Separator V-102",
+    "activity": "Internal Cleaning",
+    "narrative": "Entry permit was fully drafted with valid gas test recorded, but authorized gas tester had not physically countersigned authorization block prior to technician stepping inside.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "REVIEW",
+      "primary_iogp_rule": "Work Authorization",
+      "secondary_iogp_rules": [
+        "Confined Space"
+      ],
+      "entities": {
+        "hazards": [
+          "procedural permit gap"
+        ],
+        "energy_sources": [
+          "enclosed space"
+        ],
+        "controls": [
+          "gas test passed",
+          "attendant present"
+        ],
+        "control_failures": [
+          "signature missing"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "authorized gas tester had not physically countersigned",
+          "start_char": 65,
+          "end_char": 119,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Physical barriers and gas test were verified safe, but legal authorization signature was missing; warrants Review."
+    }
+  },
+  {
+    "benchmark_id": "BM-106",
+    "title": "Hot Work Permit Gas Retest Delayed by 45 Minutes",
+    "site": "Moran Production Field",
+    "location": "Workshop Welding Area",
+    "activity": "Grating Repair",
+    "narrative": "Mandatory 2-hourly gas retest was performed at 2 hours and 45 minutes. LEL remained 0% throughout the shift.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "REVIEW",
+      "primary_iogp_rule": "Work Authorization",
+      "secondary_iogp_rules": [
+        "Hot Work"
+      ],
+      "entities": {
+        "hazards": [
+          "monitoring interval exceeded"
+        ],
+        "energy_sources": [
+          "grinding sparks"
+        ],
+        "controls": [
+          "fire watch present",
+          "fire blanket"
+        ],
+        "control_failures": [
+          "retest overdue"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "Mandatory 2-hourly gas retest was performed at 2 hours and 45 minutes",
+          "start_char": 0,
+          "end_char": 69,
+          "category": "CONTROL_FAILURE"
+        }
+      ],
+      "adjudication_rationale": "Retest timing slipped 45 minutes; area was well ventilated with 0% LEL verified."
+    }
+  },
+  {
+    "benchmark_id": "BM-107",
+    "title": "Routine Visual Inspection Carried Out on Approved General Permit",
+    "site": "Naharkatiya EPS",
+    "location": "Pump Shelter",
+    "activity": "Visual Gauge Reading",
+    "narrative": "Operator walked through pump shelter reading pressure gauges holding valid general area work permit and high visibility PPE.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": "Work Authorization",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "none"
+        ],
+        "energy_sources": [
+          "visual check"
+        ],
+        "controls": [
+          "valid permit",
+          "ppe"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "holding valid general area work permit",
+          "start_char": 61,
+          "end_char": 99,
+          "category": "CONTROL"
+        }
+      ],
+      "adjudication_rationale": "Compliant, fully permitted routine operational monitoring; non-SIF."
+    }
+  },
+  {
+    "benchmark_id": "BM-108",
+    "title": "Comprehensive PTW Handover Completed Between Shifts",
+    "site": "Duliajan Gas Processing Plant",
+    "location": "Control Room",
+    "activity": "Shift Change Handover",
+    "narrative": "Outgoing and incoming shift supervisors conducted joint review of all active permits, walked site to verify LOTO keys, and signed handover log.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": "Work Authorization",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "none - proactive handover"
+        ],
+        "energy_sources": [
+          "procedural administration"
+        ],
+        "controls": [
+          "joint permit review",
+          "loto key verification"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "conducted joint review of all active permits",
+          "start_char": 40,
+          "end_char": 84,
+          "category": "CONTROL"
+        }
+      ],
+      "adjudication_rationale": "High-reliability administrative barrier verification; zero incident occurrence."
+    }
+  },
+  {
+    "benchmark_id": "BM-109",
+    "title": "Toolbox Talk Signed by All Crew Members Prior to Shift",
+    "site": "Drilling Rig OIL-45",
+    "location": "Drill Floor",
+    "activity": "Morning Pre-Tour TBT",
+    "narrative": "Driller gathered rig crew, reviewed day's operational sequence, discussed slip/trip prevention on wet deck, and verified all 7 workers signed attendance register.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": "Work Authorization",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "none"
+        ],
+        "energy_sources": [
+          "meeting"
+        ],
+        "controls": [
+          "pre-tour tbt",
+          "signed attendance"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "reviewed day's operational sequence",
+          "start_char": 27,
+          "end_char": 62,
+          "category": "CONTROL"
+        }
+      ],
+      "adjudication_rationale": "Standard proactive safety talk; safe operational baseline."
+    }
+  },
+  {
+    "benchmark_id": "BM-110",
+    "title": "Permit to Work Closed Out Cleanly After Valve Overhaul",
+    "site": "Tinsukia Station",
+    "location": "Manifold Header",
+    "activity": "Permit Closeout",
+    "narrative": "Lead mechanical technician inspected worksite for cleanliness, confirmed all isolation blinds removed and test tags signed off, and formally closed PTW with asset custodian.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": "Work Authorization",
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "none"
+        ],
+        "energy_sources": [
+          "procedural closeout"
+        ],
+        "controls": [
+          "site housekeeping verification",
+          "formal permit closeout"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "formally closed PTW with asset custodian",
+          "start_char": 132,
+          "end_char": 172,
+          "category": "CONTROL"
+        }
+      ],
+      "adjudication_rationale": "Perfect procedural closeout of permit; non-SIF."
+    }
+  },
+  {
+    "benchmark_id": "BM-111",
+    "title": "Office Worker Tripped on Low Carpet Edge",
+    "site": "Duliajan Administrative Office",
+    "location": "Finance Department Corridor",
+    "activity": "Walking Between Offices",
+    "narrative": "Accounts clerk tripped over curled corner of floor mat while carrying stationery. Clerk caught balance with hand against wall and sustained minor finger sprain.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": null,
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "uneven floor mat"
+        ],
+        "energy_sources": [
+          "walking kinetic"
+        ],
+        "controls": [
+          "mat taped down"
+        ],
+        "control_failures": [
+          "curled mat edge"
+        ]
+      },
+      "evidence_spans": [
+        {
+          "text": "tripped over curled corner of floor mat",
+          "start_char": 15,
+          "end_char": 54,
+          "category": "EXPOSURE"
+        }
+      ],
+      "adjudication_rationale": "Low-energy trip in office environment resulting in minor sprain; completely non-SIF."
+    }
+  },
+  {
+    "benchmark_id": "BM-112",
+    "title": "Printer Paper Jam Cleared with Power Switched Off",
+    "site": "Moran Field Office",
+    "location": "Dispatch Room",
+    "activity": "Office Maintenance",
+    "narrative": "Clerk turned off office laser printer switch, opened rear access cover, and removed crumpled paper sheet from feed roller.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": null,
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "none"
+        ],
+        "energy_sources": [
+          "low"
+        ],
+        "controls": [
+          "power turned off"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "turned off office laser printer switch",
+          "start_char": 6,
+          "end_char": 44,
+          "category": "CONTROL"
+        }
+      ],
+      "adjudication_rationale": "Standard office appliance clearing with power turned off; non-SIF."
+    }
+  },
+  {
+    "benchmark_id": "BM-113",
+    "title": "Safety Glasses Scratched During Routine Sanding Check",
+    "site": "Duliajan Machine Shop",
+    "location": "Bench Area",
+    "activity": "Housekeeping",
+    "narrative": "Fitter noticed slight scratch on polycarbonate safety glasses lens while wiping them with microfiber cloth and requested new pair from store.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": null,
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "none"
+        ],
+        "energy_sources": [
+          "none"
+        ],
+        "controls": [
+          "ppe replacement"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "requested new pair from store",
+          "start_char": 111,
+          "end_char": 140,
+          "category": "CONTROL"
+        }
+      ],
+      "adjudication_rationale": "Routine personal protective equipment replacement; zero injury potential."
+    }
+  },
+  {
+    "benchmark_id": "BM-114",
+    "title": "Water Cooler Bottle Replaced in Breakroom",
+    "site": "Naharkatiya Camp",
+    "location": "Canteen",
+    "activity": "Water Dispenser Refill",
+    "narrative": "Two kitchen attendants lifted 20-litre mineral water bottle onto cooler stand using two-person lift technique.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": null,
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "manual handling"
+        ],
+        "energy_sources": [
+          "20 kg weight"
+        ],
+        "controls": [
+          "two-person lift"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "using two-person lift technique",
+          "start_char": 78,
+          "end_char": 109,
+          "category": "CONTROL"
+        }
+      ],
+      "adjudication_rationale": "Safe ergonomic lifting of low weight water bottle; non-SIF."
+    }
+  },
+  {
+    "benchmark_id": "BM-115",
+    "title": "Cardboard Box Disposed in Recycling Bin",
+    "site": "Tinsukia Warehouse",
+    "location": "Unpacking Area",
+    "activity": "Waste Segregation",
+    "narrative": "Store assistant flattened empty cardboard packaging box with safety utility knife and deposited it into designated paper recycling bin.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": null,
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "utility knife blade"
+        ],
+        "energy_sources": [
+          "manual"
+        ],
+        "controls": [
+          "safety utility knife with self-retracting blade"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [],
+      "adjudication_rationale": "Standard routine waste disposal utilizing safety tooling; non-SIF."
+    }
+  },
+  {
+    "benchmark_id": "BM-116",
+    "title": "Minor Mud Splash on Worker Coveralls During Pump Wash",
+    "site": "Drilling Rig OIL-45",
+    "location": "Shaker Screen Area",
+    "activity": "Screen Washdown",
+    "narrative": "Roustabout sprayed water on shale shaker screen. Low pressure water bounced back and splashed muddy water on waterproof bib coveralls.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": null,
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "mud splash"
+        ],
+        "energy_sources": [
+          "low pressure wash water"
+        ],
+        "controls": [
+          "waterproof ppe worn"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "splashed muddy water on waterproof bib coveralls",
+          "start_char": 85,
+          "end_char": 133,
+          "category": "EXPOSURE"
+        }
+      ],
+      "adjudication_rationale": "Inconsequential water splash on protective coveralls; non-SIF."
+    }
+  },
+  {
+    "benchmark_id": "BM-117",
+    "title": "Safety Boots Cleaned in Boot Wash Station",
+    "site": "Moran Production Site",
+    "location": "Main Entrance Gate",
+    "activity": "Decontamination Walkthrough",
+    "narrative": "Operators cleaned mud from soles of steel-toed boots in designated rotary boot brush station before entering offices.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": null,
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "none"
+        ],
+        "energy_sources": [
+          "none"
+        ],
+        "controls": [
+          "boot brush station"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "cleaned mud from soles of steel-toed boots",
+          "start_char": 10,
+          "end_char": 52,
+          "category": "CONTROL"
+        }
+      ],
+      "adjudication_rationale": "Routine hygiene station usage; non-SIF."
+    }
+  },
+  {
+    "benchmark_id": "BM-118",
+    "title": "Stationery Requisition Submitted",
+    "site": "Duliajan HQ",
+    "location": "Administration Office",
+    "activity": "Office Supply Order",
+    "narrative": "Secretary submitted online purchase requisition for 10 boxes of ballpoint pens and 5 reams of A4 paper.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": null,
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "none"
+        ],
+        "energy_sources": [
+          "none"
+        ],
+        "controls": [],
+        "control_failures": []
+      },
+      "evidence_spans": [],
+      "adjudication_rationale": "Pure administrative activity with zero physical hazard; non-SIF."
+    }
+  },
+  {
+    "benchmark_id": "BM-119",
+    "title": "First Aid Kit Contents Verified in Control Room",
+    "site": "Jorajan Gathering Station",
+    "location": "Control Room",
+    "activity": "Monthly Kit Inspection",
+    "narrative": "HSE medic inspected wall-mounted first aid kit, verified expiration dates on sterile bandages and burn ointments, and replenished adhesive strips.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": null,
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "none"
+        ],
+        "energy_sources": [
+          "none"
+        ],
+        "controls": [
+          "first aid inventory"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "replenished adhesive strips",
+          "start_char": 118,
+          "end_char": 145,
+          "category": "CONTROL"
+        }
+      ],
+      "adjudication_rationale": "Routine medical kit audit; non-SIF."
+    }
+  },
+  {
+    "benchmark_id": "BM-120",
+    "title": "Small Coffee Spill Mopped Immediately",
+    "site": "Duliajan Security Post",
+    "location": "Guard Room",
+    "activity": "Spill Cleanup",
+    "narrative": "Security guard accidentally tipped paper cup containing 50ml of lukewarm coffee onto tile floor. Guard placed yellow 'Wet Floor' sign and mopped floor dry immediately.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": null,
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "slip risk"
+        ],
+        "energy_sources": [
+          "low"
+        ],
+        "controls": [
+          "wet floor sign",
+          "immediate mopping"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "placed yellow 'Wet Floor' sign and mopped floor dry",
+          "start_char": 103,
+          "end_char": 154,
+          "category": "CONTROL"
+        }
+      ],
+      "adjudication_rationale": "Immediate mitigating housekeeping with warning sign; non-SIF."
+    }
+  },
+  {
+    "benchmark_id": "BM-121",
+    "title": "Fire Extinguisher Pressure Gauge Monthly Visual Inspection",
+    "site": "Digboi Refinery Store",
+    "location": "Building Perimeter",
+    "activity": "Extinguisher Inspection",
+    "narrative": "Safety inspector checked pressure needle on dry chemical powder (DCP) 10 kg extinguisher, confirmed needle in green zone, and punched inspection tag.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": null,
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "none"
+        ],
+        "energy_sources": [
+          "audit check"
+        ],
+        "controls": [
+          "monthly inspection tag",
+          "green zone pressure"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "confirmed needle in green zone",
+          "start_char": 90,
+          "end_char": 120,
+          "category": "CONTROL"
+        }
+      ],
+      "adjudication_rationale": "Preventative safety equipment check; non-SIF."
+    }
+  },
+  {
+    "benchmark_id": "BM-122",
+    "title": "Ergonomic Office Chair Height Adjustment",
+    "site": "Duliajan Central IT",
+    "location": "Helpdesk",
+    "activity": "Workstation Setup",
+    "narrative": "IT technician adjusted pneumatic lumbar support on office mesh swivel chair to correct desk posture.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": null,
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "none"
+        ],
+        "energy_sources": [
+          "none"
+        ],
+        "controls": [
+          "ergonomic adjustment"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [],
+      "adjudication_rationale": "Workstation posture adjustment; non-SIF."
+    }
+  },
+  {
+    "benchmark_id": "BM-123",
+    "title": "Replacement of Hand Soap in Rig Mess Hall Washroom",
+    "site": "Drilling Rig OIL-45",
+    "location": "Camp Washroom",
+    "activity": "Hygiene Service",
+    "narrative": "Camp helper refilled antibacterial liquid soap dispenser in washroom sink area.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": null,
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "none"
+        ],
+        "energy_sources": [
+          "none"
+        ],
+        "controls": [],
+        "control_failures": []
+      },
+      "evidence_spans": [],
+      "adjudication_rationale": "Routine sanitation maintenance; non-SIF."
+    }
+  },
+  {
+    "benchmark_id": "BM-124",
+    "title": "Daily Weather Forecast Email Dissemination",
+    "site": "Duliajan HSSE Department",
+    "location": "Disaster Management Cell",
+    "activity": "Weather Advisory",
+    "narrative": "HSE coordinator reviewed India Meteorological Department radar bulletin and forwarded 24-hour rainfall advisory email to all asset managers.",
+    "ground_truth": {
+      "is_psif": false,
+      "psif_priority": "LOW",
+      "primary_iogp_rule": null,
+      "secondary_iogp_rules": [],
+      "entities": {
+        "hazards": [
+          "none - advisory only"
+        ],
+        "energy_sources": [
+          "none"
+        ],
+        "controls": [
+          "weather notification"
+        ],
+        "control_failures": []
+      },
+      "evidence_spans": [
+        {
+          "text": "forwarded 24-hour rainfall advisory email",
+          "start_char": 76,
+          "end_char": 117,
+          "category": "CONTROL"
+        }
+      ],
+      "adjudication_rationale": "Information dissemination and situational awareness; non-SIF."
+    }
+  }
+]
