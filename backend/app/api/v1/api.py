@@ -13,6 +13,7 @@ from backend.app.api.v1.endpoints import (
     ontology,
     clusters,
     baseline,
+    extraction,
 )
 
 api_router = APIRouter()
@@ -26,4 +27,5 @@ api_router.include_router(annotation.router, prefix="/annotation", tags=["Annota
 api_router.include_router(ontology.router, prefix="/ontology", tags=["Ontology & Barriers"])
 api_router.include_router(clusters.router, prefix="/clusters", tags=["Precursor Clusters & Graph"])
 api_router.include_router(baseline.router, prefix="/baseline", tags=["Baseline ML Modeling"])
+api_router.include_router(extraction.router, prefix="/extraction", tags=["Safety NER & Information Extraction"])
 

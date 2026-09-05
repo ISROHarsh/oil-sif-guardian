@@ -10,21 +10,23 @@ import {
   Cpu,
   Layers,
   Activity,
-  Network
+  Network,
+  Tag,
+  Target
 } from 'lucide-react';
 import { ReportIngestion } from './components/ReportIngestion';
 import { AIResultView } from './components/AIResultView';
 import { BatchIngestionView } from './components/BatchIngestionView';
 import { AnnotationBenchmarkView } from './components/AnnotationBenchmarkView';
 import { PrecursorClusterView } from './components/PrecursorClusterView';
+import { EntityExtractionView } from './components/EntityExtractionView';
 import { HSEReviewQueue } from './components/HSEReviewQueue';
 import { CorrectiveActionsView } from './components/CorrectiveActionsView';
 import { ExecutiveDashboard } from './components/ExecutiveDashboard';
 import { ReportResponse } from './types';
-import { Target } from 'lucide-react';
 
 export const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'intake' | 'batch' | 'annotation' | 'clusters' | 'queue' | 'actions' | 'analytics'>('intake');
+  const [activeTab, setActiveTab] = useState<'intake' | 'batch' | 'annotation' | 'clusters' | 'extraction' | 'queue' | 'actions' | 'analytics'>('intake');
   const [latestReport, setLatestReport] = useState<ReportResponse | null>(null);
 
   const handleTriageComplete = (report: ReportResponse) => {
@@ -124,6 +126,18 @@ export const App: React.FC = () => {
             </button>
 
             <button
+              onClick={() => setActiveTab('extraction')}
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
+                activeTab === 'extraction'
+                  ? 'bg-amber-500 text-slate-950 shadow-md'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+              }`}
+            >
+              <Tag className="w-3.5 h-3.5" />
+              <span>Entity NER</span>
+            </button>
+
+            <button
               onClick={() => setActiveTab('queue')}
               className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
                 activeTab === 'queue'
@@ -202,6 +216,12 @@ export const App: React.FC = () => {
             Clusters
           </button>
           <button
+            onClick={() => setActiveTab('extraction')}
+            className={`text-xs px-2 py-1 rounded ${activeTab === 'extraction' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+          >
+            NER
+          </button>
+          <button
             onClick={() => setActiveTab('queue')}
             className={`text-xs px-2 py-1 rounded ${activeTab === 'queue' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
           >
@@ -249,6 +269,10 @@ export const App: React.FC = () => {
 
         {activeTab === 'clusters' && (
           <PrecursorClusterView />
+        )}
+
+        {activeTab === 'extraction' && (
+          <EntityExtractionView />
         )}
 
         {activeTab === 'queue' && (
