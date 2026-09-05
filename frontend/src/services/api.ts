@@ -15,7 +15,12 @@ import {
   ExtractionRequestData,
   ExtractionResponseData,
   BIOTaggingResponseData,
-  NERTaxonomyResponseData
+  NERTaxonomyResponseData,
+  SequencePredictResponseData,
+  TokenAttributionResponseData,
+  EnsembleArbitrationResponseData,
+  FourWayBenchmarkResponseData,
+  ModelStatusResponseData
 } from '../types';
 
 const API_BASE = '/api/v1';
@@ -284,6 +289,48 @@ export const api = {
   async getNERTaxonomy(): Promise<NERTaxonomyResponseData> {
     const res = await fetch(`${API_BASE}/extraction/taxonomy`);
     if (!res.ok) throw new Error('Failed to fetch NER taxonomy');
+    return await res.json();
+  },
+
+  async predictSequence(narrative: string, activity?: string, site?: string): Promise<SequencePredictResponseData> {
+    const res = await fetch(`${API_BASE}/models/predict`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ narrative, activity, site })
+    });
+    if (!res.ok) throw new Error('Failed to run sequence prediction');
+    return await res.json();
+  },
+
+  async explainTokenAttribution(narrative: string): Promise<TokenAttributionResponseData> {
+    const res = await fetch(`${API_BASE}/models/attribution`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ narrative })
+    });
+    if (!res.ok) throw new Error('Failed to compute token attribution');
+    return await res.json();
+  },
+
+  async arbitrateEnsemble(narrative: string, activity?: string, site?: string): Promise<EnsembleArbitrationResponseData> {
+    const res = await fetch(`${API_BASE}/models/ensemble`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ narrative, activity, site })
+    });
+    if (!res.ok) throw new Error('Failed to run ensemble arbitration');
+    return await res.json();
+  },
+
+  async getFourWayBenchmark(): Promise<FourWayBenchmarkResponseData> {
+    const res = await fetch(`${API_BASE}/models/benchmark`);
+    if (!res.ok) throw new Error('Failed to fetch 4-way benchmark report');
+    return await res.json();
+  },
+
+  async getModelStatus(): Promise<ModelStatusResponseData> {
+    const res = await fetch(`${API_BASE}/models/status`);
+    if (!res.ok) throw new Error('Failed to fetch model status');
     return await res.json();
   }
 };
