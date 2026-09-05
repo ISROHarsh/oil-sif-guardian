@@ -26,13 +26,14 @@ import { EntityExtractionView } from './components/EntityExtractionView';
 import { ModelStudioView } from './components/ModelStudioView';
 import { IOGPMultiLabelView } from './components/IOGPMultiLabelView';
 import { DeterministicRulesView } from './components/DeterministicRulesView';
+import { HybridDecisionStudioView } from './components/HybridDecisionStudioView';
 import { HSEReviewQueue } from './components/HSEReviewQueue';
 import { CorrectiveActionsView } from './components/CorrectiveActionsView';
 import { ExecutiveDashboard } from './components/ExecutiveDashboard';
 import { ReportResponse } from './types';
 
 export const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'intake' | 'batch' | 'annotation' | 'clusters' | 'extraction' | 'models' | 'iogp' | 'rules' | 'queue' | 'actions' | 'analytics'>('intake');
+  const [activeTab, setActiveTab] = useState<'intake' | 'batch' | 'annotation' | 'clusters' | 'extraction' | 'models' | 'iogp' | 'rules' | 'decision' | 'queue' | 'actions' | 'analytics'>('intake');
   const [latestReport, setLatestReport] = useState<ReportResponse | null>(null);
 
   const handleTriageComplete = (report: ReportResponse) => {
@@ -180,6 +181,18 @@ export const App: React.FC = () => {
             </button>
 
             <button
+              onClick={() => setActiveTab('decision')}
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
+                activeTab === 'decision'
+                  ? 'bg-amber-500 text-slate-950 shadow-md'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+              }`}
+            >
+              <Cpu className="w-3.5 h-3.5" />
+              <span>Decision Studio</span>
+            </button>
+
+            <button
               onClick={() => setActiveTab('queue')}
               className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
                 activeTab === 'queue'
@@ -282,6 +295,12 @@ export const App: React.FC = () => {
             Rules
           </button>
           <button
+            onClick={() => setActiveTab('decision')}
+            className={`text-xs px-2 py-1 rounded ${activeTab === 'decision' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+          >
+            Decision
+          </button>
+          <button
             onClick={() => setActiveTab('queue')}
             className={`text-xs px-2 py-1 rounded ${activeTab === 'queue' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
           >
@@ -345,6 +364,10 @@ export const App: React.FC = () => {
 
         {activeTab === 'rules' && (
           <DeterministicRulesView />
+        )}
+
+        {activeTab === 'decision' && (
+          <HybridDecisionStudioView />
         )}
 
         {activeTab === 'queue' && (

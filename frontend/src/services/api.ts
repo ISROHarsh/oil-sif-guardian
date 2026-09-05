@@ -29,7 +29,11 @@ import {
   RuleEvaluationResponseData,
   RuleCatalogResponseData,
   RuleCatalogItemData,
-  RuleStatsResponseData
+  RuleStatsResponseData,
+  HybridDecisionResponseData,
+  CalibrationReportResponseData,
+  WeightTuneResponseData,
+  DecisionStatusResponseData
 } from '../types';
 
 const API_BASE = '/api/v1';
@@ -415,6 +419,58 @@ export const api = {
   async getRuleStats(): Promise<RuleStatsResponseData> {
     const res = await fetch(`${API_BASE}/rules/stats`);
     if (!res.ok) throw new Error('Failed to fetch rule engine golden benchmark statistics');
+    return await res.json();
+  },
+
+  // Phase 8: Calibrated Hybrid Decision Engine Endpoints
+  async triageHybridDecision(
+    narrative: string,
+    title?: string,
+    weightOverrides?: Record<string, number>,
+    tauHighOverride?: number,
+    tauLowOverride?: number
+  ): Promise<HybridDecisionResponseData> {
+    const res = await fetch(`${API_BASE}/decision/triage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        narrative,
+        title: title || '',
+        weight_overrides: weightOverrides,
+        tau_high_override: tauHighOverride,
+        tau_low_override: tauLowOverride
+      })
+    });
+    if (!res.ok) throw new Error('Failed to execute calibrated hybrid decision triage');
+    return await res.json();
+  },
+
+  async getDecisionCalibration(): Promise<CalibrationReportResponseData> {
+    const res = await fetch(`${API_BASE}/decision/calibration`);
+    if (!res.ok) throw new Error('Failed to fetch decision calibration report');
+    return await res.json();
+  },
+
+  async tuneDecisionWeights(params: {
+    sequence_weight?: number;
+    iogp_weight?: number;
+    tfidf_weight?: number;
+    tau_high?: number;
+    tau_low?: number;
+    temperature?: number;
+  }): Promise<WeightTuneResponseData> {
+    const res = await fetch(`${API_BASE}/decision/tune-weights`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params)
+    });
+    if (!res.ok) throw new Error('Failed to tune decision weights');
+    return await res.json();
+  },
+
+  async getDecisionStatus(): Promise<DecisionStatusResponseData> {
+    const res = await fetch(`${API_BASE}/decision/status`);
+    if (!res.ok) throw new Error('Failed to fetch decision engine status');
     return await res.json();
   }
 };

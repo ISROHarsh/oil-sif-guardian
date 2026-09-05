@@ -730,3 +730,68 @@ export interface RuleStatsResponseData {
   category_distribution: Record<string, number>;
 }
 
+// Phase 8: Calibrated Hybrid Decision Engine Types
+export interface ModelContributionData {
+  model_name: string;
+  raw_probability: number;
+  assigned_weight: number;
+  weighted_probability: number;
+}
+
+export interface HybridDecisionResponseData {
+  fused_psif_probability: number;
+  priority: 'HIGH' | 'REVIEW' | 'LOW';
+  confidence_score: number;
+  is_veto_enforced: boolean;
+  is_benign: boolean;
+  decision_rationale: string[];
+  primary_iogp_rule: string;
+  secondary_iogp_rules: string[];
+  triggered_rules: string[];
+  model_contributions: Record<string, ModelContributionData>;
+  calibration_factor: number;
+  latency_ms: number;
+  raw_text: string;
+}
+
+export interface CalibrationBinPointData {
+  bin_index: number;
+  bin_lower: number;
+  bin_upper: number;
+  sample_count: number;
+  mean_confidence: number;
+  empirical_accuracy: number;
+}
+
+export interface CalibrationReportResponseData {
+  total_samples: number;
+  true_high_psif_count: number;
+  detected_high_psif_count: number;
+  high_psif_recall: number;
+  priority_accuracy: number;
+  ece: number;
+  mce: number;
+  brier_score: number;
+  temperature: number;
+  bins: CalibrationBinPointData[];
+  active_weights: Record<string, number>;
+  active_thresholds: Record<string, number>;
+  evaluated_at: string;
+}
+
+export interface WeightTuneResponseData {
+  updated: boolean;
+  current_weights: Record<string, number>;
+  message: string;
+}
+
+export interface DecisionStatusResponseData {
+  engine_name: string;
+  version: string;
+  models_loaded: Record<string, boolean>;
+  active_weights: Record<string, number>;
+  active_thresholds: Record<string, number>;
+  temperature: number;
+  zero_tolerance_enforced: boolean;
+}
+
