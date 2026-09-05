@@ -655,3 +655,78 @@ export interface IOGPStatusResponseData {
   is_persisted: boolean;
 }
 
+// Phase 7: Codified Deterministic Safety Rulebook & Veto Engine Types
+export interface TriggeredRuleDetailData {
+  rule_id: string;
+  rule_name: string;
+  iogp_category: string;
+  severity: 'ZERO_TOLERANCE_FATAL' | 'CRITICAL_CONTROL_COMPROMISED' | 'PROCEDURAL_DEVIATION' | 'BENIGN_ADMINISTRATIVE' | string;
+  description: string;
+  failure_mechanism: string;
+  regulatory_standard: string;
+  stop_work_action: string;
+  prescribed_safeguards: string[];
+}
+
+export interface AuditTrailItemData {
+  rule_id: string;
+  rule_name: string;
+  severity: string;
+  regulatory_standard?: string | null;
+  stop_work_action?: string | null;
+  action_status?: string | null;
+  action_taken?: string | null;
+}
+
+export interface RuleEvaluationResponseData {
+  mandatory_high_psif: boolean;
+  triggered_rules: string[];
+  triggered_rule_details: TriggeredRuleDetailData[];
+  rule_reasons: string[];
+  suggested_rules: string[];
+  is_benign: boolean;
+  severity_level: string;
+  stop_work_required: boolean;
+  audit_trail: AuditTrailItemData[];
+  latency_ms: number;
+  raw_text: string;
+}
+
+export interface RuleCatalogItemData {
+  rule_id: string;
+  rule_name: string;
+  iogp_category: string;
+  severity: 'ZERO_TOLERANCE_FATAL' | 'CRITICAL_CONTROL_COMPROMISED' | 'PROCEDURAL_DEVIATION' | 'BENIGN_ADMINISTRATIVE' | string;
+  description: string;
+  failure_mechanism: string;
+  regulatory_standard: string;
+  stop_work_action: string;
+  prescribed_safeguards: string[];
+}
+
+export interface RuleCatalogResponseData {
+  total_rules: number;
+  rules: RuleCatalogItemData[];
+  categories: string[];
+  severities: string[];
+}
+
+export interface RuleTriggerStatData {
+  rule_id: string;
+  rule_name: string;
+  iogp_category: string;
+  trigger_count: number;
+  benchmark_prevalence_pct: number;
+  regulatory_standard: string;
+}
+
+export interface RuleStatsResponseData {
+  total_evaluated: number;
+  high_psif_count: number;
+  high_psif_recall: number;
+  zero_tolerance_vetoes: number;
+  benign_suppressions: number;
+  top_triggered_rules: RuleTriggerStatData[];
+  category_distribution: Record<string, number>;
+}
+
