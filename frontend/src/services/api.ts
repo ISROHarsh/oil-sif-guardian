@@ -11,7 +11,11 @@ import {
   PrecursorCluster,
   ClusterGraphData,
   BaselineModelStatus,
-  BaselineComparisonResult
+  BaselineComparisonResult,
+  ExtractionRequestData,
+  ExtractionResponseData,
+  BIOTaggingResponseData,
+  NERTaxonomyResponseData
 } from '../types';
 
 const API_BASE = '/api/v1';
@@ -248,6 +252,38 @@ export const api = {
       headers: { 'Content-Type': 'application/json' }
     });
     if (!res.ok) throw new Error('Failed to run baseline comparison evaluation');
+    return await res.json();
+  },
+
+  async extractSafetyEntities(data: ExtractionRequestData): Promise<ExtractionResponseData> {
+    const res = await fetch(`${API_BASE}/extraction/entities`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ detail: 'Failed to extract safety entities' }));
+      throw new Error(err.detail || 'Failed to extract safety entities');
+    }
+    return await res.json();
+  },
+
+  async generateBIOTagging(data: ExtractionRequestData): Promise<BIOTaggingResponseData> {
+    const res = await fetch(`${API_BASE}/extraction/bio-tag`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ detail: 'Failed to generate BIO sequence tags' }));
+      throw new Error(err.detail || 'Failed to generate BIO sequence tags');
+    }
+    return await res.json();
+  },
+
+  async getNERTaxonomy(): Promise<NERTaxonomyResponseData> {
+    const res = await fetch(`${API_BASE}/extraction/taxonomy`);
+    if (!res.ok) throw new Error('Failed to fetch NER taxonomy');
     return await res.json();
   }
 };

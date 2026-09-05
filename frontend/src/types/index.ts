@@ -402,5 +402,77 @@ export interface BaselineComparisonResult {
   key_findings: string[];
 }
 
+// ==================== Phase 4: Safety NER & Extraction Types ====================
 
+export interface EntitySpanItem {
+  text: string;
+  label: string;
+  start_char: number;
+  end_char: number;
+  confidence: number;
+  source: string;
+  category_description?: string;
+}
 
+export interface CausalStepItem {
+  step_id: number;
+  node_key: string;
+  title: string;
+  category: string;
+  detected_entities: string[];
+  has_evidence: boolean;
+  summary: string;
+  icon_hint: string;
+  severity_level: string;
+}
+
+export interface CausalFlowData {
+  steps: CausalStepItem[];
+  completeness_score: number;
+  risk_level: string;
+  causal_narrative: string;
+  key_failure_mechanism: string;
+  suggested_critical_controls: string[];
+  audit_grounding: Record<string, EntitySpanItem[]>;
+}
+
+export interface ExtractionRequestData {
+  narrative: string;
+  activity?: string;
+  site?: string;
+}
+
+export interface ExtractionResponseData {
+  narrative: string;
+  entities_by_category: Record<string, EntitySpanItem[]>;
+  all_spans: EntitySpanItem[];
+  causal_flow: CausalFlowData;
+  summary_text: string;
+  entity_counts: Record<string, number>;
+  total_entities: number;
+}
+
+export interface BIOTokenItem {
+  token: string;
+  tag: string;
+  start_char: number;
+  end_char: number;
+}
+
+export interface BIOTaggingResponseData {
+  narrative: string;
+  tokens: BIOTokenItem[];
+  total_tokens: number;
+  entity_tokens_count: number;
+  conll_format: string;
+}
+
+export interface NERTaxonomyResponseData {
+  supported_categories: string[];
+  category_descriptions: Record<string, string>;
+  builtin_terms_count: number;
+  terms_by_category: Record<string, number>;
+  trie_entries_loaded: number;
+  regex_patterns_count: number;
+  engine: string;
+}
