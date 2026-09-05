@@ -795,3 +795,92 @@ export interface DecisionStatusResponseData {
   zero_tolerance_enforced: boolean;
 }
 
+export interface AdjudicationRequest {
+  report_id: string;
+  reviewer_id: string;
+  reviewer_role?: string;
+  decision: 'CONFIRMED' | 'MODIFIED' | 'REJECTED' | 'ESCALATED';
+  final_priority: 'HIGH' | 'REVIEW' | 'LOW';
+  final_primary_rule?: string;
+  final_secondary_rules?: string[];
+  barrier_failures?: string[];
+  statutory_tags?: string[];
+  override_reason_code?: string;
+  reviewer_notes: string;
+  senior_signoff_by?: string;
+  create_corrective_action?: boolean;
+  action_title?: string;
+  action_assignee?: string;
+  action_due_date?: string;
+}
+
+export interface HITLAdjudicationResponse {
+  report_id: string;
+  status: string;
+  decision: string;
+  reviewer_id: string;
+  reviewer_role: string;
+  ai_priority: string;
+  final_priority: string;
+  is_veto_enforced: boolean;
+  veto_override_approved: boolean;
+  final_primary_rule?: string | null;
+  final_secondary_rules: string[];
+  barrier_failures: string[];
+  statutory_tags: string[];
+  reviewer_notes: string;
+  reviewed_at: string;
+  action_id?: string | null;
+  audit_event_id: string;
+  recalibration_flag: boolean;
+}
+
+export interface PendingReviewItem {
+  report_id: string;
+  site: string;
+  location?: string | null;
+  report_timestamp: string;
+  ai_priority: 'HIGH' | 'REVIEW' | 'LOW';
+  psif_probability: number;
+  confidence: 'HIGH' | 'MEDIUM' | 'LOW';
+  primary_rule?: string | null;
+  secondary_rules: string[];
+  is_veto_enforced: boolean;
+  veto_rule_name?: string | null;
+  statutory_citation?: string | null;
+  raw_text: string;
+  review_status: string;
+  days_pending: number;
+}
+
+export interface ReviewHistoryItem {
+  report_id: string;
+  site: string;
+  ai_priority: string;
+  final_priority: string;
+  decision: string;
+  reviewer_id: string;
+  reviewer_role: string;
+  is_veto_enforced: boolean;
+  veto_override_approved: boolean;
+  final_primary_rule?: string | null;
+  reviewed_at?: string | null;
+  reviewer_notes?: string | null;
+  override_reason_code?: string | null;
+}
+
+export interface ReviewMetricsData {
+  total_reports: number;
+  pending_count: number;
+  high_priority_pending: number;
+  adjudicated_count: number;
+  agreement_rate: number;
+  high_psif_agreement_rate: number;
+  priority_transitions: Record<string, number>;
+  override_reasons: Record<string, number>;
+  drift_status: 'NORMAL' | 'WARNING' | 'DRIFT_DETECTED';
+  drift_alert_message: string;
+  reviewer_velocity_daily: number;
+  recommendations: string[];
+}
+
