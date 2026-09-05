@@ -20,7 +20,12 @@ import {
   TokenAttributionResponseData,
   EnsembleArbitrationResponseData,
   FourWayBenchmarkResponseData,
-  ModelStatusResponseData
+  ModelStatusResponseData,
+  IOGPMultiLabelResponseData,
+  IOGPMatrixResponseData,
+  IOGPEvaluationReportResponseData,
+  IOGPThresholdUpdateResponseData,
+  IOGPStatusResponseData
 } from '../types';
 
 const API_BASE = '/api/v1';
@@ -331,6 +336,48 @@ export const api = {
   async getModelStatus(): Promise<ModelStatusResponseData> {
     const res = await fetch(`${API_BASE}/models/status`);
     if (!res.ok) throw new Error('Failed to fetch model status');
+    return await res.json();
+  },
+
+  async predictIOGPMultiLabel(
+    narrative: string,
+    title?: string,
+    thresholdOverrides?: Record<string, number>
+  ): Promise<IOGPMultiLabelResponseData> {
+    const res = await fetch(`${API_BASE}/iogp/predict`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ narrative, title, threshold_overrides: thresholdOverrides })
+    });
+    if (!res.ok) throw new Error('Failed to execute IOGP multi-label prediction');
+    return await res.json();
+  },
+
+  async getIOGPMatrix(): Promise<IOGPMatrixResponseData> {
+    const res = await fetch(`${API_BASE}/iogp/matrix`);
+    if (!res.ok) throw new Error('Failed to fetch IOGP co-occurrence matrix');
+    return await res.json();
+  },
+
+  async getIOGPBenchmark(): Promise<IOGPEvaluationReportResponseData> {
+    const res = await fetch(`${API_BASE}/iogp/benchmark`);
+    if (!res.ok) throw new Error('Failed to fetch IOGP benchmark report');
+    return await res.json();
+  },
+
+  async updateIOGPThresholds(thresholds: Record<string, number>): Promise<IOGPThresholdUpdateResponseData> {
+    const res = await fetch(`${API_BASE}/iogp/thresholds`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ thresholds })
+    });
+    if (!res.ok) throw new Error('Failed to update IOGP thresholds');
+    return await res.json();
+  },
+
+  async getIOGPStatus(): Promise<IOGPStatusResponseData> {
+    const res = await fetch(`${API_BASE}/iogp/status`);
+    if (!res.ok) throw new Error('Failed to fetch IOGP status');
     return await res.json();
   }
 };

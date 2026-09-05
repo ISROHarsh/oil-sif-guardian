@@ -566,3 +566,92 @@ export interface ModelStatusResponseData {
   training_samples: number;
   supported_rules: string[];
 }
+
+// -------------------------------------------------------------
+// Phase 6: IOGP Life-Saving Rules Multi-Label Classifier
+// -------------------------------------------------------------
+
+export interface IOGPRuleResultData {
+  rule_name: string;
+  probability: number;
+  threshold: number;
+  is_triggered: boolean;
+  rank: number;
+  evidence_spans: string[];
+}
+
+export interface IOGPCoOccurrenceItemData {
+  rule_a: string;
+  rule_b: string;
+  historical_co_occurrences: number;
+  synergy_confidence: number;
+}
+
+export interface IOGPMultiLabelResponseData {
+  primary_rule: string;
+  secondary_rules: string[];
+  triggered_rules: string[];
+  rule_scores: Record<string, IOGPRuleResultData>;
+  co_occurrence_tags: IOGPCoOccurrenceItemData[];
+  latency_ms: number;
+  raw_text: string;
+}
+
+export interface IOGPTopPairData {
+  rule_1: string;
+  rule_2: string;
+  co_occurrence_count: number;
+}
+
+export interface IOGPMatrixResponseData {
+  rules: string[];
+  matrix: number[][];
+  prevalence: Record<string, number>;
+  top_pairs: IOGPTopPairData[];
+}
+
+export interface IOGPPerRuleReportData {
+  rule_name: string;
+  true_positives: number;
+  false_positives: number;
+  false_negatives: number;
+  true_negatives: number;
+  support: number;
+  precision: number;
+  recall: number;
+  f1: number;
+}
+
+export interface IOGPEvaluationReportResponseData {
+  total_samples: number;
+  hamming_loss: number;
+  subset_accuracy: number;
+  jaccard_similarity: number;
+  micro_precision: number;
+  micro_recall: number;
+  micro_f1: number;
+  macro_precision: number;
+  macro_recall: number;
+  macro_f1: number;
+  primary_rule_accuracy: number;
+  per_rule_metrics: Record<string, IOGPPerRuleReportData>;
+  average_latency_ms: number;
+  evaluated_at: string;
+}
+
+export interface IOGPThresholdUpdateResponseData {
+  updated: boolean;
+  current_thresholds: Record<string, number>;
+  message: string;
+}
+
+export interface IOGPStatusResponseData {
+  model_type: string;
+  version: string;
+  rules_count: number;
+  canonical_rules: string[];
+  current_thresholds: Record<string, number>;
+  model_file: string;
+  is_persisted: boolean;
+}
+
