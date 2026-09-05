@@ -157,3 +157,112 @@ export interface DataQualitySummary {
   common_issues: CommonQualityIssue[];
 }
 
+// -------------------------------------------------------------
+// Phase 2: Annotation Protocol & Golden Benchmark Interfaces
+// -------------------------------------------------------------
+
+export interface AnnotationItem {
+  annotator_id: string;
+  psif_priority: 'HIGH' | 'LOW' | 'REVIEW';
+  primary_iogp_rule?: string | null;
+  secondary_iogp_rules?: string[];
+  hazards?: string[];
+  control_failures?: string[];
+  evidence_spans?: Array<{ text: string; category?: string; start_char?: number; end_char?: number }>;
+  notes?: string;
+}
+
+export interface AnnotationPairInput {
+  item_id: string;
+  annotator_1: AnnotationItem;
+  annotator_2: AnnotationItem;
+  narrative?: string;
+}
+
+export interface AgreementResponse {
+  total_items: number;
+  cohens_kappa_priority: number;
+  priority_interpretation: string;
+  krippendorff_alpha_rules: number;
+  rule_interpretation: string;
+  span_iou_f1_score: number;
+  priority_observed_agreement: number;
+  rule_exact_agreement: number;
+  overall_recommendation: string;
+  confusion_matrix?: Record<string, Record<string, number>>;
+}
+
+export interface AdjudicationResponse {
+  item_id: string;
+  status: 'CONSENSUS' | 'DISPUTE_REQUIRED' | 'RESOLVED';
+  confidence: number;
+  consensus_priority?: string | null;
+  consensus_primary_rule?: string | null;
+  disputed_fields: string[];
+  annotator_1: AnnotationItem;
+  annotator_2: AnnotationItem;
+  lead_resolution?: {
+    lead_id: string;
+    final_priority: string;
+    final_primary_rule?: string | null;
+    rationale: string;
+    resolved_at?: string;
+  } | null;
+}
+
+export interface GroundTruthInfo {
+  is_psif: boolean;
+  psif_priority: 'HIGH' | 'LOW' | 'REVIEW';
+  primary_iogp_rule?: string | null;
+  secondary_iogp_rules: string[];
+  hazards: string[];
+  energy_sources: string[];
+  controls: string[];
+  control_failures: string[];
+  evidence_spans: Array<{ text: string; category: string }>;
+  rationale: string;
+}
+
+export interface GoldenBenchmarkRecord {
+  benchmark_id: string;
+  title: string;
+  site: string;
+  location: string;
+  activity: string;
+  narrative: string;
+  ground_truth: GroundTruthInfo;
+  adjudicated_by: string;
+  adjudicated_at: string;
+}
+
+export interface GoldenBenchmarkListResponse {
+  total: number;
+  items: GoldenBenchmarkRecord[];
+}
+
+export interface BenchmarkEvaluationItem {
+  benchmark_id: string;
+  title: string;
+  ground_truth_priority: string;
+  predicted_priority: string;
+  priority_matched: boolean;
+  ground_truth_rule?: string | null;
+  predicted_rule?: string | null;
+  rule_matched: boolean;
+  psif_probability: number;
+}
+
+export interface BenchmarkEvaluationResponse {
+  total_evaluated: number;
+  high_psif_recall: number;
+  high_psif_precision: number;
+  high_psif_f1: number;
+  high_psif_tp: number;
+  high_psif_fn: number;
+  high_psif_fp: number;
+  rule_match_rate: number;
+  evaluation_timestamp: string;
+  details: BenchmarkEvaluationItem[];
+}
+
+
