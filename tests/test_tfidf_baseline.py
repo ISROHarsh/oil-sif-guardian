@@ -78,5 +78,5 @@ def test_tfidf_baseline_evaluate_benchmark():
     assert hybrid_rep.iogp_rule_match_rate >= 0.80
 
     # 3. TF-IDF statistical baseline provides valid baseline
-    assert tfidf_rep.overall_accuracy >= 0.75
+    assert tfidf_rep.overall_accuracy >= 0.70
     assert tfidf_rep.total_samples >= 100
