@@ -1,0 +1,106 @@
+[
+  {
+    "id": "GOLD-01",
+    "name": "Tank Confined Space Maintenance",
+    "narrative": "During maintenance, a contractor entered the tank to inspect an internal valve. Gas testing was not recorded, the entry permit had expired, and no attendant was positioned outside.",
+    "expected_priority": "HIGH",
+    "expected_rules": ["Confined Space", "Work Authorization"],
+    "expected_control_failures": ["gas test", "permit", "attendant"]
+  },
+  {
+    "id": "GOLD-02",
+    "name": "Live Gas Line Valve Removal",
+    "narrative": "Mechanical technician attempted to unbolt a pressurized gas line flange before closing isolation block valves. Stored energy was present without LOTO verification.",
+    "expected_priority": "HIGH",
+    "expected_rules": ["Energy Isolation"],
+    "expected_control_failures": ["loto", "isolation"]
+  },
+  {
+    "id": "GOLD-03",
+    "name": "Suspended Casing Drop Zone",
+    "narrative": "During rig operations, a roustabout was walking underneath the suspended load while the crane was slewing a 3-ton casing joint across the drill floor.",
+    "expected_priority": "HIGH",
+    "expected_rules": ["Safe Mechanical Lifting", "Line of Fire"],
+    "expected_control_failures": []
+  },
+  {
+    "id": "GOLD-04",
+    "name": "Derrick Work Without Fall Arrest",
+    "narrative": "Derrickman was observed working at height on the monkey board 25 meters above ground without safety harness lanyard connected to the certified anchor point.",
+    "expected_priority": "HIGH",
+    "expected_rules": ["Working at Height"],
+    "expected_control_failures": ["harness"]
+  },
+  {
+    "id": "GOLD-05",
+    "name": "Hot Work Near Crude Separator",
+    "narrative": "Contractor welder commenced torch cutting on pipe rack in Zone 1 hazardous area near separator without continuous LEL gas test and no fire watch posted.",
+    "expected_priority": "HIGH",
+    "expected_rules": ["Hot Work"],
+    "expected_control_failures": ["gas test", "fire watch"]
+  },
+  {
+    "id": "GOLD-06",
+    "name": "Overridden High-Pressure Trip",
+    "narrative": "Instrument technician installed an unauthorized electrical jumper to bypass the emergency high-pressure shutdown interlock on the main sales gas compressor.",
+    "expected_priority": "HIGH",
+    "expected_rules": ["Bypassing Safety Controls"],
+    "expected_control_failures": ["bypass"]
+  },
+  {
+    "id": "GOLD-07",
+    "name": "Crew Carrier Speeding on Lease Road",
+    "narrative": "Heavy utility truck transporting 6 field workers was driven at 85 km/h on unpaved wet rig access road with 3 passengers not wearing seatbelts.",
+    "expected_priority": "HIGH",
+    "expected_rules": ["Driving"],
+    "expected_control_failures": ["seatbelt"]
+  },
+  {
+    "id": "GOLD-08",
+    "name": "H2S Sour Gas Flange Leak",
+    "narrative": "Pinhole leak detected on sour gas gathering line emitting 15 ppm H2S. Area was evacuated immediately and wind socks checked; SCBA donned.",
+    "expected_priority": "HIGH",
+    "expected_rules": [],
+    "expected_control_failures": []
+  },
+  {
+    "id": "GOLD-09",
+    "name": "Minor Foot Trip on Access Path",
+    "narrative": "Operator tripped over an uneven gravel verge while walking from administration block to cafeteria during daylight, resulting in minor dirt on coveralls.",
+    "expected_priority": "LOW",
+    "expected_rules": [],
+    "expected_control_failures": []
+  },
+  {
+    "id": "GOLD-10",
+    "name": "Empty Pallet Stacking Housekeeping",
+    "narrative": "Warehouse helper noticed five empty wooden shipping pallets stacked unevenly behind store room and restacked them neatly against the exterior wall.",
+    "expected_priority": "LOW",
+    "expected_rules": [],
+    "expected_control_failures": []
+  },
+  {
+    "id": "GOLD-11",
+    "name": "Office Paper Shredder Jam",
+    "narrative": "Clerical assistant experienced paper feed jam in office electric shredder. Power plug was disconnected from wall outlet before clearing paper fragments.",
+    "expected_priority": "LOW",
+    "expected_rules": [],
+    "expected_control_failures": []
+  },
+  {
+    "id": "GOLD-12",
+    "name": "Drill Collar Rigging Slings Damaged",
+    "narrative": "Pre-lift inspection by crane operator identified severe wire fraying on wire rope sling. Sling was immediately red-tagged and cut to prevent use.",
+    "expected_priority": "REVIEW",
+    "expected_rules": ["Safe Mechanical Lifting"],
+    "expected_control_failures": []
+  },
+  {
+    "id": "GOLD-13",
+    "name": "Scaffold Tag Missing",
+    "narrative": "Painter climbed temporary scaffold tower to touch up handrail paint before scaffold inspection green tag was signed off by competent scaffold builder.",
+    "expected_priority": "REVIEW",
+    "expected_rules": ["Working at Height", "Work Authorization"],
+    "expected_control_failures": []
+  }
+]

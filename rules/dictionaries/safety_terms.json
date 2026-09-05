@@ -1,0 +1,41 @@
+{
+  "abbreviations": {
+    "PTW": "Permit to Work",
+    "JSA": "Job Safety Analysis",
+    "JHA": "Job Hazard Analysis",
+    "LOTO": "Lockout / Tagout",
+    "BOP": "Blowout Preventer",
+    "H2S": "Hydrogen Sulfide",
+    "LEL": "Lower Explosive Limit",
+    "TBT": "Toolbox Talk",
+    "PPE": "Personal Protective Equipment",
+    "SCBA": "Self-Contained Breathing Apparatus",
+    "ESP": "Electrical Submersible Pump",
+    "DBB": "Double Block and Bleed",
+    "MOC": "Management of Change",
+    "SIMOPS": "Simultaneous Operations",
+    "DG": "Diesel Generator"
+  },
+  "equipment": [
+    "separator", "separator vessel", "wellhead", "christmas tree", "blowout preventer", "bop",
+    "drill pipe", "drill collar", "casing", "tubing", "kelly", "rotary table", "top drive",
+    "mud pump", "shale shaker", "choke manifold", "flare knock-out drum", "compressor",
+    "scrubber", "crude oil storage tank", "flowline", "gathering line", "pig launcher",
+    "pig receiver", "scaffold", "crane", "winch", "wireline unit", "coiled tubing unit",
+    "catwalk", "derrick", "mast", "monkey board", "standpipe", "kelly hose"
+  ],
+  "hazards": [
+    "h2s gas", "sour gas", "flammable hydrocarbon gas", "crude vapor", "high pressure gas kick",
+    "confined space", "hazardous atmosphere", "oxygen deficiency", "suspended load",
+    "rotating drill string", "high voltage line", "explosive atmosphere", "unsupported trench",
+    "open edge without barrier", "slippery drill floor", "uncontrolled pressure release"
+  ],
+  "energy_sources": {
+    "pressure": ["pressurized", "kick", "burst", "blowout", "hydraulic", "pneumatic", "psi", "bar", "bleed off"],
+    "mechanical": ["rotating", "drill pipe", "winch", "pinched", "crushed", "entangled", "coupling", "gear"],
+    "gravity": ["suspended", "crane load", "dropped", "fell", "height", "scaffold", "mast", "ladder", "elevated"],
+    "chemical": ["h2s", "toxic", "poisonous", "hydrocarbon", "gas release", "caustic", "acid", "flammable", "asphyxiation"],
+    "thermal": ["welding", "hot work", "torch", "grinding", "sparks", "fire", "steam", "scald", "heat exhaustion"],
+    "electrical": ["high voltage", "electrocution", "shock", "generator", "switchgear", "transformer", "short circuit"]
+  }
+}

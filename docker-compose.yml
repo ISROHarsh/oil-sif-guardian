@@ -1,0 +1,59 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: oil-sif-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-oil_sif_guardian}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-oil_sif_guardian}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - oil-sif-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: oil-sif-backend
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-oil_sif_guardian}
+      ENVIRONMENT: production
+      BACKEND_HOST: 0.0.0.0
+      BACKEND_PORT: 8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./rules:/app/rules
+      - ./data:/app/data
+    networks:
+      - oil-sif-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: oil-sif-frontend
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+    networks:
+      - oil-sif-network
+
+volumes:
+  pgdata:
+
+networks:
+  oil-sif-network:
+    driver: bridge

@@ -1,0 +1,74 @@
+[
+  {
+    "id": "IOGP-LSR-01",
+    "name": "Bypassing Safety Controls",
+    "icon": "shield-alert",
+    "summary": "Obtain authorization before overriding or disabling safety-critical equipment or controls.",
+    "keywords": ["bypass", "override", "defeat", "bridged", "disabled safety", "interlock bypassed", "safety valve gagged", "tripped jumper"],
+    "critical_controls": ["Management of Change (MOC)", "Competent Person Authorization", "Temporary Defeat Log"]
+  },
+  {
+    "id": "IOGP-LSR-02",
+    "name": "Confined Space",
+    "icon": "box",
+    "summary": "Obtain authorization before entering a confined space, verify atmosphere, and assign attendant.",
+    "keywords": ["confined space", "tank", "vessel", "separator", "manhole", "inside column", "sump", "pit entry", "gas test", "attendant", "breathing apparatus"],
+    "critical_controls": ["Gas Testing Certificate", "Confined Space Entry Permit", "Standby Attendant", "Rescue Plan", "Positive Isolation"]
+  },
+  {
+    "id": "IOGP-LSR-03",
+    "name": "Driving",
+    "icon": "truck",
+    "summary": "Follow journey management rules, wear seatbelts, obey speed limits, and avoid mobile phones.",
+    "keywords": ["driving", "vehicle", "truck", "tanker", "rollover", "speeding", "seatbelt", "journey management", "crash", "collision"],
+    "critical_controls": ["Journey Management Plan", "Seatbelt Compliance", "Speed Limiter / IVMS", "Driver Rest Hours"]
+  },
+  {
+    "id": "IOGP-LSR-04",
+    "name": "Energy Isolation",
+    "icon": "lock",
+    "summary": "Verify isolation and zero energy state before work begins (LOTO).",
+    "keywords": ["isolation", "loto", "lockout", "tagout", "de-energize", "bleed", "double block and bleed", "blind flange", "spade", "stored energy", "pressurized line"],
+    "critical_controls": ["Lockout / Tagout (LOTO)", "Zero Energy Verification", "Double Block and Bleed (DBB)", "Electrical Breaker Isolation"]
+  },
+  {
+    "id": "IOGP-LSR-05",
+    "name": "Hot Work",
+    "icon": "flame",
+    "summary": "Identify and control ignition sources before starting work in hazardous or flammable areas.",
+    "keywords": ["hot work", "welding", "cutting", "grinding", "torch", "spark", "flammable gas", "lel", "zone 1", "zone 0", "fire watch"],
+    "critical_controls": ["Hot Work Permit", "Continuous Gas Monitoring (<0% LEL)", "Fire Watch with Extinguisher", "Ignition Source Enclosure"]
+  },
+  {
+    "id": "IOGP-LSR-06",
+    "name": "Line of Fire",
+    "icon": "crosshair",
+    "summary": "Position yourself and others away from moving objects, pressurized equipment, and suspended loads.",
+    "keywords": ["line of fire", "struck by", "pinch point", "crushed by", "swing radius", "whipping hose", "uncontrolled movement", "in path of", "trajectory"],
+    "critical_controls": ["Barricades and Exclusion Zones", "Whip Checks on Hoses", "Safe Positioning Protocols", "Guarding"]
+  },
+  {
+    "id": "IOGP-LSR-07",
+    "name": "Safe Mechanical Lifting",
+    "icon": "anchor",
+    "summary": "Plan lifts, check rigging, establish exclusion zones, and never walk under a suspended load.",
+    "keywords": ["lifting", "crane", "hoist", "suspended load", "sling", "shackle", "rigger", "rigging", "tagline", "winch", "under load", "dropped object"],
+    "critical_controls": ["Approved Lift Plan", "Certified Rigging Inspection", "Lift Exclusion Zone", "No Walking Under Load Rule"]
+  },
+  {
+    "id": "IOGP-LSR-08",
+    "name": "Work Authorization",
+    "icon": "file-check",
+    "summary": "Confirm that work is authorized by valid permits, risk assessments, and toolbox talks.",
+    "keywords": ["permit to work", "ptw", "work authorization", "jsa", "jha", "toolbox talk", "risk assessment", "unauthorized work", "expired permit", "green tag", "signed off", "tag was signed"],
+    "critical_controls": ["Valid Permit to Work (PTW)", "Documented JSA/JHA", "Toolbox Safety Briefing (TBT)", "SimOps Coordination"]
+  },
+  {
+    "id": "IOGP-LSR-09",
+    "name": "Working at Height",
+    "icon": "arrow-up-right",
+    "summary": "Protect yourself against falls when working above 1.8 meters.",
+    "keywords": ["working at height", "scaffold", "fall arrest", "safety harness", "lanyard", "anchor point", "open edge", "mast", "derrick", "monkey board", "fall protection"],
+    "critical_controls": ["Certified Full-Body Harness with 100% Tie-Off", "Inspected Scaffolding with Green Tag", "Fall Arrest System", "Edge Handrails"]
+  }
+]
