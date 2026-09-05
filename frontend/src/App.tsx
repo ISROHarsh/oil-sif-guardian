@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   ShieldAlert,
   FilePlus,
+  FileSpreadsheet,
   UserCheck,
   ClipboardCheck,
   BarChart3,
@@ -12,13 +13,14 @@ import {
 } from 'lucide-react';
 import { ReportIngestion } from './components/ReportIngestion';
 import { AIResultView } from './components/AIResultView';
+import { BatchIngestionView } from './components/BatchIngestionView';
 import { HSEReviewQueue } from './components/HSEReviewQueue';
 import { CorrectiveActionsView } from './components/CorrectiveActionsView';
 import { ExecutiveDashboard } from './components/ExecutiveDashboard';
 import { ReportResponse } from './types';
 
 export const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'intake' | 'queue' | 'actions' | 'analytics'>('intake');
+  const [activeTab, setActiveTab] = useState<'intake' | 'batch' | 'queue' | 'actions' | 'analytics'>('intake');
   const [latestReport, setLatestReport] = useState<ReportResponse | null>(null);
 
   const handleTriageComplete = (report: ReportResponse) => {
@@ -29,6 +31,19 @@ export const App: React.FC = () => {
   const handleSelectReportFromQueue = (report: ReportResponse) => {
     setLatestReport(report);
     setActiveTab('intake');
+  };
+
+  const handleSelectReportId = async (reportId: string) => {
+    try {
+      const res = await fetch(`http://localhost:8000/api/v1/reports/${reportId}`);
+      if (res.ok) {
+        const rep = await res.json();
+        setLatestReport(rep);
+        setActiveTab('intake');
+      }
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
@@ -66,6 +81,18 @@ export const App: React.FC = () => {
             >
               <FilePlus className="w-3.5 h-3.5" />
               <span>Intake & Triage</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('batch')}
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
+                activeTab === 'batch'
+                  ? 'bg-amber-500 text-slate-950 shadow-md'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+              }`}
+            >
+              <FileSpreadsheet className="w-3.5 h-3.5" />
+              <span>Batch & Quality</span>
             </button>
 
             <button
@@ -129,6 +156,12 @@ export const App: React.FC = () => {
             Intake
           </button>
           <button
+            onClick={() => setActiveTab('batch')}
+            className={`text-xs px-2.5 py-1 rounded ${activeTab === 'batch' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+          >
+            Batch
+          </button>
+          <button
             onClick={() => setActiveTab('queue')}
             className={`text-xs px-2.5 py-1 rounded ${activeTab === 'queue' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
           >
@@ -164,6 +197,10 @@ export const App: React.FC = () => {
               </div>
             )}
           </div>
+        )}
+
+        {activeTab === 'batch' && (
+          <BatchIngestionView onSelectReportId={handleSelectReportId} />
         )}
 
         {activeTab === 'queue' && (
