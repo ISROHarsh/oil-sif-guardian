@@ -3,7 +3,15 @@ import {
   ReportListResponse,
   AnalyticsOverview,
   ReviewInfo,
-  CorrectiveAction
+  CorrectiveAction,
+  OntologyTerms,
+  BarrierDefinition,
+  BarrierAnalysisResult,
+  SIFFingerprintResult,
+  PrecursorCluster,
+  ClusterGraphData,
+  BaselineModelStatus,
+  BaselineComparisonResult
 } from '../types';
 
 const API_BASE = '/api/v1';
@@ -43,42 +51,72 @@ export const api = {
     return await res.json();
   },
 
-  async listReports(params?: {
+  async getReports(params: {
     priority?: string;
-    site?: string;
-    review_status?: string;
-    skip?: number;
+    rule?: string;
+    status?: string;
     limit?: number;
-  }): Promise<ReportListResponse> {
+    offset?: number;
+  } = {}): Promise<ReportListResponse> {
     const query = new URLSearchParams();
-    if (params?.priority) query.append('priority', params.priority);
-    if (params?.site) query.append('site', params.site);
-    if (params?.review_status) query.append('review_status', params.review_status);
-    if (params?.skip) query.append('skip', String(params.skip));
-    if (params?.limit) query.append('limit', String(params.limit));
+    if (params.priority) query.append('priority', params.priority);
+    if (params.rule) query.append('rule', params.rule);
+    if (params.status) query.append('status', params.status);
+    if (params.limit) query.append('limit', params.limit.toString());
+    if (params.offset) query.append('offset', params.offset.toString());
 
     const res = await fetch(`${API_BASE}/reports?${query.toString()}`);
     if (!res.ok) throw new Error('Failed to fetch reports');
     return await res.json();
   },
 
-  async getReport(reportId: string): Promise<ReportResponse> {
-    const res = await fetch(`${API_BASE}/reports/${reportId}`);
-    if (!res.ok) throw new Error(`Failed to fetch report ${reportId}`);
+  async listReports(params: {
+    priority?: string;
+    site?: string;
+    review_status?: string;
+    skip?: number;
+    limit?: number;
+    rule?: string;
+    status?: string;
+    offset?: number;
+  } = {}): Promise<ReportListResponse> {
+    const query = new URLSearchParams();
+    if (params.priority) query.append('priority', params.priority);
+    if (params.site) query.append('site', params.site);
+    if (params.rule) query.append('rule', params.rule);
+    if (params.status || params.review_status) query.append('status', params.status || params.review_status || '');
+    if (params.limit) query.append('limit', params.limit.toString());
+    const off = params.offset !== undefined ? params.offset : params.skip;
+    if (off !== undefined) query.append('offset', off.toString());
+
+    const res = await fetch(`${API_BASE}/reports?${query.toString()}`);
+    if (!res.ok) throw new Error('Failed to fetch reports');
     return await res.json();
   },
 
-  async submitReview(
-    reportId: string,
-    payload: { reviewer_id: string; status: string; final_psif_label?: string; reviewer_notes?: string }
-  ): Promise<ReviewInfo> {
-    const res = await fetch(`${API_BASE}/reports/${reportId}/review`, {
+  async getReport(id: string): Promise<ReportResponse> {
+    const res = await fetch(`${API_BASE}/reports/${id}`);
+    if (!res.ok) throw new Error('Failed to fetch report');
+    return await res.json();
+  },
+
+  async submitReview(id: string, review: ReviewInfo): Promise<ReportResponse> {
+    const res = await fetch(`${API_BASE}/reports/${id}/review`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(review),
     });
-
     if (!res.ok) throw new Error('Failed to submit review');
+    return await res.json();
+  },
+
+  async createAction(id: string, action: Partial<CorrectiveAction>): Promise<CorrectiveAction> {
+    const res = await fetch(`${API_BASE}/reports/${id}/actions`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(action),
+    });
+    if (!res.ok) throw new Error('Failed to create action');
     return await res.json();
   },
 
@@ -86,13 +124,23 @@ export const api = {
     reportId: string,
     payload: { title: string; assigned_to: string; due_date?: string; status?: string; notes?: string }
   ): Promise<CorrectiveAction> {
-    const res = await fetch(`${API_BASE}/reports/${reportId}/actions`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
+    return this.createAction(reportId, payload as Partial<CorrectiveAction>);
+  },
 
-    if (!res.ok) throw new Error('Failed to create corrective action');
+  async getActions(status?: string): Promise<CorrectiveAction[]> {
+    const query = status ? `?status=${status}` : '';
+    const res = await fetch(`${API_BASE}/reports/actions/all${query}`);
+    if (!res.ok) throw new Error('Failed to fetch actions');
+    return await res.json();
+  },
+
+  async updateAction(actionId: string, update: Partial<CorrectiveAction>): Promise<CorrectiveAction> {
+    const res = await fetch(`${API_BASE}/reports/actions/${actionId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(update),
+    });
+    if (!res.ok) throw new Error('Failed to update action');
     return await res.json();
   },
 
@@ -125,6 +173,81 @@ export const api = {
   }> {
     const res = await fetch(`${API_BASE}/analytics/clusters`);
     if (!res.ok) throw new Error('Failed to fetch clusters');
+    return await res.json();
+  },
+
+  // Phase 3 Endpoints
+  async getOntologyTerms(): Promise<OntologyTerms> {
+    const res = await fetch(`${API_BASE}/ontology/terms`);
+    if (!res.ok) throw new Error('Failed to fetch ontology terms');
+    return await res.json();
+  },
+
+  async getBarrierDefinitions(): Promise<BarrierDefinition[]> {
+    const res = await fetch(`${API_BASE}/ontology/barriers`);
+    if (!res.ok) throw new Error('Failed to fetch barrier definitions');
+    return await res.json();
+  },
+
+  async analyzeBarriers(narrative: string): Promise<BarrierAnalysisResult> {
+    const res = await fetch(`${API_BASE}/ontology/analyze-barriers`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ narrative })
+    });
+    if (!res.ok) throw new Error('Failed to analyze barriers');
+    return await res.json();
+  },
+
+  async generateFingerprint(
+    narrative: string,
+    activity?: string,
+    site?: string,
+    title?: string
+  ): Promise<SIFFingerprintResult> {
+    const res = await fetch(`${API_BASE}/ontology/fingerprint`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ narrative, activity, site, title })
+    });
+    if (!res.ok) throw new Error('Failed to generate SIF fingerprint');
+    return await res.json();
+  },
+
+  async getPrecursorClusters(): Promise<PrecursorCluster[]> {
+    const res = await fetch(`${API_BASE}/clusters/precursors`);
+    if (!res.ok) throw new Error('Failed to fetch precursor clusters');
+    return await res.json();
+  },
+
+  async getPrecursorGraph(): Promise<ClusterGraphData> {
+    const res = await fetch(`${API_BASE}/clusters/graph`);
+    if (!res.ok) throw new Error('Failed to fetch precursor graph');
+    return await res.json();
+  },
+
+  async getBaselineStatus(): Promise<BaselineModelStatus> {
+    const res = await fetch(`${API_BASE}/baseline/status`);
+    if (!res.ok) throw new Error('Failed to fetch baseline status');
+    return await res.json();
+  },
+
+  async trainBaseline(use_golden_benchmark: boolean = true, use_db_reports: boolean = true): Promise<BaselineModelStatus> {
+    const res = await fetch(`${API_BASE}/baseline/train`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ use_golden_benchmark, use_db_reports })
+    });
+    if (!res.ok) throw new Error('Failed to train baseline model');
+    return await res.json();
+  },
+
+  async evaluateBaselineComparison(): Promise<BaselineComparisonResult> {
+    const res = await fetch(`${API_BASE}/baseline/evaluate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
+    if (!res.ok) throw new Error('Failed to run baseline comparison evaluation');
     return await res.json();
   }
 };

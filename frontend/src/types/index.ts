@@ -265,4 +265,142 @@ export interface BenchmarkEvaluationResponse {
   details: BenchmarkEvaluationItem[];
 }
 
+// -------------------------------------------------------------
+// Phase 3: Ontology, Barrier Taxonomy & Precursor Intelligence
+// -------------------------------------------------------------
+
+export interface DetectedBarrier {
+  barrier_id: string;
+  name: string;
+  category: 'HARDWARE' | 'ADMINISTRATIVE' | 'HUMAN_ACTION';
+  sub_type: string;
+  state: 'EFFECTIVE' | 'DEGRADED' | 'FAILED' | 'BYPASSED' | 'ABSENT';
+  evidence: string;
+  severity_weight: number;
+}
+
+export interface BarrierAnalysisResult {
+  detected_barriers: DetectedBarrier[];
+  barrier_health_score: number;
+  has_critical_failure: boolean;
+  summary_by_category: Record<string, { total: number; failed: number; effective: number }>;
+  failure_mechanisms: string[];
+  sif_barrier_flag: 'CRITICAL_FAILURE' | 'DEGRADED' | 'EFFECTIVE' | 'NONE_DETECTED';
+}
+
+export interface BarrierDefinition {
+  id: string;
+  name: string;
+  category: string;
+  sub_type: string;
+  description: string;
+  iogp_rule_association: string;
+}
+
+export interface SIFFingerprintResult {
+  fingerprint: string;
+  activity: string;
+  hazardous_energy: string;
+  hazard: string;
+  barrier_failure: string;
+  iogp_rule: string;
+  explanation: string;
+}
+
+export interface RegulatoryFramework {
+  code: string;
+  title: string;
+  mandate: string;
+}
+
+export interface OntologyTerms {
+  abbreviations: Record<string, string>;
+  oil_facilities: string[];
+  oil_operating_areas: string[];
+  equipment: string[];
+  hazards: string[];
+  failure_modes: string[];
+  energy_sources: Record<string, string[]>;
+  regulatory_frameworks: RegulatoryFramework[];
+}
+
+export interface PrecursorCluster {
+  cluster_id: string;
+  theme: string;
+  primary_iogp_rule: string;
+  exposure_fingerprint: string;
+  common_failure: string;
+  hazard: string;
+  reports_count: number;
+  high_psif_count: number;
+  recurrence_score: number;
+  affected_facilities: string[];
+  facility_count: number;
+  barrier_breakdowns: {
+    hardware_failed: number;
+    admin_failed: number;
+    human_failed: number;
+  };
+  sample_incidents: Array<{
+    id: string;
+    title: string;
+    site: string;
+    priority: string;
+  }>;
+}
+
+export interface ClusterGraphNode {
+  id: string;
+  label: string;
+  type: 'CLUSTER' | 'ASSET' | 'BARRIER' | 'INCIDENT';
+  category: string;
+  val: number;
+  priority: string;
+  fingerprint?: string;
+}
+
+export interface ClusterGraphLink {
+  source: string;
+  target: string;
+  relation: string;
+  weight: number;
+}
+
+export interface ClusterGraphData {
+  nodes: ClusterGraphNode[];
+  links: ClusterGraphLink[];
+  total_nodes: number;
+  total_links: number;
+  cluster_count: number;
+}
+
+export interface BaselineModelStatus {
+  is_trained: boolean;
+  vocabulary_size: number;
+  training_samples: number;
+  model_path: string;
+}
+
+export interface BaselineEvaluationReport {
+  model_name: string;
+  total_samples: number;
+  high_psif_recall: number;
+  high_psif_precision: number;
+  high_psif_f1: number;
+  overall_accuracy: number;
+  iogp_rule_match_rate: number;
+  average_latency_ms: number;
+  confusion_matrix: Record<string, Record<string, number>>;
+}
+
+export interface BaselineComparisonResult {
+  timestamp: string;
+  total_benchmark_samples: number;
+  deterministic_rule_engine: BaselineEvaluationReport;
+  tfidf_baseline: BaselineEvaluationReport;
+  calibrated_hybrid: BaselineEvaluationReport;
+  key_findings: string[];
+}
+
+
 
