@@ -14,6 +14,7 @@ from backend.app.api.v1.endpoints import (
     clusters,
     baseline,
     extraction,
+    models,
 )
 
 api_router = APIRouter()
@@ -28,4 +29,5 @@ api_router.include_router(ontology.router, prefix="/ontology", tags=["Ontology &
 api_router.include_router(clusters.router, prefix="/clusters", tags=["Precursor Clusters & Graph"])
 api_router.include_router(baseline.router, prefix="/baseline", tags=["Baseline ML Modeling"])
 api_router.include_router(extraction.router, prefix="/extraction", tags=["Safety NER & Information Extraction"])
+api_router.include_router(models.router, prefix="/models", tags=["Contextual Models & Studio"])
 

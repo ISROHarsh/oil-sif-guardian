@@ -476,3 +476,93 @@ export interface NERTaxonomyResponseData {
   regex_patterns_count: number;
   engine: string;
 }
+
+// ==================== Phase 5: Sequence Modeling & Model Studio Types ====================
+
+export interface SequencePredictResponseData {
+  predicted_class: 'HIGH' | 'REVIEW' | 'LOW';
+  raw_probabilities: Record<string, number>;
+  calibrated_probabilities: Record<string, number>;
+  confidence_level: 'HIGH' | 'MEDIUM' | 'LOW';
+  temperature: number;
+  iogp_rule_scores: Record<string, number>;
+  top_iogp_rules: Array<{ rule_name: string; probability: number; is_primary: boolean }>;
+  inference_latency_ms: number;
+}
+
+export interface TokenAttributionItemData {
+  token: string;
+  saliency_score: number;
+  start_char: number;
+  end_char: number;
+  role: 'RISK_AMPLIFIER' | 'NEUTRAL_CONTEXT' | 'SAFETY_MITIGATOR';
+  color_hex: string;
+  rationale: string;
+}
+
+export interface TokenAttributionResponseData {
+  narrative: string;
+  tokens: TokenAttributionItemData[];
+  top_risk_amplifiers: Array<{ token: string; score: number; offsets: [number, number] }>;
+  top_mitigators: Array<{ token: string; score: number; offsets: [number, number] }>;
+  saliency_balance: number;
+  predicted_sif_class: string;
+  confidence_level: string;
+}
+
+export interface EnsembleArbitrationResponseData {
+  final_priority: 'HIGH' | 'REVIEW' | 'LOW';
+  confidence_score: number;
+  safety_override: boolean;
+  override_reason?: string | null;
+  rule_engine_decision: {
+    priority: string;
+    probability: number;
+    triggered_rules: string[];
+  };
+  tfidf_decision: {
+    priority: string;
+    probabilities: Record<string, number>;
+  };
+  contextual_decision: {
+    priority: string;
+    calibrated_probabilities: Record<string, number>;
+    confidence_level: string;
+    temperature: number;
+  };
+  blended_probabilities: Record<string, number>;
+  final_iogp_rules: Array<{ rule_name: string; probability: number; is_primary: boolean; source: string }>;
+  arbitration_summary: string;
+  latency_ms: number;
+}
+
+export interface ModelBenchmarkItemData {
+  model_name: string;
+  total_samples: number;
+  high_psif_recall: number;
+  high_psif_precision: number;
+  high_psif_f1: number;
+  overall_accuracy: number;
+  iogp_rule_match_rate: number;
+  average_latency_ms: number;
+  confusion_matrix: Record<string, Record<string, number>>;
+}
+
+export interface FourWayBenchmarkResponseData {
+  timestamp: string;
+  total_benchmark_samples: number;
+  deterministic_rule_engine: ModelBenchmarkItemData;
+  tfidf_baseline: ModelBenchmarkItemData;
+  contextual_sequence_classifier: ModelBenchmarkItemData;
+  tri_model_ensemble: ModelBenchmarkItemData;
+  key_findings: string[];
+}
+
+export interface ModelStatusResponseData {
+  model_version: string;
+  is_trained: boolean;
+  temperature: number;
+  vocabulary_size: number;
+  training_samples: number;
+  supported_rules: string[];
+}
