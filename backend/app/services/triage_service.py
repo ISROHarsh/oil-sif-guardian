@@ -43,7 +43,7 @@ class SafetyTriageService:
         """
         Normalizes incident text, standardizes abbreviations, and redacts PII.
         """
-        # Redact phone numbers (e.g. 10 digits or with dashes)
+        # Redact phone numbers
         sanitized = re.sub(r"\b\d{3}[-.\s]??\d{3}[-.\s]??\d{4}\b", "[PHONE_REDACTED]", text)
         # Redact email addresses
         sanitized = re.sub(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b", "[EMAIL_REDACTED]", sanitized)
@@ -70,50 +70,92 @@ class SafetyTriageService:
                     energy_sources.append(energy_cat.capitalize())
                     break
 
+        if any(w in lower_text for w in ["pressure", "psi", "bar", "pressurized", "pneumatic", "hydraulic"]):
+            energy_sources.append("Pressure")
+        if any(w in lower_text for w in ["crane", "suspended", "hoist", "falling", "height", "meters", "elevation"]):
+            energy_sources.append("Gravitational")
+        if any(w in lower_text for w in ["welding", "torch", "cutting", "grinding", "hot work", "sparks"]):
+            energy_sources.append("Thermal")
+        if any(w in lower_text for w in ["volt", "kv", "electrical", "switchgear", "breaker", "transformer"]):
+            energy_sources.append("Electrical")
+        if any(w in lower_text for w in ["h2s", "toxic", "acid", "sour gas", "hydrocarbon", "lpg", "crude"]):
+            energy_sources.append("Chemical")
+        if any(w in lower_text for w in ["speeding", "km/h", "vehicle", "truck", "winch", "slewing"]):
+            energy_sources.append("Kinetic")
+
         # Hazards & Exposures
-        if "tank" in lower_text or "confined space" in lower_text or "vessel" in lower_text:
-            hazards.append("Confined Space / Flammable Atmosphere")
-            if any(w in lower_text for w in ["entered", "inside", "went in", "entry"]):
-                exposures.append("Worker entered inside confined vessel")
+        if any(w in lower_text for w in ["tank", "confined space", "vessel", "separator", "pit", "sump", "drum", "manhole"]):
+            hazards.append("Confined Space / Hazardous Atmosphere")
+            if any(w in lower_text for w in ["entered", "inside", "went in", "entry", "stepped inside", "crawled"]):
+                exposures.append("Worker entered inside confined space / vessel")
 
-        if any(w in lower_text for w in ["suspended", "crane", "load", "lifting"]):
-            hazards.append("Suspended Mechanical Load")
-            if any(w in lower_text for w in ["under", "beneath", "drop zone", "struck by"]):
-                exposures.append("Worker positioned in load drop zone")
+        if any(w in lower_text for w in ["suspended", "crane", "load", "lifting", "rigging", "hoist"]):
+            hazards.append("Suspended Mechanical Load / Rigging Failure")
+            if any(w in lower_text for w in ["under", "beneath", "drop zone", "struck by", "swung"]):
+                exposures.append("Worker positioned in active drop zone")
 
-        if any(w in lower_text for w in ["height", "scaffold", "derrick", "monkey board"]):
+        if any(w in lower_text for w in ["height", "scaffold", "derrick", "monkey board", "ladder", "roof", "meters above"]):
             hazards.append("Elevated Fall from Height (>1.8m)")
-            exposures.append("Worker at elevated position without barrier")
+            exposures.append("Worker at elevated position without complete fall arrest")
 
-        if any(w in lower_text for w in ["pressurized", "gas line", "pressure", "hydrocarbon"]):
-            hazards.append("Pressurized Hydrocarbon Release")
+        if any(w in lower_text for w in ["pressurized", "gas line", "flowline", "wellhead", "flange", "psi", "bar"]):
+            hazards.append("High Pressure Stored Energy Release")
 
         if any(w in lower_text for w in ["h2s", "toxic", "sour gas"]):
-            hazards.append("H2S / Toxic Gas Pocket")
+            hazards.append("Toxic Gas / H2S Exposure")
+
+        if any(w in lower_text for w in ["line of fire", "snapback", "trench", "recoil", "pinch point", "whip check"]):
+            hazards.append("Line of Fire / Mechanical Stored Energy")
+
+        if any(w in lower_text for w in ["welding", "torch", "grinding", "hot work", "cutting", "spark"]):
+            hazards.append("Hot Work Ignition in Hydrocarbon Area")
+
+        if any(w in lower_text for w in ["speeding", "rollover", "tanker", "km/h", "unbelted"]):
+            hazards.append("Vehicle Road Transport Collision / Rollover")
 
         # Controls & Control Failures
-        if any(w in lower_text for w in ["no gas test", "gas testing was not", "without gas test"]):
+        if any(w in lower_text for w in ["gas test", "meter", "lel monitor", "atmospheric test"]):
             controls.append("Atmospheric Gas Testing")
-            control_failures.append("Gas testing was not recorded / absent")
-            consequences.append("Credible fatal asphyxiation / toxic shock")
+            if any(w in lower_text for w in ["without", "no gas test", "not recorded", "omitted", "skipped", "not calibrated"]):
+                control_failures.append("Atmospheric gas testing omitted or unverified")
+                consequences.append("Fatal asphyxiation / acute toxic exposure")
 
-        if any(w in lower_text for w in ["expired permit", "permit had expired", "without ptw", "no permit"]):
+        if any(w in lower_text for w in ["permit", "ptw", "work authorization"]):
             controls.append("Permit to Work (PTW)")
-            control_failures.append("Entry permit expired / unauthorized work")
+            if any(w in lower_text for w in ["expired", "without ptw", "without permit", "rejected", "unauthorized", "self-authorized"]):
+                control_failures.append("Work commenced without authorized or valid PTW")
 
-        if any(w in lower_text for w in ["no attendant", "without an attendant", "unattended"]):
+        if any(w in lower_text for w in ["attendant", "hole watch", "standby"]):
             controls.append("Standby Safety Attendant")
-            control_failures.append("No attendant positioned outside for rescue")
+            if any(w in lower_text for w in ["no attendant", "without attendant", "absent", "left post", "away"]):
+                control_failures.append("Standby attendant absent during confined space entry")
 
-        if any(w in lower_text for w in ["no loto", "not isolated", "isolation failed"]):
+        if any(w in lower_text for w in ["loto", "isolation", "lockout", "tagout"]):
             controls.append("Lockout / Tagout (LOTO) Energy Isolation")
-            control_failures.append("Line isolation not verified / zero energy unconfirmed")
-            consequences.append("Uncontrolled high-pressure release / impact")
+            if any(w in lower_text for w in ["no loto", "not isolated", "isolation failed", "without loto", "not de-energized", "lock not hung"]):
+                control_failures.append("Energy isolation not verified / zero energy unconfirmed")
+                consequences.append("Uncontrolled high-pressure release / mechanical impact")
 
-        if any(w in lower_text for w in ["no harness", "unhooked", "unclipped"]):
+        if any(w in lower_text for w in ["harness", "tie-off", "fall arrest", "lifeline"]):
             controls.append("Fall Arrest System / Harness")
-            control_failures.append("100% tie-off not maintained at height")
-            consequences.append("Fatal impact from elevated fall")
+            if any(w in lower_text for w in ["no harness", "unhooked", "unclipped", "without harness", "below waist"]):
+                control_failures.append("100% tie-off not maintained at height")
+                consequences.append("Fatal impact from elevated fall")
+
+        if any(w in lower_text for w in ["fire watch", "extinguisher"]):
+            controls.append("Continuous Fire Watch & Gas Monitoring")
+            if any(w in lower_text for w in ["no fire watch", "fire watch absent", "without fire watch"]):
+                control_failures.append("Fire watch omitted during hot work")
+
+        if any(w in lower_text for w in ["seatbelt", "speed limit", "escort"]):
+            controls.append("Journey Management & Vehicle Safety Controls")
+            if any(w in lower_text for w in ["speeding", "unbelted", "without seatbelt", "no escort", "phone", "texting"]):
+                control_failures.append("Driver speed limit breach or seatbelt non-compliance")
+
+        if any(w in lower_text for w in ["interlock", "safety valve", "esd", "trip", "bypass"]):
+            controls.append("Safety Critical Device Integrity")
+            if any(w in lower_text for w in ["bypass", "override", "jumper", "gagged", "defeated"]):
+                control_failures.append("Safety-critical interlock or trip device defeated")
 
         return EntitiesSchema(
             hazards=list(dict.fromkeys(hazards)),
@@ -130,16 +172,18 @@ class SafetyTriageService:
         """
         spans = []
         patterns = [
-            (r"\b(entered\s+the\s+tank|inside\s+the\s+vessel|entered\s+to\s+inspect)\b", "EXPOSURE"),
+            (r"\b(entered\s+the\s+tank|inside\s+the\s+vessel|entered\s+to\s+inspect|stepped\s+inside)\b", "EXPOSURE"),
             (r"\b(under(neath)?\s+(the\s+)?suspended\s+load|in\s+line\s+of\s+fire|drop\s+zone)\b", "EXPOSURE"),
-            (r"\b(working\s+at\s+height|on\s+the\s+derrick|on\s+scaffold)\b", "EXPOSURE"),
-            (r"\b(gas\s+testing\s+was\s+not\s+recorded|no\s+gas\s+test|without\s+gas\s+test)\b", "CONTROL_FAILURE"),
-            (r"\b(permit\s+(had\s+)?expired|expired\s+permit|without\s+(a\s+)?ptw)\b", "CONTROL_FAILURE"),
-            (r"\b(no\s+attendant\s+was\s+positioned\s+outside|no\s+attendant|unattended)\b", "CONTROL_FAILURE"),
-            (r"\b(isolation\s+failed|not\s+isolated|without\s+loto|no\s+loto)\b", "CONTROL_FAILURE"),
-            (r"\b(without\s+safety\s+harness|harness\s+not\s+anchored|unclipped)\b", "CONTROL_FAILURE"),
-            (r"\b(pressurized\s+gas\s+line|stored\s+energy|high\s+pressure)\b", "HAZARD"),
-            (r"\b(welding|hot\s+work|torch)\b", "HAZARD")
+            (r"\b(working\s+at\s+height|on\s+the\s+derrick|on\s+scaffold|monkey\s+board)\b", "EXPOSURE"),
+            (r"\b(gas\s+testing\s+was\s+not\s+recorded|without\s+continuous\s+atmospheric\s+gas\s+testing|no\s+gas\s+test|without\s+gas\s+test)\b", "CONTROL_FAILURE"),
+            (r"\b(permit\s+(had\s+)?expired|expired\s+permit|without\s+(a\s+)?(ptw|permit))\b", "CONTROL_FAILURE"),
+            (r"\b(standby\s+attendant\s+was\s+absent|no\s+attendant|unattended|attendant\s+had\s+left)\b", "CONTROL_FAILURE"),
+            (r"\b(isolation\s+failed|not\s+isolated|without\s+loto|no\s+loto|before\s+closing\s+isolation)\b", "CONTROL_FAILURE"),
+            (r"\b(without\s+safety\s+harness|harness\s+not\s+anchored|unclipped|unhooked)\b", "CONTROL_FAILURE"),
+            (r"\b(pressurized\s+gas\s+line|stored\s+energy|high\s+pressure|\d+\s*psi|\d+\s*bar)\b", "HAZARD"),
+            (r"\b(welding|hot\s+work|torch|grinding)\b", "HAZARD"),
+            (r"\b(bypassed|jumper\s+wire|override|gagged)\b", "CONTROL_FAILURE"),
+            (r"\b(speeding|texting\s+on\s+phone|without\s+seatbelts?|unbelted)\b", "CONTROL_FAILURE")
         ]
 
         for pattern, category in patterns:
@@ -153,26 +197,26 @@ class SafetyTriageService:
 
         return spans
 
-    def predict_iogp_rules(self, text: str, suggested_rules: List[str]) -> List[IOGPRulePredictionSchema]:
+    def predict_iogp_rules(self, text: str, suggested_rules: List[str], is_benign: bool = False) -> List[IOGPRulePredictionSchema]:
         """
-        Maps the 9 IOGP Life-Saving Rules with probabilities.
+        Maps the 9 IOGP Life-Saving Rules with calibrated probabilities.
         """
+        if is_benign or not suggested_rules:
+            return []
+
         lower_text = text.lower()
         rule_scores: Dict[str, float] = {}
 
-        # Default low probabilities
-        for r in self.iogp_rules:
-            rule_scores[r["name"]] = 0.05
-
-        # Check keywords
         for r in self.iogp_rules:
             name = r["name"]
             score = 0.05
-            for kw in r.get("keywords", []):
-                if kw in lower_text:
-                    score = max(score, 0.75)
             if name in suggested_rules:
-                score = max(score, 0.92)
+                idx = suggested_rules.index(name)
+                score = 0.95 if idx == 0 else 0.85
+            else:
+                for kw in r.get("keywords", []):
+                    if kw in lower_text:
+                        score = max(score, 0.45)
             rule_scores[name] = score
 
         results = []
@@ -200,7 +244,7 @@ class SafetyTriageService:
         energy = (entities.energy_sources[0] if entities.energy_sources else "ENERGY_HAZARD").upper()
         hazard = (entities.hazards[0] if entities.hazards else "HAZARD").upper().replace(" ", "_")[:20]
         failure = (entities.control_failures[0] if entities.control_failures else "BARRIER_FAILURE").upper().replace(" ", "_")[:24]
-        rule = (primary_rule or "IOGP_RULE").upper().replace(" ", "_")
+        rule = (primary_rule or "NONE").upper().replace(" ", "_")
         return f"{act}|{energy}|{hazard}|{failure}|{rule}"
 
     def triage(self, narrative: str, activity: str = "Maintenance") -> SafetyTriageResponse:
@@ -212,19 +256,24 @@ class SafetyTriageService:
         spans = self.extract_evidence_spans(normalized)
         rule_eval = self.rules_engine.evaluate(normalized)
 
-        iogp_preds = self.predict_iogp_rules(normalized, rule_eval["suggested_rules"])
-        primary_rule = iogp_preds[0].rule_name if iogp_preds else "Work Authorization"
+        is_benign = rule_eval.get("is_benign", False)
+        iogp_preds = self.predict_iogp_rules(normalized, rule_eval["suggested_rules"], is_benign=is_benign)
+        primary_rule = iogp_preds[0].rule_name if iogp_preds else None
 
         # Calculate hybrid PSIF probability
         if rule_eval["mandatory_high_psif"]:
             psif_prob = 0.94
             priority = "HIGH"
             confidence = "HIGH"
+        elif is_benign:
+            psif_prob = 0.05
+            priority = "LOW"
+            confidence = "HIGH"
         elif len(entities.control_failures) > 0 and len(entities.energy_sources) > 0:
             psif_prob = 0.82
             priority = "HIGH"
             confidence = "HIGH"
-        elif len(entities.control_failures) > 0 or len(entities.hazards) > 0:
+        elif len(entities.control_failures) > 0 or len(entities.hazards) > 0 or len(rule_eval["suggested_rules"]) > 0:
             psif_prob = 0.58
             priority = "REVIEW"
             confidence = "MEDIUM"
@@ -235,20 +284,23 @@ class SafetyTriageService:
 
         # Construct structured safety reasoning
         reasoning = []
-        if entities.hazards:
-            reasoning.append(f"Hazard context identified: {', '.join(entities.hazards)}.")
-        if entities.energy_sources:
-            reasoning.append(f"Hazardous energy vectors involved: {', '.join(entities.energy_sources)}.")
-        if entities.exposures:
-            reasoning.append(f"Direct personnel exposure: {', '.join(entities.exposures)}.")
-        if entities.control_failures:
-            reasoning.append(f"Critical barrier breakdown: {', '.join(entities.control_failures)}.")
-        if rule_eval["rule_reasons"]:
-            reasoning.extend(rule_eval["rule_reasons"])
-        if not reasoning:
-            reasoning.append("Routine operational narrative with no critical control breakdown identified.")
+        if is_benign:
+            reasoning.append("Routine administrative or benign non-industrial activity without safety precursor risk.")
+        else:
+            if entities.hazards:
+                reasoning.append(f"Hazard context identified: {', '.join(entities.hazards)}.")
+            if entities.energy_sources:
+                reasoning.append(f"Hazardous energy vectors involved: {', '.join(entities.energy_sources)}.")
+            if entities.exposures:
+                reasoning.append(f"Direct personnel exposure: {', '.join(entities.exposures)}.")
+            if entities.control_failures:
+                reasoning.append(f"Critical barrier breakdown: {', '.join(entities.control_failures)}.")
+            if rule_eval["rule_reasons"]:
+                reasoning.extend(rule_eval["rule_reasons"])
+            if not reasoning:
+                reasoning.append("Operational safety narrative with no critical control breakdown identified.")
 
-        fingerprint = self.build_fingerprint(activity, entities, primary_rule)
+        fingerprint = self.build_fingerprint(activity, entities, primary_rule or "NONE")
 
         return SafetyTriageResponse(
             psif=PSIFSchema(

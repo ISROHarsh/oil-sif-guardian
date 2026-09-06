@@ -1,12 +1,8 @@
-"""
-API Router for Safety Report Ingestion and Retrieval.
-"""
-
 from typing import Optional, List
 from datetime import datetime, timezone
 import json
 import uuid
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile, File, status
 from sqlalchemy.orm import Session
 from backend.app.core.database import get_db
 from backend.app.models.report import (
@@ -22,7 +18,13 @@ from backend.app.schemas.report import (
     ReportCreate,
     ReportResponse,
     ReportListResponse,
-    ReportListItem
+    ReportListItem,
+    BatchReportCreate,
+    BatchIngestResponse,
+    DataQualitySummaryResponse,
+    SimilaritySearchRequest,
+    SimilaritySearchResponse,
+    ReportSimilarityResponse
 )
 from backend.app.schemas.prediction import (
     PSIFSchema,
@@ -33,6 +35,7 @@ from backend.app.schemas.prediction import (
 from backend.app.schemas.review import ReviewResponse
 from backend.app.schemas.action import CorrectiveActionResponse
 from backend.app.services.triage_service import triage_service
+from backend.app.services.ingestion_service import ingestion_service
 
 router = APIRouter()
 
@@ -134,6 +137,8 @@ def _build_report_response(report: ReportModel) -> ReportResponse:
         reporter_role=report.reporter_role,
         raw_text=report.raw_text,
         normalized_text=report.normalized_text,
+        quality_score=report.quality_score,
+        quality_grade=report.quality_grade,
         psif=psif_data,
         life_saving_rules=iogp_rules,
         entities=entities_data,
@@ -151,105 +156,48 @@ def _build_report_response(report: ReportModel) -> ReportResponse:
 @router.post("", response_model=ReportResponse, status_code=status.HTTP_201_CREATED)
 def submit_report(payload: ReportCreate, db: Session = Depends(get_db)):
     """
-    Ingests a new HSSE narrative, runs the hybrid triage engine,
+    Ingests a new HSSE narrative, runs the preprocessing & triage pipeline,
     persists records with audit trail, and returns complete triage results.
     """
-    # 1. Execute AI triage pipeline
-    triage_result = triage_service.triage(
-        narrative=payload.narrative,
-        activity=payload.activity or "Maintenance"
-    )
+    report, _ = ingestion_service.process_single(payload, db=db, commit=True)
+    return _build_report_response(report)
 
-    # 2. Generate canonical Report ID
-    rep_num = db.query(ReportModel).count() + 1001
-    year = datetime.now(timezone.utc).year
-    report_id = f"OIL-{year}-REP-{rep_num:06d}"
 
-    # 3. Create Report record
-    report = ReportModel(
-        report_id=report_id,
-        report_type=payload.report_type,
-        site=payload.site,
-        location=payload.location,
-        department=payload.department,
-        activity=payload.activity,
-        equipment=json.dumps(payload.equipment) if payload.equipment else None,
-        reporter_role=payload.reporter_role,
-        raw_text=payload.narrative,
-        normalized_text=triage_service.normalize_text(payload.narrative)
-    )
-    db.add(report)
-    db.flush()
+@router.post("/batch", response_model=BatchIngestResponse, status_code=status.HTTP_201_CREATED)
+def batch_ingest_reports(payload: BatchReportCreate, db: Session = Depends(get_db)):
+    """
+    Batch ingests an array of safety reports, scoring each and identifying duplicates.
+    """
+    return ingestion_service.process_batch(payload.reports, db=db)
 
-    # 4. Create Prediction record
-    pred = PredictionModel(
-        report_id=report.id,
-        psif_probability=triage_result.psif.probability,
-        priority=triage_result.psif.priority,
-        confidence=triage_result.psif.confidence,
-        calibration_factor=triage_result.psif.calibration_factor or 1.0,
-        model_version=triage_result.model_version,
-        reasoning_summary=json.dumps(triage_result.safety_reasoning),
-        exposure_fingerprint=triage_result.exposure_fingerprint
-    )
-    db.add(pred)
-    db.flush()
 
-    # 5. Add IOGP rule predictions
-    for r in triage_result.life_saving_rules:
-        db.add(IOGPPredictionModel(
-            prediction_id=pred.id,
-            rule_name=r.rule_name,
-            probability=r.probability,
-            is_primary=r.is_primary
-        ))
+@router.post("/upload-csv", response_model=BatchIngestResponse, status_code=status.HTTP_201_CREATED)
+async def upload_csv_reports(file: UploadFile = File(...), db: Session = Depends(get_db)):
+    """
+    Uploads and processes an incident dataset in CSV format.
+    Automatically normalizes headers, expands abbreviations, masks PII, and runs triage.
+    """
+    filename = file.filename or ""
+    if not filename.lower().endswith((".csv", ".txt")):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Uploaded file must be a .csv or plain text table."
+        )
+    content_bytes = await file.read()
+    try:
+        content_str = content_bytes.decode("utf-8")
+    except UnicodeDecodeError:
+        content_str = content_bytes.decode("latin-1")
 
-    # 6. Add Entities
-    for h in triage_result.entities.hazards:
-        db.add(ReportEntityModel(report_id=report.id, category="hazard", value=h))
-    for e in triage_result.entities.energy_sources:
-        db.add(ReportEntityModel(report_id=report.id, category="energy", value=e))
-    for ex in triage_result.entities.exposures:
-        db.add(ReportEntityModel(report_id=report.id, category="exposure", value=ex))
-    for c in triage_result.entities.controls:
-        db.add(ReportEntityModel(report_id=report.id, category="control", value=c))
-    for cf in triage_result.entities.control_failures:
-        db.add(ReportEntityModel(report_id=report.id, category="control_failure", value=cf))
-    for cq in triage_result.entities.consequences:
-        db.add(ReportEntityModel(report_id=report.id, category="consequence", value=cq))
+    return ingestion_service.parse_and_process_csv(content_str, db=db)
 
-    # 7. Add Evidence Spans
-    for s in triage_result.evidence_spans:
-        db.add(EvidenceSpanModel(
-            prediction_id=pred.id,
-            text=s.text,
-            start_char=s.start_char,
-            end_char=s.end_char,
-            category=s.category
-        ))
 
-    # 8. Create default Pending Review record
-    review = ReviewModel(
-        report_id=report.id,
-        status="PENDING",
-        final_psif_label=triage_result.psif.priority
-    )
-    db.add(review)
-
-    # 9. Audit log entry
-    db.add(AuditEventModel(
-        report_id=report.id,
-        action="REPORT_INGESTION_AND_TRIAGE",
-        actor_id=payload.reporter_role or "REPORTER",
-        details=f"Ingested and triaged as {triage_result.psif.priority} priority (prob: {triage_result.psif.probability})"
-    ))
-
-    db.commit()
-    db.refresh(report)
-
-    resp = _build_report_response(report)
-    resp.triggered_rules = triage_result.triggered_rules
-    return resp
+@router.get("/quality-summary", response_model=DataQualitySummaryResponse)
+def get_data_quality_summary(db: Session = Depends(get_db)):
+    """
+    Returns aggregated data quality metrics, grade distributions, and top deficiencies.
+    """
+    return ingestion_service.get_quality_summary(db=db)
 
 
 @router.get("", response_model=ReportListResponse)
@@ -299,10 +247,44 @@ def list_reports(
             psif_probability=r.prediction.psif_probability if r.prediction else 0.5,
             primary_rule=primary_rule,
             review_status=r.review.status if r.review else "PENDING",
+            quality_score=r.quality_score,
+            quality_grade=r.quality_grade,
             created_at=r.created_at
         ))
 
     return ReportListResponse(total=total, items=items)
+
+
+@router.post("/search/similarity", response_model=SimilaritySearchResponse)
+def search_similar_by_narrative(
+    payload: SimilaritySearchRequest,
+):
+    """
+    Finds semantically similar historical incidents for ad-hoc narrative text.
+    """
+    from ml.search.similarity_engine import similarity_engine
+
+    narrative = payload.narrative
+    top_k = payload.top_k
+    min_score = payload.min_score
+
+    if not narrative.strip():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Narrative query text cannot be empty."
+        )
+
+    results = similarity_engine.find_similar(
+        query_text=narrative,
+        top_k=top_k,
+        min_score=min_score
+    )
+
+    return {
+        "query_tokens_count": len(narrative.split()),
+        "total_matches": len(results),
+        "similar_precursors": results
+    }
 
 
 @router.get("/{report_id}", response_model=ReportResponse)
@@ -321,3 +303,41 @@ def get_report(report_id: str, db: Session = Depends(get_db)):
         )
 
     return _build_report_response(report)
+
+
+@router.get("/{report_id}/similar", response_model=ReportSimilarityResponse)
+def get_similar_reports(
+    report_id: str,
+    top_k: int = Query(5, ge=1, le=20),
+    min_score: float = Query(0.10, ge=0.0, le=1.0),
+    db: Session = Depends(get_db)
+):
+    """
+    Returns top semantically similar historical precursor incidents.
+    """
+    from ml.search.similarity_engine import similarity_engine
+
+    report = db.query(ReportModel).filter(
+        (ReportModel.id == report_id) | (ReportModel.report_id == report_id)
+    ).first()
+
+    if not report:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Report '{report_id}' not found."
+        )
+
+    results = similarity_engine.find_similar(
+        query_text=report.raw_text,
+        top_k=top_k,
+        min_score=min_score,
+        exclude_report_id=report.report_id
+    )
+
+    return {
+        "report_id": report.report_id,
+        "site": report.site,
+        "total_matches": len(results),
+        "similar_precursors": results
+    }
+

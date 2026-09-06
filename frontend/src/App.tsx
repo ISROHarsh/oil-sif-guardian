@@ -2,23 +2,39 @@ import React, { useState } from 'react';
 import {
   ShieldAlert,
   FilePlus,
+  FileSpreadsheet,
   UserCheck,
   ClipboardCheck,
   BarChart3,
   ExternalLink,
   Cpu,
   Layers,
-  Activity
+  Activity,
+  Network,
+  Tag,
+  Target,
+  Sliders,
+  Crosshair,
+  AlertOctagon
 } from 'lucide-react';
 import { ReportIngestion } from './components/ReportIngestion';
 import { AIResultView } from './components/AIResultView';
+import { BatchIngestionView } from './components/BatchIngestionView';
+import { AnnotationBenchmarkView } from './components/AnnotationBenchmarkView';
+import { PrecursorClusterView } from './components/PrecursorClusterView';
+import { EntityExtractionView } from './components/EntityExtractionView';
+import { ModelStudioView } from './components/ModelStudioView';
+import { IOGPMultiLabelView } from './components/IOGPMultiLabelView';
+import { DeterministicRulesView } from './components/DeterministicRulesView';
+import { HybridDecisionStudioView } from './components/HybridDecisionStudioView';
 import { HSEReviewQueue } from './components/HSEReviewQueue';
 import { CorrectiveActionsView } from './components/CorrectiveActionsView';
 import { ExecutiveDashboard } from './components/ExecutiveDashboard';
 import { ReportResponse } from './types';
+import { api } from './services/api';
 
 export const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'intake' | 'queue' | 'actions' | 'analytics'>('intake');
+  const [activeTab, setActiveTab] = useState<'intake' | 'batch' | 'annotation' | 'clusters' | 'extraction' | 'models' | 'iogp' | 'rules' | 'decision' | 'queue' | 'actions' | 'analytics'>('intake');
   const [latestReport, setLatestReport] = useState<ReportResponse | null>(null);
 
   const handleTriageComplete = (report: ReportResponse) => {
@@ -29,6 +45,16 @@ export const App: React.FC = () => {
   const handleSelectReportFromQueue = (report: ReportResponse) => {
     setLatestReport(report);
     setActiveTab('intake');
+  };
+
+  const handleSelectReportId = async (reportId: string) => {
+    try {
+      const rep = await api.getReport(reportId);
+      setLatestReport(rep);
+      setActiveTab('intake');
+    } catch (e) {
+      console.error('Failed to load report:', e);
+    }
   };
 
   return (
@@ -66,6 +92,102 @@ export const App: React.FC = () => {
             >
               <FilePlus className="w-3.5 h-3.5" />
               <span>Intake & Triage</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('batch')}
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
+                activeTab === 'batch'
+                  ? 'bg-amber-500 text-slate-950 shadow-md'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+              }`}
+            >
+              <FileSpreadsheet className="w-3.5 h-3.5" />
+              <span>Batch & Quality</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('annotation')}
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
+                activeTab === 'annotation'
+                  ? 'bg-amber-500 text-slate-950 shadow-md'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+              }`}
+            >
+              <Target className="w-3.5 h-3.5" />
+              <span>Annotation & Benchmark</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('clusters')}
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
+                activeTab === 'clusters'
+                  ? 'bg-amber-500 text-slate-950 shadow-md'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+              }`}
+            >
+              <Network className="w-3.5 h-3.5" />
+              <span>Clusters & Barriers</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('extraction')}
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
+                activeTab === 'extraction'
+                  ? 'bg-amber-500 text-slate-950 shadow-md'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+              }`}
+            >
+              <Tag className="w-3.5 h-3.5" />
+              <span>Entity NER</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('models')}
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
+                activeTab === 'models'
+                  ? 'bg-amber-500 text-slate-950 shadow-md'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+              }`}
+            >
+              <Sliders className="w-3.5 h-3.5" />
+              <span>Model Studio</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('iogp')}
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
+                activeTab === 'iogp'
+                  ? 'bg-amber-500 text-slate-950 shadow-md'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+              }`}
+            >
+              <Crosshair className="w-3.5 h-3.5" />
+              <span>IOGP Rules</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('rules')}
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
+                activeTab === 'rules'
+                  ? 'bg-amber-500 text-slate-950 shadow-md'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+              }`}
+            >
+              <AlertOctagon className="w-3.5 h-3.5" />
+              <span>Safety Rules</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('decision')}
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
+                activeTab === 'decision'
+                  ? 'bg-amber-500 text-slate-950 shadow-md'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+              }`}
+            >
+              <Cpu className="w-3.5 h-3.5" />
+              <span>Decision Studio</span>
             </button>
 
             <button
@@ -124,25 +246,73 @@ export const App: React.FC = () => {
         <div className="md:hidden flex items-center justify-around border-t border-slate-800/80 bg-slate-950 py-2 px-2">
           <button
             onClick={() => setActiveTab('intake')}
-            className={`text-xs px-2.5 py-1 rounded ${activeTab === 'intake' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+            className={`text-xs px-2 py-1 rounded ${activeTab === 'intake' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
           >
             Intake
           </button>
           <button
+            onClick={() => setActiveTab('batch')}
+            className={`text-xs px-2 py-1 rounded ${activeTab === 'batch' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+          >
+            Batch
+          </button>
+          <button
+            onClick={() => setActiveTab('annotation')}
+            className={`text-xs px-2 py-1 rounded ${activeTab === 'annotation' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+          >
+            Benchmark
+          </button>
+          <button
+            onClick={() => setActiveTab('clusters')}
+            className={`text-xs px-2 py-1 rounded ${activeTab === 'clusters' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+          >
+            Clusters
+          </button>
+          <button
+            onClick={() => setActiveTab('extraction')}
+            className={`text-xs px-2 py-1 rounded ${activeTab === 'extraction' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+          >
+            NER
+          </button>
+          <button
+            onClick={() => setActiveTab('models')}
+            className={`text-xs px-2 py-1 rounded ${activeTab === 'models' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+          >
+            Models
+          </button>
+          <button
+            onClick={() => setActiveTab('iogp')}
+            className={`text-xs px-2 py-1 rounded ${activeTab === 'iogp' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+          >
+            IOGP
+          </button>
+          <button
+            onClick={() => setActiveTab('rules')}
+            className={`text-xs px-2 py-1 rounded ${activeTab === 'rules' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+          >
+            Rules
+          </button>
+          <button
+            onClick={() => setActiveTab('decision')}
+            className={`text-xs px-2 py-1 rounded ${activeTab === 'decision' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+          >
+            Decision
+          </button>
+          <button
             onClick={() => setActiveTab('queue')}
-            className={`text-xs px-2.5 py-1 rounded ${activeTab === 'queue' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+            className={`text-xs px-2 py-1 rounded ${activeTab === 'queue' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
           >
             Queue
           </button>
           <button
             onClick={() => setActiveTab('actions')}
-            className={`text-xs px-2.5 py-1 rounded ${activeTab === 'actions' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+            className={`text-xs px-2 py-1 rounded ${activeTab === 'actions' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
           >
             Actions
           </button>
           <button
             onClick={() => setActiveTab('analytics')}
-            className={`text-xs px-2.5 py-1 rounded ${activeTab === 'analytics' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+            className={`text-xs px-2 py-1 rounded ${activeTab === 'analytics' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
           >
             Analytics
           </button>
@@ -160,10 +330,43 @@ export const App: React.FC = () => {
                   report={latestReport}
                   onGoToReview={() => setActiveTab('queue')}
                   onGoToAction={() => setActiveTab('actions')}
+                  onSelectReportId={handleSelectReportId}
                 />
               </div>
             )}
           </div>
+        )}
+
+        {activeTab === 'batch' && (
+          <BatchIngestionView onSelectReportId={handleSelectReportId} />
+        )}
+
+        {activeTab === 'annotation' && (
+          <AnnotationBenchmarkView />
+        )}
+
+        {activeTab === 'clusters' && (
+          <PrecursorClusterView />
+        )}
+
+        {activeTab === 'extraction' && (
+          <EntityExtractionView />
+        )}
+
+        {activeTab === 'models' && (
+          <ModelStudioView />
+        )}
+
+        {activeTab === 'iogp' && (
+          <IOGPMultiLabelView />
+        )}
+
+        {activeTab === 'rules' && (
+          <DeterministicRulesView />
+        )}
+
+        {activeTab === 'decision' && (
+          <HybridDecisionStudioView />
         )}
 
         {activeTab === 'queue' && (

@@ -14,28 +14,119 @@
     "DBB": "Double Block and Bleed",
     "MOC": "Management of Change",
     "SIMOPS": "Simultaneous Operations",
-    "DG": "Diesel Generator"
+    "DG": "Diesel Generator",
+    "ESD": "Emergency Shutdown System",
+    "PSV": "Pressure Safety Valve",
+    "PRV": "Pressure Relief Valve",
+    "LAHH": "Level Alarm High High",
+    "PAHH": "Pressure Alarm High High",
+    "ASLI": "Automatic Safe Load Indicator",
+    "OCS": "Oil Collecting Station",
+    "EPS": "Early Production System",
+    "CTF": "Central Tank Farm",
+    "GCP": "Gas Compressor Plant",
+    "WOU": "Workover Unit",
+    "F&G": "Fire and Gas Detection System",
+    "OISD": "Oil Industry Safety Directorate",
+    "DGMS": "Directorate General of Mines Safety",
+    "OMR": "Oil Mines Regulations 2017",
+    "PNGRB": "Petroleum and Natural Gas Regulatory Board",
+    "PESO": "Petroleum and Explosives Safety Organization"
   },
+  "oil_facilities": [
+    "Drilling Rig OIL-45",
+    "Drilling Rig OIL-78",
+    "Drilling Rig OIL-12",
+    "Workover Unit WOU-12",
+    "Workover Unit WOU-24",
+    "Workover Unit WOU-08",
+    "Early Production System EPS-1",
+    "Early Production System EPS-2",
+    "Oil Collecting Station OCS-1 Naharkatia",
+    "Oil Collecting Station OCS-4 Moran",
+    "Oil Collecting Station OCS-8 Digboi",
+    "Gas Compressor Plant GCP-Duliajan",
+    "Gas Compressor Plant GCP-Kusijan",
+    "Central Tank Farm CTF-Duliajan",
+    "LPG Recovery Plant Duliajan",
+    "Water Injection Station WIS-Moran",
+    "Crude Pipeline Pumping Station PS-1",
+    "NH-37 Crude Pipeline Corridor",
+    "Wellhead Cluster NHK-204",
+    "Wellhead Cluster MOR-89",
+    "Wellhead Cluster BGH-17"
+  ],
+  "oil_operating_areas": [
+    "Duliajan",
+    "Naharkatia",
+    "Moran",
+    "Digboi",
+    "Tengakhat",
+    "Kusijan",
+    "Jorajan",
+    "Barekuri",
+    "Baghjan",
+    "Shalmari",
+    "Deohall",
+    "Hapjan"
+  ],
   "equipment": [
     "separator", "separator vessel", "wellhead", "christmas tree", "blowout preventer", "bop",
     "drill pipe", "drill collar", "casing", "tubing", "kelly", "rotary table", "top drive",
     "mud pump", "shale shaker", "choke manifold", "flare knock-out drum", "compressor",
     "scrubber", "crude oil storage tank", "flowline", "gathering line", "pig launcher",
     "pig receiver", "scaffold", "crane", "winch", "wireline unit", "coiled tubing unit",
-    "catwalk", "derrick", "mast", "monkey board", "standpipe", "kelly hose"
+    "catwalk", "derrick", "mast", "monkey board", "standpipe", "kelly hose", "annular bop",
+    "pipe rams", "blind rams", "shear rams", "poor boy degasser", "mud gas separator",
+    "desander", "desilter", "iron roughneck", "casing tongs", "power tongs", "rotary swivel",
+    "swivel joint", "chiksan line", "hammer union", "air tugger", "air hoist", "accumulator bottle",
+    "ko drum", "beam pump", "sucker rod", "polished rod", "stuffing box", "manifold header",
+    "orifice plate", "pulse dampener", "water injection pump", "crude transfer pump"
   ],
   "hazards": [
     "h2s gas", "sour gas", "flammable hydrocarbon gas", "crude vapor", "high pressure gas kick",
     "confined space", "hazardous atmosphere", "oxygen deficiency", "suspended load",
     "rotating drill string", "high voltage line", "explosive atmosphere", "unsupported trench",
-    "open edge without barrier", "slippery drill floor", "uncontrolled pressure release"
+    "open edge without barrier", "slippery drill floor", "uncontrolled pressure release",
+    "well kick", "toxic gas escape", "dropped object from derrick", "stored hydraulic pressure",
+    "cathead pinch point", "whip check parting", "line snapback", "pyrophoric iron scale"
+  ],
+  "failure_modes": [
+    "gasket blowout", "flange seal rupture", "stuffing box leakage", "swivel packing blowout",
+    "whip check unlatched", "sheared shear pin", "wire rope kink", "broken strands",
+    "brake band slippage", "hydraulic line burst", "high pressure gas kick", "lost circulation",
+    "trapped annular pressure", "overpressured accumulator bottle", "bridle cable parted",
+    "dropped tubing string", "stuck drill pipe", "unvented trapped pressure", "gas detector out of calibration",
+    "ground fault", "latch tongue missing", "bypassed crown-o-matic", "defeat of safety interlock"
   ],
   "energy_sources": {
-    "pressure": ["pressurized", "kick", "burst", "blowout", "hydraulic", "pneumatic", "psi", "bar", "bleed off"],
-    "mechanical": ["rotating", "drill pipe", "winch", "pinched", "crushed", "entangled", "coupling", "gear"],
-    "gravity": ["suspended", "crane load", "dropped", "fell", "height", "scaffold", "mast", "ladder", "elevated"],
-    "chemical": ["h2s", "toxic", "poisonous", "hydrocarbon", "gas release", "caustic", "acid", "flammable", "asphyxiation"],
-    "thermal": ["welding", "hot work", "torch", "grinding", "sparks", "fire", "steam", "scald", "heat exhaustion"],
-    "electrical": ["high voltage", "electrocution", "shock", "generator", "switchgear", "transformer", "short circuit"]
-  }
+    "pressure": ["pressurized", "kick", "burst", "blowout", "hydraulic", "pneumatic", "psi", "bar", "bleed off", "line pack", "annular pressure"],
+    "mechanical": ["rotating", "drill pipe", "winch", "pinched", "crushed", "entangled", "coupling", "gear", "iron roughneck", "tongs", "cathead", "sheared"],
+    "gravity": ["suspended", "crane load", "dropped", "fell", "height", "scaffold", "mast", "ladder", "elevated", "tubular stand", "monkey board"],
+    "chemical": ["h2s", "toxic", "poisonous", "hydrocarbon", "gas release", "caustic", "acid", "flammable", "asphyxiation", "condensate", "crude oil", "sour gas"],
+    "thermal": ["welding", "hot work", "torch", "grinding", "sparks", "fire", "steam", "scald", "heat exhaustion", "pyrophoric iron"],
+    "electrical": ["high voltage", "electrocution", "shock", "generator", "switchgear", "transformer", "short circuit", "3.3 kv", "415v", "substation"]
+  },
+  "regulatory_frameworks": [
+    {
+      "code": "OISD-STD-105",
+      "title": "Work Permit System in Petroleum & Petrochemical Plants",
+      "mandate": "Comprehensive cold work, hot work, vessel entry, and electrical isolation permits."
+    },
+    {
+      "code": "OISD-STD-141",
+      "title": "Design and Safety Requirements for Electrical Submersible Pumps (ESP)",
+      "mandate": "Positive electrical isolation, earth leakage circuit breaker, and hazardous area classification."
+    },
+    {
+      "code": "DGMS-OMR-2017",
+      "title": "Oil Mines Regulations 2017 (Rule 72 & 73)",
+      "mandate": "Mandatory testing for flammable and noxious gases before entering any oilfield confined space or pit."
+    },
+    {
+      "code": "PNGRB-T4S",
+      "title": "Technical Standards and Specifications including Safety Standards",
+      "mandate": "Integrity management, pipeline isolation, emergency shutdown valves, and cathodic protection."
+    }
+  ]
 }

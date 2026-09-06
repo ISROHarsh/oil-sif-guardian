@@ -9,9 +9,9 @@ The platform defines 8 core interconnected safety dimensions:
                               │
                               ├──exposes──> [WORKER EXPOSURE]
                               │
-                              ├──mitigated by──> [CRITICAL CONTROL]
+                              ├──mitigated by──> [CRITICAL BARRIER]
                               │                       │
-                              │                  [CONTROL FAILURE]
+                              │                  [BARRIER DEGRADATION / FAILURE]
                               │                       │
                               ▼                       ▼
                     [CREDIBLE CONSEQUENCE] <──────────┘
@@ -25,45 +25,83 @@ The platform defines 8 core interconnected safety dimensions:
 
 ---
 
-## 2. Taxonomy Definitions
+## 2. The SIF Exposure Fingerprint
 
-### 2.1 Hazardous Energy Categories
-- **Pressure Energy**: Pressurized hydrocarbons, pneumatic lines, hydraulic kick, casing/tubing pressure, mud line blowouts.
-- **Mechanical Energy**: Rotating drill pipes, winches, belts, couplings, centrifuges, vibrating pumps, moving heavy machinery.
-- **Gravity / Suspended Load**: Drill collars, casing pipes hoisted on rig mast, crane loads, working at height (>1.8m), dropped objects.
-- **Chemical / Toxic Energy**: Hydrogen Sulfide (H2S), toxic gas pockets, caustic drilling mud additives, volatile crude condensate.
-- **Electrical Energy**: High-voltage generator connections, switchgear, electrical submersible pumps (ESP), temporary wiring.
-- **Thermal Energy**: Flare lines, hot exhaust, steam boilers, welding sparks in hazardous zone 1/2.
-- **Vehicle / Kinetic Energy**: Heavy crude tankers, crew transport vehicles on unpaved lease roads, forklifts.
+To prevent superficial keyword matching and enable true organizational recurrence detection, every incident is codified into a standardized **5-tuple SIF Exposure Fingerprint**:
 
-### 2.2 Worker Exposure States
-- **Direct**: Worker is physically within the direct trajectory or danger zone (e.g. inside tank, under suspended tubulars).
-- **Nearby**: Worker is within blast radius, flash area, or projectile hazard zone without barriers.
-- **Potential**: Worker was scheduled or likely to enter the hazard zone had timing aligned.
-- **None / Isolated**: Worker was fully isolated behind engineered barriers or outside zone.
+$$\text{SIF Fingerprint} = [\text{ACTIVITY}] \mid [\text{HAZARDOUS ENERGY}] \mid [\text{HAZARD}] \mid [\text{BARRIER FAILURE}] \mid [\text{IOGP RULE}]$$
 
-### 2.3 Critical Control States
-- **Present & Effective**: Barrier in place, verified, and functioning (e.g. tested blind flange, double block and bleed).
-- **Bypassed / Defeated**: Safety interlock or relief valve intentionally overridden or defeated without authorization.
-- **Failed / Inadequate**: Control was initiated but failed mechanically or operationally (e.g. gasket rupture during hydro-test).
-- **Absent / Missing**: Mandatory control was completely omitted (e.g. no gas testing prior to vessel entry).
-- **Unknown / Unspecified**: Narrative does not specify control status.
-
-### 2.4 Credible Severe Consequence
-- **Fatality**: High probability of fatal outcome without fortunate circumstance.
-- **Permanent Impairment**: Amputation, severe crushed limb, blindness, irreversible toxic lung damage.
-- **Serious Injury / Lost Time**: Fractures, extensive second/third-degree burns, hospitalization > 48 hours.
-- **Minor / First Aid**: Superficial cuts, bruises, minor sprains.
-- **No Harm**: Near miss with zero physical injury sustained.
+### Example Representations:
+- `VESSEL_MAINTENANCE|CHEMICAL|CONFINED_SPACE_TOXIC_GAS|ATMOSPHERIC_TEST_OMITTED|CONFINED_SPACE`
+- `WELLHEAD_REPAIR|PRESSURE|HIGH_PRESSURE_GAS_RELEASE|LOTO_ISOLATION_FAILED|ENERGY_ISOLATION`
+- `DRILL_COLLAR_LIFTING|GRAVITY|SUSPENDED_TUBULAR_LOAD|WORKER_IN_DROP_ZONE|SAFE_MECHANICAL_LIFTING`
+- `TANK_BATTERY_WELDING|THERMAL|HYDROCARBON_FLAMMABLE_VAPOR|FIRE_WATCH_ABSENT|HOT_WORK`
+- `MAST_INSPECTION|GRAVITY|ELEVATED_DERRICK_FALL|100_PERCENT_TIE_OFF_FAILED|WORKING_AT_HEIGHT`
 
 ---
 
-## 3. The 9 IOGP Life-Saving Rules (Version Locked)
+## 3. Hierarchical Barrier Taxonomy (Swiss Cheese Model)
+
+Barriers are categorized into three fundamental tiers:
+
+### 3.1 Hardware / Engineered Barriers
+Physical devices and engineering controls that prevent or mitigate energy release:
+- **Primary Containment**: Well casing, production tubing, certified pressure vessels, ANSI/API flanges.
+- **Secondary Containment**: Blowout Preventer (BOP) stack (pipe rams, blind rams, annular preventer), Emergency Shutdown (ESD) valves, Pressure Safety Valves (PSV), rupture discs, check valves, flame arrestors.
+- **Detection & Physical Mitigation**: Fire & Gas (F&G) detectors, fixed and personal H2S gas monitors, deluge water systems, blast barriers, whip checks on high-pressure hoses, crown-o-matic rig crown saver.
+
+### 3.2 Administrative / Procedural Barriers
+Management systems, authorizations, and verification procedures:
+- **Work Authorization**: Permit to Work (PTW - Hot Work, Cold Work, Confined Space Entry) compliant with **OISD-STD-105**.
+- **Risk Assessment**: Job Safety Analysis (JSA/JHA), Daily Toolbox Talks (TBT), SIMOPS matrix coordination.
+- **Energy Isolation (LOTO)**: Lockout / Tagout procedures, Double Block and Bleed (DBB) isolation, Blind/Spade installation certificate, Zero energy physical verification.
+- **Procedural Controls**: Journey Management Plan (JMP), Management of Change (MOC), Rig Move Checklist.
+
+### 3.3 Human Action / Behavioral Barriers
+Critical operational behaviors and dedicated safety personnel:
+- **Dedicated Watchers**: Certified Standby Attendant (Hole Watch) for confined spaces under DGMS-OMR-2017 Rule 72, continuous Fire Watch for hot work, dedicated Banksman / Signalman for crane lifts.
+- **Critical Behaviors**: 100% Tie-Off using full-body harness above 1.8m, staying out of the Line of Fire and active drop zones, maintaining speed limits and wearing 3-point seatbelts on lease roads.
+
+### 3.4 Barrier Degradation & Failure States
+Every barrier identified in an event narrative is evaluated against 5 standardized health states:
+1. **`EFFECTIVE`**: Barrier was in place, verified, and functioning properly.
+2. **`DEGRADED`**: Barrier was present but partially degraded, leaking, or nearing mechanical fatigue.
+3. **`FAILED`**: Barrier physically ruptured, fractured, or failed under operational pressure or load.
+4. **`BYPASSED`**: Barrier was intentionally disabled, overridden, jumpered, gagged, or silenced without authorized MOC.
+5. **`ABSENT`**: Mandatory barrier required by safety standards was completely omitted or missing.
+
+---
+
+## 4. Oil India Limited (OIL) Operational Asset Taxonomy
+
+The ontology defines domain knowledge specific to OIL Northeast India upstream operations:
+
+### 4.1 Upstream Operating Facilities
+- **Drilling Rigs**: OIL-45, OIL-78, OIL-12, Heavy Drilling Rigs (1500HP / 2000HP).
+- **Workover Units (WOU)**: WOU-12, WOU-24, WOU-08 (Rig servicing and artificial lift maintenance).
+- **Early Production Systems (EPS)**: EPS-1, EPS-2, Wellhead Separator Packages.
+- **Oil Collecting Stations (OCS)**: OCS-1 Naharkatia, OCS-4 Moran, OCS-8 Digboi, Gathering Manifolds.
+- **Gas Compressor Plants (GCP)**: GCP-Duliajan, GCP-Kusijan (High-pressure gas lift and pipeline injection).
+- **Central Tank Farm (CTF)**: CTF-Duliajan (Crude storage and dispatch).
+- **Pipelines**: NH-37 Crude Pipeline Corridor, Trunk Gas Pipelines, Wellhead Flowlines.
+
+### 4.2 Operating Fields
+- Duliajan, Naharkatia (NHK), Moran, Digboi, Tengakhat, Kusijan, Jorajan, Barekuri, Baghjan, Shalmari.
+
+### 4.3 Regulatory Mandates (Indian Oil & Gas Sector)
+- **OISD-STD-105**: Work Permit System for Petroleum & Petrochemical Plants.
+- **OISD-STD-141**: Electrical Submersible Pump (ESP) design and electrical isolation standards.
+- **DGMS Oil Mines Regulations 2017 (OMR)**: Statutory hazardous atmosphere gas testing (Rules 72 & 73) and machinery safeguarding.
+- **PNGRB T4S**: Technical Standards and Specifications including Safety Standards for pipelines and installations.
+
+---
+
+## 5. The 9 IOGP Life-Saving Rules (Version Locked)
 
 1. **Bypassing Safety Controls**: Obtain authorization before overriding or disabling safety-critical equipment or controls.
 2. **Confined Space**: Obtain authorization before entering a confined space; verify atmosphere testing and assign continuous attendant.
 3. **Driving**: Follow journey management rules, wear seatbelts, obey speed limits, and never use mobile devices while driving.
-4. **Energy Isolation**: Verify isolation and zero energy state (LOTO - Lockout/Tagout) before beginning work on pressurized or energized equipment.
+4. **Energy Isolation**: Verify isolation and zero energy state (LOTO) before beginning work on pressurized or energized equipment.
 5. **Hot Work**: Identify and control ignition sources, conduct atmospheric monitoring, and obtain hot work permits in classified zones.
 6. **Line of Fire**: Keep yourself and others out of the path of moving vehicles, suspended loads, high-pressure releases, and coiled springs.
 7. **Safe Mechanical Lifting**: Plan lifts, inspect rigging, establish exclusion zones, and never walk under a suspended load.
