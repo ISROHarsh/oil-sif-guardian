@@ -17,17 +17,19 @@ import {
   Settings,
   HelpCircle,
   Calendar,
-  ChevronDown,
-  Plus,
   ExternalLink,
   ShieldAlert,
   Sparkles,
   Zap,
   Layers,
-  Crosshair,
   Sun,
   Moon,
-  ChevronUp
+  Menu,
+  X,
+  FileText,
+  TrendingUp,
+  Shield,
+  Plus
 } from 'lucide-react';
 import { ReportIngestion } from './components/ReportIngestion';
 import { AIResultView } from './components/AIResultView';
@@ -48,34 +50,34 @@ import { api } from './services/api';
 type TabType =
   | 'dashboard'
   | 'intake'
+  | 'queue'
+  | 'actions'
+  | 'rules'
+  | 'clusters'
+  | 'models'
   | 'batch'
   | 'annotation'
-  | 'clusters'
   | 'extraction'
-  | 'models'
-  | 'iogp'
-  | 'rules'
   | 'decision'
-  | 'queue'
-  | 'actions';
+  | 'iogp';
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('dashboard');
   const [latestReport, setLatestReport] = useState<ReportResponse | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [theme, setTheme] = useState<'cosmic' | 'opal'>('cosmic');
-  const [showMoreMenu, setShowMoreMenu] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>('light'); // Default to clean light enterprise theme matching NEXA & Insights
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    if (theme === 'opal') {
-      document.body.classList.add('theme-opal');
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
     } else {
-      document.body.classList.remove('theme-opal');
+      document.documentElement.classList.remove('dark');
     }
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(theme === 'cosmic' ? 'opal' : 'cosmic');
+    setTheme(theme === 'light' ? 'dark' : 'light');
   };
 
   const handleTriageComplete = (report: ReportResponse) => {
@@ -99,317 +101,356 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-screen flex flex-col font-sans">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex font-sans transition-colors duration-200">
       {/* ====================================================================
-          Atmospheric Aurora Engine (Ambient Glow Orbs)
+          1. ENTERPRISE LEFT SIDEBAR (Direct 1:1 with NEXA Reference 4)
           ==================================================================== */}
-      <div className="aurora-mesh-container" aria-hidden="true">
-        <div className="aurora-orb aurora-orb-cyan" />
-        <div className="aurora-orb aurora-orb-purple" />
-        <div className="aurora-orb aurora-orb-amber" />
-        <div className="aurora-orb aurora-orb-emerald" />
-      </div>
-
-      {/* Spatial Precision Grid Overlay */}
-      <div className="spatial-grid-overlay" aria-hidden="true" />
-
-      {/* ====================================================================
-          Top Glass Navigation Bar
-          ==================================================================== */}
-      <header className="sticky top-0 z-40 px-4 sm:px-8 py-3.5 border-b border-white/10 backdrop-blur-2xl bg-black/30">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-          {/* Brand Identity */}
-          <div
-            onClick={() => setActiveTab('dashboard')}
-            className="flex items-center gap-3 cursor-pointer group"
-          >
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-700 flex items-center justify-center text-slate-950 shadow-lg shadow-amber-500/20 group-hover:scale-105 transition">
-              <ShieldAlert className="w-5 h-5" />
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col justify-between transition-transform duration-200 ease-in-out ${
+          mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+        }`}
+      >
+        <div className="flex flex-col h-full">
+          {/* Brand Logo & Title Header */}
+          <div className="h-16 px-6 flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80">
+            <div
+              onClick={() => { setActiveTab('dashboard'); setMobileMenuOpen(false); }}
+              className="flex items-center gap-2.5 cursor-pointer group"
+            >
+              <div className="w-8 h-8 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 flex items-center justify-center font-bold text-sm shadow-sm group-hover:scale-105 transition">
+                <ShieldAlert className="w-4 h-4 text-amber-400 dark:text-amber-500" />
+              </div>
+              <div>
+                <div className="font-extrabold text-sm tracking-tight text-slate-900 dark:text-white font-display leading-tight">
+                  OIL GUARDIAN
+                </div>
+                <div className="text-[10px] text-slate-400 font-semibold tracking-wider uppercase">
+                  Enterprise HSSE Suite
+                </div>
+              </div>
             </div>
+
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              className="md:hidden text-slate-400 hover:text-slate-600 p-1"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Navigation Links Grouped Logically (NEXA Style) */}
+          <div className="flex-1 overflow-y-auto px-4 py-5 space-y-6">
+            {/* Group 1: OVERVIEW */}
             <div>
-              <div className="flex items-center gap-2">
-                <span className="font-extrabold text-base tracking-tight text-white font-heading">
-                  OIL-SIF GUARDIAN
-                </span>
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono font-bold">
-                  v1.0 PSIF Prioritizer
-                </span>
+              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-3 mb-2">
+                Overview
               </div>
-              <div className="text-[11px] text-zinc-400 flex items-center gap-1.5 font-mono">
-                <span className="pulse-dot pulse-dot-green" />
-                <span>Oil India Limited • HSSE Intelligence Platform</span>
+              <div className="space-y-1">
+                <button
+                  onClick={() => { setActiveTab('dashboard'); setMobileMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition ${
+                    activeTab === 'dashboard'
+                      ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm font-bold'
+                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900'
+                  }`}
+                >
+                  <LayoutDashboard className={`w-4 h-4 ${activeTab === 'dashboard' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400'}`} />
+                  <span>Dashboard</span>
+                </button>
+
+                <button
+                  onClick={() => { setActiveTab('intake'); setMobileMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition ${
+                    activeTab === 'intake'
+                      ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm font-bold'
+                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900'
+                  }`}
+                >
+                  <Zap className={`w-4 h-4 ${activeTab === 'intake' ? 'text-amber-500' : 'text-slate-400'}`} />
+                  <span>Incident Triage</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Group 2: OPERATIONS & HITL */}
+            <div>
+              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-3 mb-2">
+                Operations & HITL
+              </div>
+              <div className="space-y-1">
+                <button
+                  onClick={() => { setActiveTab('queue'); setMobileMenuOpen(false); }}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition ${
+                    activeTab === 'queue'
+                      ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm font-bold'
+                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <UserCheck className={`w-4 h-4 ${activeTab === 'queue' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400'}`} />
+                    <span>HSE Review Queue</span>
+                  </div>
+                  <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">
+                    3
+                  </span>
+                </button>
+
+                <button
+                  onClick={() => { setActiveTab('actions'); setMobileMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition ${
+                    activeTab === 'actions'
+                      ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm font-bold'
+                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900'
+                  }`}
+                >
+                  <CheckSquare className={`w-4 h-4 ${activeTab === 'actions' ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400'}`} />
+                  <span>Corrective Actions</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Group 3: HSSE GOVERNANCE */}
+            <div>
+              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-3 mb-2">
+                HSSE Governance
+              </div>
+              <div className="space-y-1">
+                <button
+                  onClick={() => { setActiveTab('rules'); setMobileMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition ${
+                    activeTab === 'rules'
+                      ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm font-bold'
+                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900'
+                  }`}
+                >
+                  <AlertOctagon className={`w-4 h-4 ${activeTab === 'rules' ? 'text-red-600 dark:text-red-400' : 'text-slate-400'}`} />
+                  <span>Statutory Rules</span>
+                </button>
+
+                <button
+                  onClick={() => { setActiveTab('clusters'); setMobileMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition ${
+                    activeTab === 'clusters'
+                      ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm font-bold'
+                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900'
+                  }`}
+                >
+                  <Network className={`w-4 h-4 ${activeTab === 'clusters' ? 'text-cyan-600 dark:text-cyan-400' : 'text-slate-400'}`} />
+                  <span>Precursor Clusters</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Group 4: ADVANCED AI & SYSTEM */}
+            <div>
+              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-3 mb-2">
+                System & AI
+              </div>
+              <div className="space-y-1">
+                <button
+                  onClick={() => { setActiveTab('models'); setMobileMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition ${
+                    activeTab === 'models'
+                      ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm font-bold'
+                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900'
+                  }`}
+                >
+                  <Sliders className={`w-4 h-4 ${activeTab === 'models' ? 'text-purple-600 dark:text-purple-400' : 'text-slate-400'}`} />
+                  <span>Model Studio</span>
+                </button>
+
+                <button
+                  onClick={() => { setActiveTab('batch'); setMobileMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition ${
+                    activeTab === 'batch'
+                      ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm font-bold'
+                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900'
+                  }`}
+                >
+                  <FileSpreadsheet className={`w-4 h-4 ${activeTab === 'batch' ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400'}`} />
+                  <span>Batch Ingestion</span>
+                </button>
+
+                <button
+                  onClick={() => { setActiveTab('extraction'); setMobileMenuOpen(false); }}
+                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition ${
+                    activeTab === 'extraction'
+                      ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm font-bold'
+                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900'
+                  }`}
+                >
+                  <Tag className={`w-4 h-4 ${activeTab === 'extraction' ? 'text-amber-600 dark:text-amber-400' : 'text-slate-400'}`} />
+                  <span>Entity Extraction</span>
+                </button>
               </div>
             </div>
           </div>
 
-          {/* Centered Pill Search Input */}
-          <div className="hidden md:flex flex-1 max-w-md relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400 pointer-events-none" />
-            <input
-              type="text"
-              placeholder="Search incidents, installations, barrier codes, regulations..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="tactile-search-input text-xs"
-            />
-          </div>
-
-          {/* Right Action Cluster: Theme Switcher, Profile, API */}
-          <div className="flex items-center gap-3">
-            {/* Theme Switcher (Cosmic Aurora / Luxe Opal) */}
-            <button
-              onClick={toggleTheme}
-              className="clay-pill-btn clay-pill-dark text-xs p-2.5 rounded-full"
-              title={theme === 'cosmic' ? 'Switch to Luxe Opal Glass (Light)' : 'Switch to Cosmic Aurora Glass (Dark)'}
-            >
-              {theme === 'cosmic' ? (
-                <Sun className="w-4 h-4 text-amber-400" />
-              ) : (
-                <Moon className="w-4 h-4 text-indigo-400" />
-              )}
-            </button>
-
-            {/* Notification Bell */}
-            <button
-              onClick={() => setActiveTab('queue')}
-              className="clay-pill-btn clay-pill-dark text-xs p-2.5 rounded-full relative"
-              title="Audit & Incident Notifications"
-            >
-              <Bell className="w-4 h-4 text-zinc-300" />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500" />
-            </button>
-
-            {/* Swagger API */}
-            <a
-              href="http://localhost:8000/docs"
-              target="_blank"
-              rel="noreferrer"
-              className="hidden lg:flex items-center gap-1.5 text-xs text-zinc-300 hover:text-white px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition"
-              title="Open FastAPI Swagger Documentation"
-            >
-              <Cpu className="w-3.5 h-3.5 text-amber-400" />
-              <span>Swagger API</span>
-              <ExternalLink className="w-3 h-3 text-zinc-400" />
-            </a>
-
-            {/* User Profile Pill */}
-            <div className="flex items-center gap-2.5 pl-2 border-l border-white/10">
+          {/* Bottom User Profile Section */}
+          <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
+            <div className="flex items-center gap-3">
               <img
                 src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
                 alt="Er. Rajesh Baruah"
-                className="w-8 h-8 rounded-full border border-white/30 object-cover"
+                className="w-9 h-9 rounded-full object-cover border border-slate-200 dark:border-slate-700"
               />
-              <div className="hidden sm:block text-left">
-                <div className="text-xs font-bold text-white leading-tight">
+              <div className="flex-1 min-w-0">
+                <div className="text-xs font-bold text-slate-900 dark:text-white truncate">
                   Er. Rajesh Baruah
                 </div>
-                <div className="text-[10px] text-zinc-400 leading-none">
+                <div className="text-[10px] text-slate-500 dark:text-slate-400 truncate">
                   Chief Safety Officer
                 </div>
               </div>
+
+              <a
+                href="http://localhost:8000/docs"
+                target="_blank"
+                rel="noreferrer"
+                title="FastAPI Swagger Reference"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800 transition"
+              >
+                <Cpu className="w-4 h-4 text-amber-500" />
+              </a>
             </div>
           </div>
         </div>
-      </header>
+      </aside>
+
+      {/* Backdrop for Mobile Sidebar */}
+      {mobileMenuOpen && (
+        <div
+          onClick={() => setMobileMenuOpen(false)}
+          className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 md:hidden"
+        />
+      )}
 
       {/* ====================================================================
-          Main Stage Content Area
+          2. MAIN STAGE WRAPPER (Offset by sidebar width on desktop)
           ==================================================================== */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 z-10">
-        {activeTab === 'dashboard' && (
-          <ExecutiveDashboard
-            onNavigateToIntake={() => setActiveTab('intake')}
-            onNavigateToQueue={() => setActiveTab('queue')}
-            onNavigateToActions={() => setActiveTab('actions')}
-            onTriageComplete={handleTriageComplete}
-          />
-        )}
+      <div className="flex-1 md:pl-64 flex flex-col min-w-0">
+        {/* Top Header Bar */}
+        <header className="sticky top-0 z-30 h-16 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 px-6 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setMobileMenuOpen(true)}
+              className="md:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
 
-        {activeTab === 'intake' && (
-          <div className="space-y-6 pb-24">
-            <ReportIngestion onTriageComplete={handleTriageComplete} />
-            {latestReport && (
-              <div className="pt-2">
-                <AIResultView
-                  report={latestReport}
-                  onGoToReview={() => setActiveTab('queue')}
-                  onGoToAction={() => setActiveTab('actions')}
-                  onSelectReportId={handleSelectReportId}
-                />
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-extrabold text-sm md:text-base text-slate-900 dark:text-white tracking-tight capitalize">
+                  {activeTab}
+                </span>
+                <span className="text-[10px] px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold hidden sm:inline-block">
+                  Upper Assam Operations
+                </span>
               </div>
-            )}
+            </div>
           </div>
-        )}
 
-        {activeTab === 'queue' && (
-          <div className="pb-24">
-            <HSEReviewQueue onSelectReport={handleSelectReportFromQueue} />
+          {/* Search & Actions Bar */}
+          <div className="flex items-center gap-3">
+            {/* Search Pill */}
+            <div className="relative hidden md:block w-64">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
+              <input
+                type="text"
+                placeholder="Search incidents, rigs, equipment..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-xl pl-9 pr-3 py-1.5 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition"
+              />
+            </div>
+
+            {/* Theme Switcher Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-xl text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+              title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+            >
+              {theme === 'light' ? (
+                <Moon className="w-4 h-4" />
+              ) : (
+                <Sun className="w-4 h-4 text-amber-400" />
+              )}
+            </button>
+
+            {/* Notifications Button */}
+            <button
+              onClick={() => setActiveTab('queue')}
+              className="p-2 rounded-xl text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition relative"
+              title="Notifications"
+            >
+              <Bell className="w-4 h-4" />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500" />
+            </button>
+
+            {/* Primary Action Button */}
+            <button
+              onClick={() => setActiveTab('intake')}
+              className="hidden sm:inline-flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 text-xs font-bold px-3.5 py-2 rounded-xl transition shadow-sm"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>New Incident</span>
+            </button>
           </div>
-        )}
+        </header>
 
-        {activeTab === 'actions' && (
-          <div className="pb-24">
-            <CorrectiveActionsView />
-          </div>
-        )}
+        {/* Main Content Body */}
+        <main className="flex-1 p-6 md:p-8 max-w-7xl w-full mx-auto">
+          {activeTab === 'dashboard' && (
+            <ExecutiveDashboard
+              onNavigateToIntake={() => setActiveTab('intake')}
+              onNavigateToQueue={() => setActiveTab('queue')}
+              onNavigateToActions={() => setActiveTab('actions')}
+              onTriageComplete={handleTriageComplete}
+            />
+          )}
 
-        {activeTab === 'rules' && (
-          <div className="pb-24">
-            <DeterministicRulesView />
-          </div>
-        )}
-
-        {activeTab === 'clusters' && (
-          <div className="pb-24">
-            <PrecursorClusterView />
-          </div>
-        )}
-
-        {activeTab === 'models' && (
-          <div className="pb-24">
-            <ModelStudioView />
-          </div>
-        )}
-
-        {activeTab === 'batch' && (
-          <div className="pb-24">
-            <BatchIngestionView onSelectReportId={handleSelectReportId} />
-          </div>
-        )}
-
-        {activeTab === 'annotation' && (
-          <div className="pb-24">
-            <AnnotationBenchmarkView />
-          </div>
-        )}
-
-        {activeTab === 'extraction' && (
-          <div className="pb-24">
-            <EntityExtractionView />
-          </div>
-        )}
-
-        {activeTab === 'decision' && (
-          <div className="pb-24">
-            <HybridDecisionStudioView />
-          </div>
-        )}
-
-        {activeTab === 'iogp' && (
-          <div className="pb-24">
-            <IOGPMultiLabelView />
-          </div>
-        )}
-      </main>
-
-      {/* ====================================================================
-          Floating Apple VisionOS-Style Master Glass Dock
-          ==================================================================== */}
-      <nav className="glass-dock" aria-label="Quick Dock Navigation">
-        <button
-          onClick={() => { setActiveTab('dashboard'); setShowMoreMenu(false); }}
-          className={`glass-dock-item ${activeTab === 'dashboard' ? 'active' : ''}`}
-        >
-          <LayoutDashboard className="w-4 h-4" />
-          <span>Cockpit</span>
-        </button>
-
-        <button
-          onClick={() => { setActiveTab('intake'); setShowMoreMenu(false); }}
-          className={`glass-dock-item ${activeTab === 'intake' ? 'active' : ''}`}
-        >
-          <Zap className="w-4 h-4 text-amber-400" />
-          <span>AI Triage</span>
-        </button>
-
-        <button
-          onClick={() => { setActiveTab('queue'); setShowMoreMenu(false); }}
-          className={`glass-dock-item ${activeTab === 'queue' ? 'active' : ''}`}
-        >
-          <UserCheck className="w-4 h-4" />
-          <span>HSE Review</span>
-        </button>
-
-        <button
-          onClick={() => { setActiveTab('actions'); setShowMoreMenu(false); }}
-          className={`glass-dock-item ${activeTab === 'actions' ? 'active' : ''}`}
-        >
-          <CheckSquare className="w-4 h-4" />
-          <span>CAPA Actions</span>
-        </button>
-
-        <button
-          onClick={() => { setActiveTab('rules'); setShowMoreMenu(false); }}
-          className={`glass-dock-item ${activeTab === 'rules' ? 'active' : ''}`}
-        >
-          <AlertOctagon className="w-4 h-4" />
-          <span>Safety Rules</span>
-        </button>
-
-        {/* More Tools Trigger Popover */}
-        <div className="relative">
-          <button
-            onClick={() => setShowMoreMenu(!showMoreMenu)}
-            className={`glass-dock-item ${showMoreMenu ? 'active' : ''}`}
-          >
-            <Layers className="w-4 h-4" />
-            <span>More Views</span>
-            <ChevronUp className={`w-3 h-3 transition-transform ${showMoreMenu ? 'rotate-180' : ''}`} />
-          </button>
-
-          {showMoreMenu && (
-            <div className="absolute bottom-full mb-3 right-0 w-56 p-2 rounded-2xl bg-black/90 backdrop-blur-2xl border border-white/20 shadow-2xl space-y-1 z-50 animate-fadeIn">
-              <button
-                onClick={() => { setActiveTab('clusters'); setShowMoreMenu(false); }}
-                className="w-full text-left px-3 py-2 rounded-xl text-xs text-zinc-300 hover:text-white hover:bg-white/10 flex items-center gap-2"
-              >
-                <Network className="w-4 h-4 text-cyan-400" />
-                <span>Precursor Clusters</span>
-              </button>
-
-              <button
-                onClick={() => { setActiveTab('batch'); setShowMoreMenu(false); }}
-                className="w-full text-left px-3 py-2 rounded-xl text-xs text-zinc-300 hover:text-white hover:bg-white/10 flex items-center gap-2"
-              >
-                <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
-                <span>Batch Processing</span>
-              </button>
-
-              <button
-                onClick={() => { setActiveTab('models'); setShowMoreMenu(false); }}
-                className="w-full text-left px-3 py-2 rounded-xl text-xs text-zinc-300 hover:text-white hover:bg-white/10 flex items-center gap-2"
-              >
-                <Sliders className="w-4 h-4 text-purple-400" />
-                <span>Model Studio</span>
-              </button>
-
-              <button
-                onClick={() => { setActiveTab('extraction'); setShowMoreMenu(false); }}
-                className="w-full text-left px-3 py-2 rounded-xl text-xs text-zinc-300 hover:text-white hover:bg-white/10 flex items-center gap-2"
-              >
-                <Tag className="w-4 h-4 text-amber-400" />
-                <span>Entity Extraction (NER)</span>
-              </button>
-
-              <button
-                onClick={() => { setActiveTab('annotation'); setShowMoreMenu(false); }}
-                className="w-full text-left px-3 py-2 rounded-xl text-xs text-zinc-300 hover:text-white hover:bg-white/10 flex items-center gap-2"
-              >
-                <Target className="w-4 h-4 text-rose-400" />
-                <span>Annotation Benchmark</span>
-              </button>
-
-              <button
-                onClick={() => { setActiveTab('decision'); setShowMoreMenu(false); }}
-                className="w-full text-left px-3 py-2 rounded-xl text-xs text-zinc-300 hover:text-white hover:bg-white/10 flex items-center gap-2"
-              >
-                <Cpu className="w-4 h-4 text-blue-400" />
-                <span>Hybrid Decision Studio</span>
-              </button>
+          {activeTab === 'intake' && (
+            <div className="space-y-6">
+              <ReportIngestion onTriageComplete={handleTriageComplete} />
+              {latestReport && (
+                <div className="pt-2">
+                  <AIResultView
+                    report={latestReport}
+                    onGoToReview={() => setActiveTab('queue')}
+                    onGoToAction={() => setActiveTab('actions')}
+                    onSelectReportId={handleSelectReportId}
+                  />
+                </div>
+              )}
             </div>
           )}
-        </div>
-      </nav>
+
+          {activeTab === 'queue' && (
+            <HSEReviewQueue onSelectReport={handleSelectReportFromQueue} />
+          )}
+
+          {activeTab === 'actions' && <CorrectiveActionsView />}
+
+          {activeTab === 'rules' && <DeterministicRulesView />}
+
+          {activeTab === 'clusters' && <PrecursorClusterView />}
+
+          {activeTab === 'models' && <ModelStudioView />}
+
+          {activeTab === 'batch' && (
+            <BatchIngestionView onSelectReportId={handleSelectReportId} />
+          )}
+
+          {activeTab === 'annotation' && <AnnotationBenchmarkView />}
+
+          {activeTab === 'extraction' && <EntityExtractionView />}
+
+          {activeTab === 'decision' && <HybridDecisionStudioView />}
+
+          {activeTab === 'iogp' && <IOGPMultiLabelView />}
+        </main>
+      </div>
     </div>
   );
 };
