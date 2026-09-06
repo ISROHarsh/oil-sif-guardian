@@ -884,3 +884,30 @@ export interface ReviewMetricsData {
   recommendations: string[];
 }
 
+export interface SimilarPrecursor {
+  report_id: string;
+  title: string;
+  site: string;
+  activity: string;
+  priority: 'HIGH' | 'LOW' | 'REVIEW';
+  primary_rule: string;
+  secondary_rules: string[];
+  similarity_score: number;
+  similarity_percentage: number;
+  shared_keywords: string[];
+  snippet: string;
+}
+
+export interface ReportSimilarityResponse {
+  report_id: string;
+  site: string;
+  total_matches: number;
+  similar_precursors: SimilarPrecursor[];
+}
+
+export interface SimilaritySearchResponse {
+  query_tokens_count: number;
+  total_matches: number;
+  similar_precursors: SimilarPrecursor[];
+}
+

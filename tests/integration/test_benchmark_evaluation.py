@@ -76,7 +76,8 @@ def test_system_performance_on_golden_benchmark():
     print(f"IOGP Rule Match Rate: {rule_match_rate:.1%}")
 
     # Safety Assertions:
-    # 1. High-PSIF Recall must be >= 75% (safety-critical detection)
-    assert high_psif_recall >= 0.75, f"High-PSIF Recall {high_psif_recall:.1%} fell below minimum safety target of 75%!"
-    # 2. Rule Match Rate must be >= 70%
-    assert rule_match_rate >= 0.70, f"Rule Match Rate {rule_match_rate:.1%} fell below target of 70%!"
+    # 1. Rule 2 Statutory Invariant: 100.0% recall on true High-PSIF events (Zero False Negatives)
+    assert high_psif_fn == 0, f"Critical safety breach: {high_psif_fn} false negatives detected!"
+    assert high_psif_recall == 1.0, f"Rule 2 invariant failed: High-PSIF Recall {high_psif_recall:.1%} != 100.0%!"
+    # 2. Rule Match Rate must be >= 90%
+    assert rule_match_rate >= 0.90, f"Rule Match Rate {rule_match_rate:.1%} fell below target of 90%!"

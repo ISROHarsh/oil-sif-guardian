@@ -38,7 +38,10 @@ import {
   HITLAdjudicationResponse,
   PendingReviewItem,
   ReviewHistoryItem,
-  ReviewMetricsData
+  ReviewMetricsData,
+  SimilarPrecursor,
+  ReportSimilarityResponse,
+  SimilaritySearchResponse
 } from '../types';
 
 const API_BASE = '/api/v1';
@@ -124,6 +127,22 @@ export const api = {
   async getReport(id: string): Promise<ReportResponse> {
     const res = await fetch(`${API_BASE}/reports/${id}`);
     if (!res.ok) throw new Error('Failed to fetch report');
+    return await res.json();
+  },
+
+  async getSimilarReports(id: string, topK: number = 5): Promise<ReportSimilarityResponse> {
+    const res = await fetch(`${API_BASE}/reports/${id}/similar?top_k=${topK}`);
+    if (!res.ok) throw new Error('Failed to fetch similar reports');
+    return await res.json();
+  },
+
+  async searchSimilar(narrative: string, topK: number = 5): Promise<SimilaritySearchResponse> {
+    const res = await fetch(`${API_BASE}/reports/search/similarity`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ narrative, top_k: topK }),
+    });
+    if (!res.ok) throw new Error('Failed to search similar precursors');
     return await res.json();
   },
 
@@ -248,6 +267,23 @@ export const api = {
   }> {
     const res = await fetch(`${API_BASE}/analytics/clusters`);
     if (!res.ok) throw new Error('Failed to fetch clusters');
+    return await res.json();
+  },
+
+  async getComplianceSummary(): Promise<{
+    standards_monitored: number;
+    overall_guardrail_shield_rate: number;
+    frameworks: Array<{
+      code: string;
+      title: string;
+      authority: string;
+      coverage_count: number;
+      status: string;
+      veto_enforced: boolean;
+    }>;
+  }> {
+    const res = await fetch(`${API_BASE}/analytics/compliance-summary`);
+    if (!res.ok) throw new Error('Failed to fetch compliance summary');
     return await res.json();
   },
 

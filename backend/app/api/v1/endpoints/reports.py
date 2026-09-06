@@ -21,7 +21,10 @@ from backend.app.schemas.report import (
     ReportListItem,
     BatchReportCreate,
     BatchIngestResponse,
-    DataQualitySummaryResponse
+    DataQualitySummaryResponse,
+    SimilaritySearchRequest,
+    SimilaritySearchResponse,
+    ReportSimilarityResponse
 )
 from backend.app.schemas.prediction import (
     PSIFSchema,
@@ -252,6 +255,38 @@ def list_reports(
     return ReportListResponse(total=total, items=items)
 
 
+@router.post("/search/similarity", response_model=SimilaritySearchResponse)
+def search_similar_by_narrative(
+    payload: SimilaritySearchRequest,
+):
+    """
+    Finds semantically similar historical incidents for ad-hoc narrative text.
+    """
+    from ml.search.similarity_engine import similarity_engine
+
+    narrative = payload.narrative
+    top_k = payload.top_k
+    min_score = payload.min_score
+
+    if not narrative.strip():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Narrative query text cannot be empty."
+        )
+
+    results = similarity_engine.find_similar(
+        query_text=narrative,
+        top_k=top_k,
+        min_score=min_score
+    )
+
+    return {
+        "query_tokens_count": len(narrative.split()),
+        "total_matches": len(results),
+        "similar_precursors": results
+    }
+
+
 @router.get("/{report_id}", response_model=ReportResponse)
 def get_report(report_id: str, db: Session = Depends(get_db)):
     """
@@ -268,4 +303,41 @@ def get_report(report_id: str, db: Session = Depends(get_db)):
         )
 
     return _build_report_response(report)
+
+
+@router.get("/{report_id}/similar", response_model=ReportSimilarityResponse)
+def get_similar_reports(
+    report_id: str,
+    top_k: int = Query(5, ge=1, le=20),
+    min_score: float = Query(0.10, ge=0.0, le=1.0),
+    db: Session = Depends(get_db)
+):
+    """
+    Returns top semantically similar historical precursor incidents.
+    """
+    from ml.search.similarity_engine import similarity_engine
+
+    report = db.query(ReportModel).filter(
+        (ReportModel.id == report_id) | (ReportModel.report_id == report_id)
+    ).first()
+
+    if not report:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Report '{report_id}' not found."
+        )
+
+    results = similarity_engine.find_similar(
+        query_text=report.raw_text,
+        top_k=top_k,
+        min_score=min_score,
+        exclude_report_id=report.report_id
+    )
+
+    return {
+        "report_id": report.report_id,
+        "site": report.site,
+        "total_matches": len(results),
+        "similar_precursors": results
+    }
 

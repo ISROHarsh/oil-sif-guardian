@@ -86,3 +86,21 @@ def test_canonical_confined_space_triage_flow():
     analytics_data = analytics_res.json()
     assert analytics_data["total_reports"] >= 1
     assert analytics_data["high_psif_count"] >= 1
+
+    # 6. Verify Semantic Similarity Retrieval
+    sim_res = client.get(f"/api/v1/reports/{report_id}/similar?top_k=3")
+    assert sim_res.status_code == 200
+    sim_data = sim_res.json()
+    assert sim_data["report_id"] == report_id
+    assert "similar_precursors" in sim_data
+    assert len(sim_data["similar_precursors"]) > 0
+
+    # 7. Verify Ad-hoc Similarity Search
+    search_res = client.post(
+        "/api/v1/reports/search/similarity",
+        json={"narrative": "Internal vessel inspection without breathing apparatus and absent attendant.", "top_k": 3}
+    )
+    assert search_res.status_code == 200
+    search_data = search_res.json()
+    assert search_data["total_matches"] > 0
+

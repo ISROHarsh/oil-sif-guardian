@@ -31,6 +31,7 @@ import { HSEReviewQueue } from './components/HSEReviewQueue';
 import { CorrectiveActionsView } from './components/CorrectiveActionsView';
 import { ExecutiveDashboard } from './components/ExecutiveDashboard';
 import { ReportResponse } from './types';
+import { api } from './services/api';
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'intake' | 'batch' | 'annotation' | 'clusters' | 'extraction' | 'models' | 'iogp' | 'rules' | 'decision' | 'queue' | 'actions' | 'analytics'>('intake');
@@ -48,14 +49,11 @@ export const App: React.FC = () => {
 
   const handleSelectReportId = async (reportId: string) => {
     try {
-      const res = await fetch(`http://localhost:8000/api/v1/reports/${reportId}`);
-      if (res.ok) {
-        const rep = await res.json();
-        setLatestReport(rep);
-        setActiveTab('intake');
-      }
+      const rep = await api.getReport(reportId);
+      setLatestReport(rep);
+      setActiveTab('intake');
     } catch (e) {
-      console.error(e);
+      console.error('Failed to load report:', e);
     }
   };
 
@@ -332,6 +330,7 @@ export const App: React.FC = () => {
                   report={latestReport}
                   onGoToReview={() => setActiveTab('queue')}
                   onGoToAction={() => setActiveTab('actions')}
+                  onSelectReportId={handleSelectReportId}
                 />
               </div>
             )}
