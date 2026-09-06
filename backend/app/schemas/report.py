@@ -115,3 +115,36 @@ class DataQualitySummaryResponse(BaseModel):
     dimension_averages: Dict[str, float]
     common_issues: List[Dict[str, Any]]
 
+
+class SimilaritySearchRequest(BaseModel):
+    narrative: str = Field(min_length=3, description="Narrative or incident query text")
+    top_k: int = Field(default=5, ge=1, le=20)
+    min_score: float = Field(default=0.10, ge=0.0, le=1.0)
+
+
+class SimilarPrecursorItem(BaseModel):
+    report_id: str
+    title: str
+    site: str
+    activity: str
+    priority: str
+    primary_rule: str
+    secondary_rules: List[str] = Field(default_factory=list)
+    similarity_score: float
+    similarity_percentage: float
+    shared_keywords: List[str] = Field(default_factory=list)
+    snippet: str
+
+
+class SimilaritySearchResponse(BaseModel):
+    query_tokens_count: int
+    total_matches: int
+    similar_precursors: List[SimilarPrecursorItem]
+
+
+class ReportSimilarityResponse(BaseModel):
+    report_id: str
+    site: str
+    total_matches: int
+    similar_precursors: List[SimilarPrecursorItem]
+

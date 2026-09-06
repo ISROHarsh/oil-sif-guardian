@@ -15,6 +15,16 @@ class CorrectiveActionCreate(BaseModel):
     notes: Optional[str] = Field(default=None)
 
 
+class CorrectiveActionUpdate(BaseModel):
+    title: Optional[str] = None
+    assigned_to: Optional[str] = None
+    due_date: Optional[str] = None
+    status: Optional[str] = Field(default=None, description="OPEN, IN_PROGRESS, VERIFIED_CLOSED")
+    notes: Optional[str] = None
+    verification_notes: Optional[str] = None
+    verified_by: Optional[str] = None
+
+
 class CorrectiveActionResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
@@ -27,3 +37,12 @@ class CorrectiveActionResponse(BaseModel):
     notes: Optional[str] = None
     created_at: Optional[datetime] = None
     closed_at: Optional[datetime] = None
+
+
+class CorrectiveActionStatsResponse(BaseModel):
+    total_actions: int
+    open_count: int
+    in_progress_count: int
+    verified_closed_count: int
+    overdue_count: int
+    closure_rate: float
