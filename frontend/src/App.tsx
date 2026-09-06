@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   LayoutDashboard,
   FilePlus,
@@ -22,9 +22,12 @@ import {
   ExternalLink,
   ShieldAlert,
   Sparkles,
+  Zap,
   Layers,
   Crosshair,
-  Filter
+  Sun,
+  Moon,
+  ChevronUp
 } from 'lucide-react';
 import { ReportIngestion } from './components/ReportIngestion';
 import { AIResultView } from './components/AIResultView';
@@ -54,14 +57,26 @@ type TabType =
   | 'rules'
   | 'decision'
   | 'queue'
-  | 'actions'
-  | 'analytics';
+  | 'actions';
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('dashboard');
   const [latestReport, setLatestReport] = useState<ReportResponse | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [timeframe, setTimeframe] = useState<'daily' | 'weekly' | 'monthly'>('weekly');
+  const [theme, setTheme] = useState<'cosmic' | 'opal'>('cosmic');
+  const [showMoreMenu, setShowMoreMenu] = useState(false);
+
+  useEffect(() => {
+    if (theme === 'opal') {
+      document.body.classList.add('theme-opal');
+    } else {
+      document.body.classList.remove('theme-opal');
+    }
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(theme === 'cosmic' ? 'opal' : 'cosmic');
+  };
 
   const handleTriageComplete = (report: ReportResponse) => {
     setLatestReport(report);
@@ -84,414 +99,317 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="planex-shell">
-      {/* Floating Left Icon Rail (1:1 Planex Aesthetic) */}
-      <aside className="planex-sidebar-rail" aria-label="Sidebar Navigation">
-        {/* Top Logo Glyph */}
-        <div className="flex flex-col items-center gap-6">
-          <button
+    <div className="relative min-h-screen flex flex-col font-sans">
+      {/* ====================================================================
+          Atmospheric Aurora Engine (Ambient Glow Orbs)
+          ==================================================================== */}
+      <div className="aurora-mesh-container" aria-hidden="true">
+        <div className="aurora-orb aurora-orb-cyan" />
+        <div className="aurora-orb aurora-orb-purple" />
+        <div className="aurora-orb aurora-orb-amber" />
+        <div className="aurora-orb aurora-orb-emerald" />
+      </div>
+
+      {/* Spatial Precision Grid Overlay */}
+      <div className="spatial-grid-overlay" aria-hidden="true" />
+
+      {/* ====================================================================
+          Top Glass Navigation Bar
+          ==================================================================== */}
+      <header className="sticky top-0 z-40 px-4 sm:px-8 py-3.5 border-b border-white/10 backdrop-blur-2xl bg-black/30">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+          {/* Brand Identity */}
+          <div
             onClick={() => setActiveTab('dashboard')}
-            className="w-10 h-10 rounded-2xl bg-[#18181B] text-white flex items-center justify-center hover:bg-[#27272A] transition shadow-sm"
-            title="Planex / OIL HSSE Dashboard"
+            className="flex items-center gap-3 cursor-pointer group"
           >
-            {/* Diamond Star / Glyph matching reference image */}
-            <svg
-              className="w-5 h-5 text-white"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
-              <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
-            </svg>
-          </button>
-
-          {/* Primary Navigation Icons */}
-          <div className="flex flex-col items-center gap-2">
-            <button
-              onClick={() => setActiveTab('dashboard')}
-              className={`planex-rail-btn ${activeTab === 'dashboard' ? 'active' : ''}`}
-              title="Cockpit Overview"
-            >
-              <LayoutDashboard className="w-5 h-5" />
-            </button>
-
-            <button
-              onClick={() => setActiveTab('intake')}
-              className={`planex-rail-btn ${activeTab === 'intake' ? 'active' : ''}`}
-              title="Intake & Rapid Triage"
-            >
-              <FilePlus className="w-5 h-5" />
-            </button>
-
-            <button
-              onClick={() => setActiveTab('batch')}
-              className={`planex-rail-btn ${activeTab === 'batch' ? 'active' : ''}`}
-              title="Batch Ingestion & Quality"
-            >
-              <FileSpreadsheet className="w-5 h-5" />
-            </button>
-
-            <button
-              onClick={() => setActiveTab('queue')}
-              className={`planex-rail-btn ${activeTab === 'queue' ? 'active' : ''}`}
-              title="HSE Review Queue"
-            >
-              <UserCheck className="w-5 h-5" />
-            </button>
-
-            <button
-              onClick={() => setActiveTab('actions')}
-              className={`planex-rail-btn ${activeTab === 'actions' ? 'active' : ''}`}
-              title="Corrective Actions (CAPA)"
-            >
-              <CheckSquare className="w-5 h-5" />
-            </button>
-
-            <button
-              onClick={() => setActiveTab('clusters')}
-              className={`planex-rail-btn ${activeTab === 'clusters' ? 'active' : ''}`}
-              title="Precursor Clusters & Barriers"
-            >
-              <Network className="w-5 h-5" />
-            </button>
-
-            <button
-              onClick={() => setActiveTab('models')}
-              className={`planex-rail-btn ${activeTab === 'models' ? 'active' : ''}`}
-              title="Model Studio & Benchmarks"
-            >
-              <Sliders className="w-5 h-5" />
-            </button>
-
-            <button
-              onClick={() => setActiveTab('rules')}
-              className={`planex-rail-btn ${activeTab === 'rules' ? 'active' : ''}`}
-              title="Deterministic Safety Rules (Rule 2)"
-            >
-              <AlertOctagon className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
-
-        {/* Bottom Rail Icons */}
-        <div className="flex flex-col items-center gap-2">
-          <a
-            href="http://localhost:8000/docs"
-            target="_blank"
-            rel="noreferrer"
-            className="planex-rail-btn"
-            title="FastAPI Swagger Documentation"
-          >
-            <Settings className="w-5 h-5" />
-          </a>
-
-          <button
-            onClick={() => setActiveTab('decision')}
-            className="planex-rail-btn"
-            title="System Diagnostics & Help"
-          >
-            <HelpCircle className="w-5 h-5" />
-          </button>
-        </div>
-      </aside>
-
-      {/* Planex Main Stage */}
-      <main className="planex-stage">
-        {/* Top App Bar (1:1 Planex Style) */}
-        <header className="planex-topbar">
-          {/* Brand Logo & Name */}
-          <div className="flex items-center gap-2.5">
-            <svg
-              className="w-5 h-5 text-[#18181B]"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
-              <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
-            </svg>
-            <span className="font-extrabold text-xl tracking-tight text-[#18181B] font-heading">
-              Planex
-            </span>
-            <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#18181B] text-white hidden sm:inline-block">
-              OIL HSSE
-            </span>
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-700 flex items-center justify-center text-slate-950 shadow-lg shadow-amber-500/20 group-hover:scale-105 transition">
+              <ShieldAlert className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-extrabold text-base tracking-tight text-white font-heading">
+                  OIL-SIF GUARDIAN
+                </span>
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono font-bold">
+                  v1.0 PSIF Prioritizer
+                </span>
+              </div>
+              <div className="text-[11px] text-zinc-400 flex items-center gap-1.5 font-mono">
+                <span className="pulse-dot pulse-dot-green" />
+                <span>Oil India Limited • HSSE Intelligence Platform</span>
+              </div>
+            </div>
           </div>
 
           {/* Centered Pill Search Input */}
-          <div className="planex-search-container">
-            <Search className="planex-search-icon w-4 h-4" />
+          <div className="hidden md:flex flex-1 max-w-md relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400 pointer-events-none" />
             <input
               type="text"
-              placeholder="Search projects, tasks, members.."
-              className="planex-search-input"
+              placeholder="Search incidents, installations, barrier codes, regulations..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              className="tactile-search-input text-xs"
             />
           </div>
 
-          {/* Right User & Actions Capsule */}
+          {/* Right Action Cluster: Theme Switcher, Profile, API */}
           <div className="flex items-center gap-3">
-            {/* User Profile Capsule */}
-            <div
-              className="planex-profile-capsule"
-              onClick={() => setActiveTab('dashboard')}
-            >
-              <img
-                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
-                alt="Roger Hummer"
-                className="planex-avatar"
-              />
-              <div className="text-left hidden md:block">
-                <div className="text-xs font-bold text-[#18181B] leading-tight">
-                  Roger Hummer
-                </div>
-                <div className="text-[11px] text-[#71717A] font-medium leading-none">
-                  Ops Manager
-                </div>
-              </div>
-            </div>
-
-            {/* Notification Bell Button */}
+            {/* Theme Switcher (Cosmic Aurora / Luxe Opal) */}
             <button
-              className="planex-icon-circle-btn relative"
-              title="Audit & Incident Alerts"
-              onClick={() => setActiveTab('queue')}
+              onClick={toggleTheme}
+              className="clay-pill-btn clay-pill-dark text-xs p-2.5 rounded-full"
+              title={theme === 'cosmic' ? 'Switch to Luxe Opal Glass (Light)' : 'Switch to Cosmic Aurora Glass (Dark)'}
             >
-              <Bell className="w-4 h-4" />
-              <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-[#EF4444] border-2 border-white" />
+              {theme === 'cosmic' ? (
+                <Sun className="w-4 h-4 text-amber-400" />
+              ) : (
+                <Moon className="w-4 h-4 text-indigo-400" />
+              )}
             </button>
 
-            {/* Quick Settings Button */}
+            {/* Notification Bell */}
+            <button
+              onClick={() => setActiveTab('queue')}
+              className="clay-pill-btn clay-pill-dark text-xs p-2.5 rounded-full relative"
+              title="Audit & Incident Notifications"
+            >
+              <Bell className="w-4 h-4 text-zinc-300" />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500" />
+            </button>
+
+            {/* Swagger API */}
             <a
               href="http://localhost:8000/docs"
               target="_blank"
               rel="noreferrer"
-              className="planex-icon-circle-btn"
-              title="FastAPI Swagger API Reference"
+              className="hidden lg:flex items-center gap-1.5 text-xs text-zinc-300 hover:text-white px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition"
+              title="Open FastAPI Swagger Documentation"
             >
-              <Settings className="w-4 h-4" />
+              <Cpu className="w-3.5 h-3.5 text-amber-400" />
+              <span>Swagger API</span>
+              <ExternalLink className="w-3 h-3 text-zinc-400" />
             </a>
-          </div>
-        </header>
 
-        {/* Hero Greeting Section (1:1 Planex Style) */}
-        <section className="planex-hero">
-          <div>
-            <h1 className="planex-hero-title">
-              Welcome back, Roger <span>👋</span>
-            </h1>
-            <p className="planex-hero-subtitle">
-              Here's a quick overview of your workspace today.
-            </p>
-          </div>
-
-          <div className="flex items-center flex-wrap gap-2.5">
-            {/* Date Pill */}
-            <button className="planex-btn-white">
-              <Calendar className="w-3.5 h-3.5 text-[#71717A]" />
-              <span>Today</span>
-              <ChevronDown className="w-3 h-3 text-[#A1A1AA]" />
-            </button>
-
-            {/* Timeframe Toggle Pills */}
-            <div className="planex-pill-group">
-              <button
-                onClick={() => setTimeframe('daily')}
-                className={`planex-pill-tab ${timeframe === 'daily' ? 'active' : ''}`}
-              >
-                Daily
-              </button>
-              <button
-                onClick={() => setTimeframe('weekly')}
-                className={`planex-pill-tab ${timeframe === 'weekly' ? 'active' : ''}`}
-              >
-                Weekly
-              </button>
-              <button
-                onClick={() => setTimeframe('monthly')}
-                className={`planex-pill-tab ${timeframe === 'monthly' ? 'active' : ''}`}
-              >
-                Monthly
-              </button>
-            </div>
-
-            {/* Primary Action Button */}
-            <button
-              onClick={() => setActiveTab('intake')}
-              className="planex-btn-black"
-            >
-              <Plus className="w-4 h-4" />
-              <span>+ Create Project</span>
-            </button>
-          </div>
-        </section>
-
-        {/* Secondary Sub-navigation Bar for Complete Feature Access */}
-        <nav className="planex-subnav-bar" aria-label="Feature Views">
-          <button
-            onClick={() => setActiveTab('dashboard')}
-            className={`planex-subnav-item ${activeTab === 'dashboard' ? 'active' : ''}`}
-          >
-            <LayoutDashboard className="w-3.5 h-3.5" />
-            <span>Executive Cockpit</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('intake')}
-            className={`planex-subnav-item ${activeTab === 'intake' ? 'active' : ''}`}
-          >
-            <FilePlus className="w-3.5 h-3.5" />
-            <span>Intake & Triage</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('batch')}
-            className={`planex-subnav-item ${activeTab === 'batch' ? 'active' : ''}`}
-          >
-            <FileSpreadsheet className="w-3.5 h-3.5" />
-            <span>Batch Processing</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('annotation')}
-            className={`planex-subnav-item ${activeTab === 'annotation' ? 'active' : ''}`}
-          >
-            <Target className="w-3.5 h-3.5" />
-            <span>Benchmark & Ground Truth</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('clusters')}
-            className={`planex-subnav-item ${activeTab === 'clusters' ? 'active' : ''}`}
-          >
-            <Network className="w-3.5 h-3.5" />
-            <span>Clusters & Barriers</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('extraction')}
-            className={`planex-subnav-item ${activeTab === 'extraction' ? 'active' : ''}`}
-          >
-            <Tag className="w-3.5 h-3.5" />
-            <span>Entity NER</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('models')}
-            className={`planex-subnav-item ${activeTab === 'models' ? 'active' : ''}`}
-          >
-            <Sliders className="w-3.5 h-3.5" />
-            <span>Model Studio</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('iogp')}
-            className={`planex-subnav-item ${activeTab === 'iogp' ? 'active' : ''}`}
-          >
-            <Crosshair className="w-3.5 h-3.5" />
-            <span>IOGP Rules</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('rules')}
-            className={`planex-subnav-item ${activeTab === 'rules' ? 'active' : ''}`}
-          >
-            <AlertOctagon className="w-3.5 h-3.5" />
-            <span>Safety Guardrails</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('decision')}
-            className={`planex-subnav-item ${activeTab === 'decision' ? 'active' : ''}`}
-          >
-            <Cpu className="w-3.5 h-3.5" />
-            <span>Decision Studio</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('queue')}
-            className={`planex-subnav-item ${activeTab === 'queue' ? 'active' : ''}`}
-          >
-            <UserCheck className="w-3.5 h-3.5" />
-            <span>HSE Review Queue</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('actions')}
-            className={`planex-subnav-item ${activeTab === 'actions' ? 'active' : ''}`}
-          >
-            <CheckSquare className="w-3.5 h-3.5" />
-            <span>Corrective Actions</span>
-          </button>
-        </nav>
-
-        {/* Dynamic View Body */}
-        <div className="w-full">
-          {activeTab === 'dashboard' && (
-            <ExecutiveDashboard
-              onNavigateToIntake={() => setActiveTab('intake')}
-              onNavigateToQueue={() => setActiveTab('queue')}
-              onNavigateToActions={() => setActiveTab('actions')}
-            />
-          )}
-
-          {activeTab === 'intake' && (
-            <div className="space-y-6">
-              <ReportIngestion onTriageComplete={handleTriageComplete} />
-              {latestReport && (
-                <div className="pt-2">
-                  <AIResultView
-                    report={latestReport}
-                    onGoToReview={() => setActiveTab('queue')}
-                    onGoToAction={() => setActiveTab('actions')}
-                    onSelectReportId={handleSelectReportId}
-                  />
+            {/* User Profile Pill */}
+            <div className="flex items-center gap-2.5 pl-2 border-l border-white/10">
+              <img
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
+                alt="Er. Rajesh Baruah"
+                className="w-8 h-8 rounded-full border border-white/30 object-cover"
+              />
+              <div className="hidden sm:block text-left">
+                <div className="text-xs font-bold text-white leading-tight">
+                  Er. Rajesh Baruah
                 </div>
-              )}
+                <div className="text-[10px] text-zinc-400 leading-none">
+                  Chief Safety Officer
+                </div>
+              </div>
             </div>
-          )}
+          </div>
+        </div>
+      </header>
 
-          {activeTab === 'batch' && (
-            <BatchIngestionView onSelectReportId={handleSelectReportId} />
-          )}
+      {/* ====================================================================
+          Main Stage Content Area
+          ==================================================================== */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 z-10">
+        {activeTab === 'dashboard' && (
+          <ExecutiveDashboard
+            onNavigateToIntake={() => setActiveTab('intake')}
+            onNavigateToQueue={() => setActiveTab('queue')}
+            onNavigateToActions={() => setActiveTab('actions')}
+            onTriageComplete={handleTriageComplete}
+          />
+        )}
 
-          {activeTab === 'annotation' && <AnnotationBenchmarkView />}
+        {activeTab === 'intake' && (
+          <div className="space-y-6 pb-24">
+            <ReportIngestion onTriageComplete={handleTriageComplete} />
+            {latestReport && (
+              <div className="pt-2">
+                <AIResultView
+                  report={latestReport}
+                  onGoToReview={() => setActiveTab('queue')}
+                  onGoToAction={() => setActiveTab('actions')}
+                  onSelectReportId={handleSelectReportId}
+                />
+              </div>
+            )}
+          </div>
+        )}
 
-          {activeTab === 'clusters' && <PrecursorClusterView />}
-
-          {activeTab === 'extraction' && <EntityExtractionView />}
-
-          {activeTab === 'models' && <ModelStudioView />}
-
-          {activeTab === 'iogp' && <IOGPMultiLabelView />}
-
-          {activeTab === 'rules' && <DeterministicRulesView />}
-
-          {activeTab === 'decision' && <HybridDecisionStudioView />}
-
-          {activeTab === 'queue' && (
+        {activeTab === 'queue' && (
+          <div className="pb-24">
             <HSEReviewQueue onSelectReport={handleSelectReportFromQueue} />
-          )}
+          </div>
+        )}
 
-          {activeTab === 'actions' && <CorrectiveActionsView />}
+        {activeTab === 'actions' && (
+          <div className="pb-24">
+            <CorrectiveActionsView />
+          </div>
+        )}
 
-          {activeTab === 'analytics' && (
-            <ExecutiveDashboard
-              onNavigateToIntake={() => setActiveTab('intake')}
-              onNavigateToQueue={() => setActiveTab('queue')}
-              onNavigateToActions={() => setActiveTab('actions')}
-            />
+        {activeTab === 'rules' && (
+          <div className="pb-24">
+            <DeterministicRulesView />
+          </div>
+        )}
+
+        {activeTab === 'clusters' && (
+          <div className="pb-24">
+            <PrecursorClusterView />
+          </div>
+        )}
+
+        {activeTab === 'models' && (
+          <div className="pb-24">
+            <ModelStudioView />
+          </div>
+        )}
+
+        {activeTab === 'batch' && (
+          <div className="pb-24">
+            <BatchIngestionView onSelectReportId={handleSelectReportId} />
+          </div>
+        )}
+
+        {activeTab === 'annotation' && (
+          <div className="pb-24">
+            <AnnotationBenchmarkView />
+          </div>
+        )}
+
+        {activeTab === 'extraction' && (
+          <div className="pb-24">
+            <EntityExtractionView />
+          </div>
+        )}
+
+        {activeTab === 'decision' && (
+          <div className="pb-24">
+            <HybridDecisionStudioView />
+          </div>
+        )}
+
+        {activeTab === 'iogp' && (
+          <div className="pb-24">
+            <IOGPMultiLabelView />
+          </div>
+        )}
+      </main>
+
+      {/* ====================================================================
+          Floating Apple VisionOS-Style Master Glass Dock
+          ==================================================================== */}
+      <nav className="glass-dock" aria-label="Quick Dock Navigation">
+        <button
+          onClick={() => { setActiveTab('dashboard'); setShowMoreMenu(false); }}
+          className={`glass-dock-item ${activeTab === 'dashboard' ? 'active' : ''}`}
+        >
+          <LayoutDashboard className="w-4 h-4" />
+          <span>Cockpit</span>
+        </button>
+
+        <button
+          onClick={() => { setActiveTab('intake'); setShowMoreMenu(false); }}
+          className={`glass-dock-item ${activeTab === 'intake' ? 'active' : ''}`}
+        >
+          <Zap className="w-4 h-4 text-amber-400" />
+          <span>AI Triage</span>
+        </button>
+
+        <button
+          onClick={() => { setActiveTab('queue'); setShowMoreMenu(false); }}
+          className={`glass-dock-item ${activeTab === 'queue' ? 'active' : ''}`}
+        >
+          <UserCheck className="w-4 h-4" />
+          <span>HSE Review</span>
+        </button>
+
+        <button
+          onClick={() => { setActiveTab('actions'); setShowMoreMenu(false); }}
+          className={`glass-dock-item ${activeTab === 'actions' ? 'active' : ''}`}
+        >
+          <CheckSquare className="w-4 h-4" />
+          <span>CAPA Actions</span>
+        </button>
+
+        <button
+          onClick={() => { setActiveTab('rules'); setShowMoreMenu(false); }}
+          className={`glass-dock-item ${activeTab === 'rules' ? 'active' : ''}`}
+        >
+          <AlertOctagon className="w-4 h-4" />
+          <span>Safety Rules</span>
+        </button>
+
+        {/* More Tools Trigger Popover */}
+        <div className="relative">
+          <button
+            onClick={() => setShowMoreMenu(!showMoreMenu)}
+            className={`glass-dock-item ${showMoreMenu ? 'active' : ''}`}
+          >
+            <Layers className="w-4 h-4" />
+            <span>More Views</span>
+            <ChevronUp className={`w-3 h-3 transition-transform ${showMoreMenu ? 'rotate-180' : ''}`} />
+          </button>
+
+          {showMoreMenu && (
+            <div className="absolute bottom-full mb-3 right-0 w-56 p-2 rounded-2xl bg-black/90 backdrop-blur-2xl border border-white/20 shadow-2xl space-y-1 z-50 animate-fadeIn">
+              <button
+                onClick={() => { setActiveTab('clusters'); setShowMoreMenu(false); }}
+                className="w-full text-left px-3 py-2 rounded-xl text-xs text-zinc-300 hover:text-white hover:bg-white/10 flex items-center gap-2"
+              >
+                <Network className="w-4 h-4 text-cyan-400" />
+                <span>Precursor Clusters</span>
+              </button>
+
+              <button
+                onClick={() => { setActiveTab('batch'); setShowMoreMenu(false); }}
+                className="w-full text-left px-3 py-2 rounded-xl text-xs text-zinc-300 hover:text-white hover:bg-white/10 flex items-center gap-2"
+              >
+                <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
+                <span>Batch Processing</span>
+              </button>
+
+              <button
+                onClick={() => { setActiveTab('models'); setShowMoreMenu(false); }}
+                className="w-full text-left px-3 py-2 rounded-xl text-xs text-zinc-300 hover:text-white hover:bg-white/10 flex items-center gap-2"
+              >
+                <Sliders className="w-4 h-4 text-purple-400" />
+                <span>Model Studio</span>
+              </button>
+
+              <button
+                onClick={() => { setActiveTab('extraction'); setShowMoreMenu(false); }}
+                className="w-full text-left px-3 py-2 rounded-xl text-xs text-zinc-300 hover:text-white hover:bg-white/10 flex items-center gap-2"
+              >
+                <Tag className="w-4 h-4 text-amber-400" />
+                <span>Entity Extraction (NER)</span>
+              </button>
+
+              <button
+                onClick={() => { setActiveTab('annotation'); setShowMoreMenu(false); }}
+                className="w-full text-left px-3 py-2 rounded-xl text-xs text-zinc-300 hover:text-white hover:bg-white/10 flex items-center gap-2"
+              >
+                <Target className="w-4 h-4 text-rose-400" />
+                <span>Annotation Benchmark</span>
+              </button>
+
+              <button
+                onClick={() => { setActiveTab('decision'); setShowMoreMenu(false); }}
+                className="w-full text-left px-3 py-2 rounded-xl text-xs text-zinc-300 hover:text-white hover:bg-white/10 flex items-center gap-2"
+              >
+                <Cpu className="w-4 h-4 text-blue-400" />
+                <span>Hybrid Decision Studio</span>
+              </button>
+            </div>
           )}
         </div>
-
-        {/* Minimalist Discreet Footer */}
-        <footer className="pt-6 pb-2 border-t border-[#E4E1DA] flex flex-col sm:flex-row items-center justify-between text-xs text-[#8E8A83] gap-2 font-medium">
-          <div className="flex items-center gap-2">
-            <span>OIL-SIF Guardian Enterprise Platform</span>
-            <span>•</span>
-            <span>AI recommends. Evidence explains. HSE decides.</span>
-          </div>
-          <div>Strict Statutory Compliance • OISD-105 • DGMS OMR 2017</div>
-        </footer>
-      </main>
+      </nav>
     </div>
   );
 };
