@@ -1,21 +1,30 @@
 import React, { useState } from 'react';
 import {
-  ShieldAlert,
+  LayoutDashboard,
   FilePlus,
   FileSpreadsheet,
-  UserCheck,
-  ClipboardCheck,
-  BarChart3,
-  ExternalLink,
-  Cpu,
-  Layers,
-  Activity,
+  Target,
   Network,
   Tag,
-  Target,
   Sliders,
+  AlertOctagon,
+  Cpu,
+  UserCheck,
+  CheckSquare,
+  BarChart3,
+  Search,
+  Bell,
+  Settings,
+  HelpCircle,
+  Calendar,
+  ChevronDown,
+  Plus,
+  ExternalLink,
+  ShieldAlert,
+  Sparkles,
+  Layers,
   Crosshair,
-  AlertOctagon
+  Filter
 } from 'lucide-react';
 import { ReportIngestion } from './components/ReportIngestion';
 import { AIResultView } from './components/AIResultView';
@@ -33,9 +42,26 @@ import { ExecutiveDashboard } from './components/ExecutiveDashboard';
 import { ReportResponse } from './types';
 import { api } from './services/api';
 
+type TabType =
+  | 'dashboard'
+  | 'intake'
+  | 'batch'
+  | 'annotation'
+  | 'clusters'
+  | 'extraction'
+  | 'models'
+  | 'iogp'
+  | 'rules'
+  | 'decision'
+  | 'queue'
+  | 'actions'
+  | 'analytics';
+
 export const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'intake' | 'batch' | 'annotation' | 'clusters' | 'extraction' | 'models' | 'iogp' | 'rules' | 'decision' | 'queue' | 'actions' | 'analytics'>('intake');
+  const [activeTab, setActiveTab] = useState<TabType>('dashboard');
   const [latestReport, setLatestReport] = useState<ReportResponse | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [timeframe, setTimeframe] = useState<'daily' | 'weekly' | 'monthly'>('weekly');
 
   const handleTriageComplete = (report: ReportResponse) => {
     setLatestReport(report);
@@ -58,341 +84,414 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0d14] text-slate-100 flex flex-col font-sans">
-      {/* Top Command Center Header */}
-      <header className="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center text-slate-950 shadow-glow-amber">
-              <ShieldAlert className="w-6 h-6" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-extrabold text-base tracking-tight text-white font-heading">
-                  OIL-SIF GUARDIAN
-                </span>
-                <span className="badge badge-iogp text-[10px] py-0.5 px-2">v1.0 PSIF Prioritizer</span>
-              </div>
-              <div className="text-[11px] text-slate-400 font-mono flex items-center gap-1.5">
-                <span className="pulse-dot pulse-dot-green" />
-                <span>Oil India Limited HSSE Intelligence Platform</span>
-              </div>
-            </div>
-          </div>
+    <div className="planex-shell">
+      {/* Floating Left Icon Rail (1:1 Planex Aesthetic) */}
+      <aside className="planex-sidebar-rail" aria-label="Sidebar Navigation">
+        {/* Top Logo Glyph */}
+        <div className="flex flex-col items-center gap-6">
+          <button
+            onClick={() => setActiveTab('dashboard')}
+            className="w-10 h-10 rounded-2xl bg-[#18181B] text-white flex items-center justify-center hover:bg-[#27272A] transition shadow-sm"
+            title="Planex / OIL HSSE Dashboard"
+          >
+            {/* Diamond Star / Glyph matching reference image */}
+            <svg
+              className="w-5 h-5 text-white"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
+            </svg>
+          </button>
 
-          {/* Navigation Tabs */}
-          <nav className="hidden md:flex items-center gap-1 bg-slate-900/90 p-1 rounded-xl border border-slate-800">
+          {/* Primary Navigation Icons */}
+          <div className="flex flex-col items-center gap-2">
+            <button
+              onClick={() => setActiveTab('dashboard')}
+              className={`planex-rail-btn ${activeTab === 'dashboard' ? 'active' : ''}`}
+              title="Cockpit Overview"
+            >
+              <LayoutDashboard className="w-5 h-5" />
+            </button>
+
             <button
               onClick={() => setActiveTab('intake')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeTab === 'intake'
-                  ? 'bg-amber-500 text-slate-950 shadow-md'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-              }`}
+              className={`planex-rail-btn ${activeTab === 'intake' ? 'active' : ''}`}
+              title="Intake & Rapid Triage"
             >
-              <FilePlus className="w-3.5 h-3.5" />
-              <span>Intake & Triage</span>
+              <FilePlus className="w-5 h-5" />
             </button>
 
             <button
               onClick={() => setActiveTab('batch')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeTab === 'batch'
-                  ? 'bg-amber-500 text-slate-950 shadow-md'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-              }`}
+              className={`planex-rail-btn ${activeTab === 'batch' ? 'active' : ''}`}
+              title="Batch Ingestion & Quality"
             >
-              <FileSpreadsheet className="w-3.5 h-3.5" />
-              <span>Batch & Quality</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('annotation')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeTab === 'annotation'
-                  ? 'bg-amber-500 text-slate-950 shadow-md'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-              }`}
-            >
-              <Target className="w-3.5 h-3.5" />
-              <span>Annotation & Benchmark</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('clusters')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeTab === 'clusters'
-                  ? 'bg-amber-500 text-slate-950 shadow-md'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-              }`}
-            >
-              <Network className="w-3.5 h-3.5" />
-              <span>Clusters & Barriers</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('extraction')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeTab === 'extraction'
-                  ? 'bg-amber-500 text-slate-950 shadow-md'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-              }`}
-            >
-              <Tag className="w-3.5 h-3.5" />
-              <span>Entity NER</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('models')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeTab === 'models'
-                  ? 'bg-amber-500 text-slate-950 shadow-md'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-              }`}
-            >
-              <Sliders className="w-3.5 h-3.5" />
-              <span>Model Studio</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('iogp')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeTab === 'iogp'
-                  ? 'bg-amber-500 text-slate-950 shadow-md'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-              }`}
-            >
-              <Crosshair className="w-3.5 h-3.5" />
-              <span>IOGP Rules</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('rules')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeTab === 'rules'
-                  ? 'bg-amber-500 text-slate-950 shadow-md'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-              }`}
-            >
-              <AlertOctagon className="w-3.5 h-3.5" />
-              <span>Safety Rules</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('decision')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeTab === 'decision'
-                  ? 'bg-amber-500 text-slate-950 shadow-md'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-              }`}
-            >
-              <Cpu className="w-3.5 h-3.5" />
-              <span>Decision Studio</span>
+              <FileSpreadsheet className="w-5 h-5" />
             </button>
 
             <button
               onClick={() => setActiveTab('queue')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeTab === 'queue'
-                  ? 'bg-amber-500 text-slate-950 shadow-md'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-              }`}
+              className={`planex-rail-btn ${activeTab === 'queue' ? 'active' : ''}`}
+              title="HSE Review Queue"
             >
-              <UserCheck className="w-3.5 h-3.5" />
-              <span>HSE Review Queue</span>
+              <UserCheck className="w-5 h-5" />
             </button>
 
             <button
               onClick={() => setActiveTab('actions')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeTab === 'actions'
-                  ? 'bg-amber-500 text-slate-950 shadow-md'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-              }`}
+              className={`planex-rail-btn ${activeTab === 'actions' ? 'active' : ''}`}
+              title="Corrective Actions (CAPA)"
             >
-              <ClipboardCheck className="w-3.5 h-3.5" />
-              <span>Corrective Actions</span>
+              <CheckSquare className="w-5 h-5" />
             </button>
 
             <button
-              onClick={() => setActiveTab('analytics')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeTab === 'analytics'
-                  ? 'bg-amber-500 text-slate-950 shadow-md'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-              }`}
+              onClick={() => setActiveTab('clusters')}
+              className={`planex-rail-btn ${activeTab === 'clusters' ? 'active' : ''}`}
+              title="Precursor Clusters & Barriers"
             >
-              <BarChart3 className="w-3.5 h-3.5" />
-              <span>Precursor Analytics</span>
+              <Network className="w-5 h-5" />
             </button>
-          </nav>
 
-          {/* Right Header Status */}
+            <button
+              onClick={() => setActiveTab('models')}
+              className={`planex-rail-btn ${activeTab === 'models' ? 'active' : ''}`}
+              title="Model Studio & Benchmarks"
+            >
+              <Sliders className="w-5 h-5" />
+            </button>
+
+            <button
+              onClick={() => setActiveTab('rules')}
+              className={`planex-rail-btn ${activeTab === 'rules' ? 'active' : ''}`}
+              title="Deterministic Safety Rules (Rule 2)"
+            >
+              <AlertOctagon className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Bottom Rail Icons */}
+        <div className="flex flex-col items-center gap-2">
+          <a
+            href="http://localhost:8000/docs"
+            target="_blank"
+            rel="noreferrer"
+            className="planex-rail-btn"
+            title="FastAPI Swagger Documentation"
+          >
+            <Settings className="w-5 h-5" />
+          </a>
+
+          <button
+            onClick={() => setActiveTab('decision')}
+            className="planex-rail-btn"
+            title="System Diagnostics & Help"
+          >
+            <HelpCircle className="w-5 h-5" />
+          </button>
+        </div>
+      </aside>
+
+      {/* Planex Main Stage */}
+      <main className="planex-stage">
+        {/* Top App Bar (1:1 Planex Style) */}
+        <header className="planex-topbar">
+          {/* Brand Logo & Name */}
+          <div className="flex items-center gap-2.5">
+            <svg
+              className="w-5 h-5 text-[#18181B]"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
+            </svg>
+            <span className="font-extrabold text-xl tracking-tight text-[#18181B] font-heading">
+              Planex
+            </span>
+            <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#18181B] text-white hidden sm:inline-block">
+              OIL HSSE
+            </span>
+          </div>
+
+          {/* Centered Pill Search Input */}
+          <div className="planex-search-container">
+            <Search className="planex-search-icon w-4 h-4" />
+            <input
+              type="text"
+              placeholder="Search projects, tasks, members.."
+              className="planex-search-input"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+
+          {/* Right User & Actions Capsule */}
           <div className="flex items-center gap-3">
+            {/* User Profile Capsule */}
+            <div
+              className="planex-profile-capsule"
+              onClick={() => setActiveTab('dashboard')}
+            >
+              <img
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
+                alt="Roger Hummer"
+                className="planex-avatar"
+              />
+              <div className="text-left hidden md:block">
+                <div className="text-xs font-bold text-[#18181B] leading-tight">
+                  Roger Hummer
+                </div>
+                <div className="text-[11px] text-[#71717A] font-medium leading-none">
+                  Ops Manager
+                </div>
+              </div>
+            </div>
+
+            {/* Notification Bell Button */}
+            <button
+              className="planex-icon-circle-btn relative"
+              title="Audit & Incident Alerts"
+              onClick={() => setActiveTab('queue')}
+            >
+              <Bell className="w-4 h-4" />
+              <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-[#EF4444] border-2 border-white" />
+            </button>
+
+            {/* Quick Settings Button */}
             <a
               href="http://localhost:8000/docs"
               target="_blank"
               rel="noreferrer"
-              className="btn btn-secondary text-[11px] py-1.5 px-3 flex items-center gap-1.5"
+              className="planex-icon-circle-btn"
+              title="FastAPI Swagger API Reference"
             >
-              <Cpu className="w-3.5 h-3.5 text-amber-400" />
-              <span>Swagger API</span>
-              <ExternalLink className="w-3 h-3 text-slate-400" />
+              <Settings className="w-4 h-4" />
             </a>
           </div>
-        </div>
+        </header>
 
-        {/* Mobile Navigation Sub-bar */}
-        <div className="md:hidden flex items-center justify-around border-t border-slate-800/80 bg-slate-950 py-2 px-2">
+        {/* Hero Greeting Section (1:1 Planex Style) */}
+        <section className="planex-hero">
+          <div>
+            <h1 className="planex-hero-title">
+              Welcome back, Roger <span>👋</span>
+            </h1>
+            <p className="planex-hero-subtitle">
+              Here's a quick overview of your workspace today.
+            </p>
+          </div>
+
+          <div className="flex items-center flex-wrap gap-2.5">
+            {/* Date Pill */}
+            <button className="planex-btn-white">
+              <Calendar className="w-3.5 h-3.5 text-[#71717A]" />
+              <span>Today</span>
+              <ChevronDown className="w-3 h-3 text-[#A1A1AA]" />
+            </button>
+
+            {/* Timeframe Toggle Pills */}
+            <div className="planex-pill-group">
+              <button
+                onClick={() => setTimeframe('daily')}
+                className={`planex-pill-tab ${timeframe === 'daily' ? 'active' : ''}`}
+              >
+                Daily
+              </button>
+              <button
+                onClick={() => setTimeframe('weekly')}
+                className={`planex-pill-tab ${timeframe === 'weekly' ? 'active' : ''}`}
+              >
+                Weekly
+              </button>
+              <button
+                onClick={() => setTimeframe('monthly')}
+                className={`planex-pill-tab ${timeframe === 'monthly' ? 'active' : ''}`}
+              >
+                Monthly
+              </button>
+            </div>
+
+            {/* Primary Action Button */}
+            <button
+              onClick={() => setActiveTab('intake')}
+              className="planex-btn-black"
+            >
+              <Plus className="w-4 h-4" />
+              <span>+ Create Project</span>
+            </button>
+          </div>
+        </section>
+
+        {/* Secondary Sub-navigation Bar for Complete Feature Access */}
+        <nav className="planex-subnav-bar" aria-label="Feature Views">
+          <button
+            onClick={() => setActiveTab('dashboard')}
+            className={`planex-subnav-item ${activeTab === 'dashboard' ? 'active' : ''}`}
+          >
+            <LayoutDashboard className="w-3.5 h-3.5" />
+            <span>Executive Cockpit</span>
+          </button>
+
           <button
             onClick={() => setActiveTab('intake')}
-            className={`text-xs px-2 py-1 rounded ${activeTab === 'intake' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+            className={`planex-subnav-item ${activeTab === 'intake' ? 'active' : ''}`}
           >
-            Intake
+            <FilePlus className="w-3.5 h-3.5" />
+            <span>Intake & Triage</span>
           </button>
+
           <button
             onClick={() => setActiveTab('batch')}
-            className={`text-xs px-2 py-1 rounded ${activeTab === 'batch' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+            className={`planex-subnav-item ${activeTab === 'batch' ? 'active' : ''}`}
           >
-            Batch
+            <FileSpreadsheet className="w-3.5 h-3.5" />
+            <span>Batch Processing</span>
           </button>
+
           <button
             onClick={() => setActiveTab('annotation')}
-            className={`text-xs px-2 py-1 rounded ${activeTab === 'annotation' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+            className={`planex-subnav-item ${activeTab === 'annotation' ? 'active' : ''}`}
           >
-            Benchmark
+            <Target className="w-3.5 h-3.5" />
+            <span>Benchmark & Ground Truth</span>
           </button>
+
           <button
             onClick={() => setActiveTab('clusters')}
-            className={`text-xs px-2 py-1 rounded ${activeTab === 'clusters' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+            className={`planex-subnav-item ${activeTab === 'clusters' ? 'active' : ''}`}
           >
-            Clusters
+            <Network className="w-3.5 h-3.5" />
+            <span>Clusters & Barriers</span>
           </button>
+
           <button
             onClick={() => setActiveTab('extraction')}
-            className={`text-xs px-2 py-1 rounded ${activeTab === 'extraction' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+            className={`planex-subnav-item ${activeTab === 'extraction' ? 'active' : ''}`}
           >
-            NER
+            <Tag className="w-3.5 h-3.5" />
+            <span>Entity NER</span>
           </button>
+
           <button
             onClick={() => setActiveTab('models')}
-            className={`text-xs px-2 py-1 rounded ${activeTab === 'models' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+            className={`planex-subnav-item ${activeTab === 'models' ? 'active' : ''}`}
           >
-            Models
+            <Sliders className="w-3.5 h-3.5" />
+            <span>Model Studio</span>
           </button>
+
           <button
             onClick={() => setActiveTab('iogp')}
-            className={`text-xs px-2 py-1 rounded ${activeTab === 'iogp' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+            className={`planex-subnav-item ${activeTab === 'iogp' ? 'active' : ''}`}
           >
-            IOGP
+            <Crosshair className="w-3.5 h-3.5" />
+            <span>IOGP Rules</span>
           </button>
+
           <button
             onClick={() => setActiveTab('rules')}
-            className={`text-xs px-2 py-1 rounded ${activeTab === 'rules' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+            className={`planex-subnav-item ${activeTab === 'rules' ? 'active' : ''}`}
           >
-            Rules
+            <AlertOctagon className="w-3.5 h-3.5" />
+            <span>Safety Guardrails</span>
           </button>
+
           <button
             onClick={() => setActiveTab('decision')}
-            className={`text-xs px-2 py-1 rounded ${activeTab === 'decision' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+            className={`planex-subnav-item ${activeTab === 'decision' ? 'active' : ''}`}
           >
-            Decision
+            <Cpu className="w-3.5 h-3.5" />
+            <span>Decision Studio</span>
           </button>
+
           <button
             onClick={() => setActiveTab('queue')}
-            className={`text-xs px-2 py-1 rounded ${activeTab === 'queue' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+            className={`planex-subnav-item ${activeTab === 'queue' ? 'active' : ''}`}
           >
-            Queue
+            <UserCheck className="w-3.5 h-3.5" />
+            <span>HSE Review Queue</span>
           </button>
+
           <button
             onClick={() => setActiveTab('actions')}
-            className={`text-xs px-2 py-1 rounded ${activeTab === 'actions' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
+            className={`planex-subnav-item ${activeTab === 'actions' ? 'active' : ''}`}
           >
-            Actions
+            <CheckSquare className="w-3.5 h-3.5" />
+            <span>Corrective Actions</span>
           </button>
-          <button
-            onClick={() => setActiveTab('analytics')}
-            className={`text-xs px-2 py-1 rounded ${activeTab === 'analytics' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'}`}
-          >
-            Analytics
-          </button>
+        </nav>
+
+        {/* Dynamic View Body */}
+        <div className="w-full">
+          {activeTab === 'dashboard' && (
+            <ExecutiveDashboard
+              onNavigateToIntake={() => setActiveTab('intake')}
+              onNavigateToQueue={() => setActiveTab('queue')}
+              onNavigateToActions={() => setActiveTab('actions')}
+            />
+          )}
+
+          {activeTab === 'intake' && (
+            <div className="space-y-6">
+              <ReportIngestion onTriageComplete={handleTriageComplete} />
+              {latestReport && (
+                <div className="pt-2">
+                  <AIResultView
+                    report={latestReport}
+                    onGoToReview={() => setActiveTab('queue')}
+                    onGoToAction={() => setActiveTab('actions')}
+                    onSelectReportId={handleSelectReportId}
+                  />
+                </div>
+              )}
+            </div>
+          )}
+
+          {activeTab === 'batch' && (
+            <BatchIngestionView onSelectReportId={handleSelectReportId} />
+          )}
+
+          {activeTab === 'annotation' && <AnnotationBenchmarkView />}
+
+          {activeTab === 'clusters' && <PrecursorClusterView />}
+
+          {activeTab === 'extraction' && <EntityExtractionView />}
+
+          {activeTab === 'models' && <ModelStudioView />}
+
+          {activeTab === 'iogp' && <IOGPMultiLabelView />}
+
+          {activeTab === 'rules' && <DeterministicRulesView />}
+
+          {activeTab === 'decision' && <HybridDecisionStudioView />}
+
+          {activeTab === 'queue' && (
+            <HSEReviewQueue onSelectReport={handleSelectReportFromQueue} />
+          )}
+
+          {activeTab === 'actions' && <CorrectiveActionsView />}
+
+          {activeTab === 'analytics' && (
+            <ExecutiveDashboard
+              onNavigateToIntake={() => setActiveTab('intake')}
+              onNavigateToQueue={() => setActiveTab('queue')}
+              onNavigateToActions={() => setActiveTab('actions')}
+            />
+          )}
         </div>
-      </header>
 
-      {/* Main View Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-        {activeTab === 'intake' && (
-          <div className="space-y-6">
-            <ReportIngestion onTriageComplete={handleTriageComplete} />
-            {latestReport && (
-              <div className="pt-2">
-                <AIResultView
-                  report={latestReport}
-                  onGoToReview={() => setActiveTab('queue')}
-                  onGoToAction={() => setActiveTab('actions')}
-                  onSelectReportId={handleSelectReportId}
-                />
-              </div>
-            )}
-          </div>
-        )}
-
-        {activeTab === 'batch' && (
-          <BatchIngestionView onSelectReportId={handleSelectReportId} />
-        )}
-
-        {activeTab === 'annotation' && (
-          <AnnotationBenchmarkView />
-        )}
-
-        {activeTab === 'clusters' && (
-          <PrecursorClusterView />
-        )}
-
-        {activeTab === 'extraction' && (
-          <EntityExtractionView />
-        )}
-
-        {activeTab === 'models' && (
-          <ModelStudioView />
-        )}
-
-        {activeTab === 'iogp' && (
-          <IOGPMultiLabelView />
-        )}
-
-        {activeTab === 'rules' && (
-          <DeterministicRulesView />
-        )}
-
-        {activeTab === 'decision' && (
-          <HybridDecisionStudioView />
-        )}
-
-        {activeTab === 'queue' && (
-          <HSEReviewQueue onSelectReport={handleSelectReportFromQueue} />
-        )}
-
-        {activeTab === 'actions' && (
-          <CorrectiveActionsView />
-        )}
-
-        {activeTab === 'analytics' && (
-          <ExecutiveDashboard />
-        )}
-      </main>
-
-      {/* Footer */}
-      <footer className="border-t border-slate-800/80 bg-slate-950/60 py-4 mt-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-2 font-mono">
+        {/* Minimalist Discreet Footer */}
+        <footer className="pt-6 pb-2 border-t border-[#E4E1DA] flex flex-col sm:flex-row items-center justify-between text-xs text-[#8E8A83] gap-2 font-medium">
           <div className="flex items-center gap-2">
             <span>OIL-SIF Guardian Enterprise Platform</span>
             <span>•</span>
-            <span className="text-amber-400">AI recommends. Evidence explains. HSE decides.</span>
+            <span>AI recommends. Evidence explains. HSE decides.</span>
           </div>
-          <div>Strict Confidentiality • Version Locked to IOGP 9 Life-Saving Rules</div>
-        </div>
-      </footer>
+          <div>Strict Statutory Compliance • OISD-105 • DGMS OMR 2017</div>
+        </footer>
+      </main>
     </div>
   );
 };
