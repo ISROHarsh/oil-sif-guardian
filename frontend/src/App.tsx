@@ -21,7 +21,6 @@ import {
   ShieldAlert,
   Sparkles,
   Zap,
-  Layers,
   Sun,
   Moon,
   Menu,
@@ -65,7 +64,7 @@ export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('dashboard');
   const [latestReport, setLatestReport] = useState<ReportResponse | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [theme, setTheme] = useState<'light' | 'dark'>('light'); // Default to clean light enterprise theme matching NEXA & Insights
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -101,30 +100,38 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex font-sans transition-colors duration-200">
+    <div className="app-shell">
       {/* ====================================================================
-          1. ENTERPRISE LEFT SIDEBAR (Direct 1:1 with NEXA Reference 4)
+          1. FIXED LEFT ENTERPRISE SIDEBAR (1:1 with NEXA Reference 4)
           ==================================================================== */}
-      <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col justify-between transition-transform duration-200 ease-in-out ${
-          mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
-        }`}
-      >
-        <div className="flex flex-col h-full">
-          {/* Brand Logo & Title Header */}
-          <div className="h-16 px-6 flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80">
+      <aside className={`sidebar ${mobileMenuOpen ? 'mobile-open' : ''}`}>
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+          {/* Header Brand */}
+          <div className="sidebar-header">
             <div
               onClick={() => { setActiveTab('dashboard'); setMobileMenuOpen(false); }}
-              className="flex items-center gap-2.5 cursor-pointer group"
+              style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}
             >
-              <div className="w-8 h-8 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 flex items-center justify-center font-bold text-sm shadow-sm group-hover:scale-105 transition">
-                <ShieldAlert className="w-4 h-4 text-amber-400 dark:text-amber-500" />
+              <div
+                style={{
+                  width: '34px',
+                  height: '34px',
+                  borderRadius: '10px',
+                  backgroundColor: '#0F172A',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#FFFFFF',
+                  boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
+                }}
+              >
+                <ShieldAlert style={{ width: '18px', height: '18px', color: '#F59E0B' }} />
               </div>
               <div>
-                <div className="font-extrabold text-sm tracking-tight text-slate-900 dark:text-white font-display leading-tight">
+                <div style={{ fontWeight: 800, fontSize: '14px', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
                   OIL GUARDIAN
                 </div>
-                <div className="text-[10px] text-slate-400 font-semibold tracking-wider uppercase">
+                <div style={{ fontSize: '9.5px', color: 'var(--text-muted)', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
                   Enterprise HSSE Suite
                 </div>
               </div>
@@ -132,275 +139,264 @@ export const App: React.FC = () => {
 
             <button
               onClick={() => setMobileMenuOpen(false)}
-              className="md:hidden text-slate-400 hover:text-slate-600 p-1"
+              className="icon-btn"
+              style={{ display: window.innerWidth > 768 ? 'none' : 'flex' }}
             >
-              <X className="w-5 h-5" />
+              <X style={{ width: '18px', height: '18px' }} />
             </button>
           </div>
 
-          {/* Navigation Links Grouped Logically (NEXA Style) */}
-          <div className="flex-1 overflow-y-auto px-4 py-5 space-y-6">
-            {/* Group 1: OVERVIEW */}
-            <div>
-              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-3 mb-2">
-                Overview
+          {/* Grouped Sidebar Menu Items */}
+          <div className="sidebar-menu">
+            {/* OVERVIEW */}
+            <div className="sidebar-group-title">Overview</div>
+            <button
+              onClick={() => { setActiveTab('dashboard'); setMobileMenuOpen(false); }}
+              className={`sidebar-item ${activeTab === 'dashboard' ? 'active' : ''}`}
+            >
+              <div className="sidebar-item-left">
+                <LayoutDashboard style={{ width: '16px', height: '16px' }} />
+                <span>Dashboard</span>
               </div>
-              <div className="space-y-1">
-                <button
-                  onClick={() => { setActiveTab('dashboard'); setMobileMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition ${
-                    activeTab === 'dashboard'
-                      ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm font-bold'
-                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900'
-                  }`}
-                >
-                  <LayoutDashboard className={`w-4 h-4 ${activeTab === 'dashboard' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400'}`} />
-                  <span>Dashboard</span>
-                </button>
+            </button>
 
-                <button
-                  onClick={() => { setActiveTab('intake'); setMobileMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition ${
-                    activeTab === 'intake'
-                      ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm font-bold'
-                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900'
-                  }`}
-                >
-                  <Zap className={`w-4 h-4 ${activeTab === 'intake' ? 'text-amber-500' : 'text-slate-400'}`} />
-                  <span>Incident Triage</span>
-                </button>
+            <button
+              onClick={() => { setActiveTab('intake'); setMobileMenuOpen(false); }}
+              className={`sidebar-item ${activeTab === 'intake' ? 'active' : ''}`}
+            >
+              <div className="sidebar-item-left">
+                <Zap style={{ width: '16px', height: '16px', color: '#F59E0B' }} />
+                <span>Incident Triage</span>
               </div>
-            </div>
+            </button>
 
-            {/* Group 2: OPERATIONS & HITL */}
-            <div>
-              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-3 mb-2">
-                Operations & HITL
+            {/* OPERATIONS & HITL */}
+            <div className="sidebar-group-title">Operations & HITL</div>
+            <button
+              onClick={() => { setActiveTab('queue'); setMobileMenuOpen(false); }}
+              className={`sidebar-item ${activeTab === 'queue' ? 'active' : ''}`}
+            >
+              <div className="sidebar-item-left">
+                <UserCheck style={{ width: '16px', height: '16px' }} />
+                <span>HSE Review Queue</span>
               </div>
-              <div className="space-y-1">
-                <button
-                  onClick={() => { setActiveTab('queue'); setMobileMenuOpen(false); }}
-                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition ${
-                    activeTab === 'queue'
-                      ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm font-bold'
-                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <UserCheck className={`w-4 h-4 ${activeTab === 'queue' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400'}`} />
-                    <span>HSE Review Queue</span>
-                  </div>
-                  <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">
-                    3
-                  </span>
-                </button>
+              <span className="sidebar-badge">3</span>
+            </button>
 
-                <button
-                  onClick={() => { setActiveTab('actions'); setMobileMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition ${
-                    activeTab === 'actions'
-                      ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm font-bold'
-                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900'
-                  }`}
-                >
-                  <CheckSquare className={`w-4 h-4 ${activeTab === 'actions' ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400'}`} />
-                  <span>Corrective Actions</span>
-                </button>
+            <button
+              onClick={() => { setActiveTab('actions'); setMobileMenuOpen(false); }}
+              className={`sidebar-item ${activeTab === 'actions' ? 'active' : ''}`}
+            >
+              <div className="sidebar-item-left">
+                <CheckSquare style={{ width: '16px', height: '16px' }} />
+                <span>Corrective Actions</span>
               </div>
-            </div>
+            </button>
 
-            {/* Group 3: HSSE GOVERNANCE */}
-            <div>
-              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-3 mb-2">
-                HSSE Governance
+            {/* HSSE GOVERNANCE */}
+            <div className="sidebar-group-title">HSSE Governance</div>
+            <button
+              onClick={() => { setActiveTab('rules'); setMobileMenuOpen(false); }}
+              className={`sidebar-item ${activeTab === 'rules' ? 'active' : ''}`}
+            >
+              <div className="sidebar-item-left">
+                <AlertOctagon style={{ width: '16px', height: '16px', color: '#EF4444' }} />
+                <span>Statutory Rules</span>
               </div>
-              <div className="space-y-1">
-                <button
-                  onClick={() => { setActiveTab('rules'); setMobileMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition ${
-                    activeTab === 'rules'
-                      ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm font-bold'
-                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900'
-                  }`}
-                >
-                  <AlertOctagon className={`w-4 h-4 ${activeTab === 'rules' ? 'text-red-600 dark:text-red-400' : 'text-slate-400'}`} />
-                  <span>Statutory Rules</span>
-                </button>
+            </button>
 
-                <button
-                  onClick={() => { setActiveTab('clusters'); setMobileMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition ${
-                    activeTab === 'clusters'
-                      ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm font-bold'
-                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900'
-                  }`}
-                >
-                  <Network className={`w-4 h-4 ${activeTab === 'clusters' ? 'text-cyan-600 dark:text-cyan-400' : 'text-slate-400'}`} />
-                  <span>Precursor Clusters</span>
-                </button>
+            <button
+              onClick={() => { setActiveTab('clusters'); setMobileMenuOpen(false); }}
+              className={`sidebar-item ${activeTab === 'clusters' ? 'active' : ''}`}
+            >
+              <div className="sidebar-item-left">
+                <Network style={{ width: '16px', height: '16px', color: '#06B6D4' }} />
+                <span>Precursor Clusters</span>
               </div>
-            </div>
+            </button>
 
-            {/* Group 4: ADVANCED AI & SYSTEM */}
-            <div>
-              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-3 mb-2">
-                System & AI
+            {/* ADVANCED AI & SYSTEM */}
+            <div className="sidebar-group-title">Advanced AI & System</div>
+            <button
+              onClick={() => { setActiveTab('models'); setMobileMenuOpen(false); }}
+              className={`sidebar-item ${activeTab === 'models' ? 'active' : ''}`}
+            >
+              <div className="sidebar-item-left">
+                <Sliders style={{ width: '16px', height: '16px', color: '#8B5CF6' }} />
+                <span>Model Studio</span>
               </div>
-              <div className="space-y-1">
-                <button
-                  onClick={() => { setActiveTab('models'); setMobileMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition ${
-                    activeTab === 'models'
-                      ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm font-bold'
-                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900'
-                  }`}
-                >
-                  <Sliders className={`w-4 h-4 ${activeTab === 'models' ? 'text-purple-600 dark:text-purple-400' : 'text-slate-400'}`} />
-                  <span>Model Studio</span>
-                </button>
+            </button>
 
-                <button
-                  onClick={() => { setActiveTab('batch'); setMobileMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition ${
-                    activeTab === 'batch'
-                      ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm font-bold'
-                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900'
-                  }`}
-                >
-                  <FileSpreadsheet className={`w-4 h-4 ${activeTab === 'batch' ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400'}`} />
-                  <span>Batch Ingestion</span>
-                </button>
-
-                <button
-                  onClick={() => { setActiveTab('extraction'); setMobileMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition ${
-                    activeTab === 'extraction'
-                      ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm font-bold'
-                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900'
-                  }`}
-                >
-                  <Tag className={`w-4 h-4 ${activeTab === 'extraction' ? 'text-amber-600 dark:text-amber-400' : 'text-slate-400'}`} />
-                  <span>Entity Extraction</span>
-                </button>
+            <button
+              onClick={() => { setActiveTab('batch'); setMobileMenuOpen(false); }}
+              className={`sidebar-item ${activeTab === 'batch' ? 'active' : ''}`}
+            >
+              <div className="sidebar-item-left">
+                <FileSpreadsheet style={{ width: '16px', height: '16px', color: '#10B981' }} />
+                <span>Batch Ingestion</span>
               </div>
-            </div>
+            </button>
+
+            <button
+              onClick={() => { setActiveTab('extraction'); setMobileMenuOpen(false); }}
+              className={`sidebar-item ${activeTab === 'extraction' ? 'active' : ''}`}
+            >
+              <div className="sidebar-item-left">
+                <Tag style={{ width: '16px', height: '16px', color: '#F59E0B' }} />
+                <span>Entity Extraction (NER)</span>
+              </div>
+            </button>
           </div>
 
-          {/* Bottom User Profile Section */}
-          <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
-            <div className="flex items-center gap-3">
+          {/* User Profile Footer */}
+          <div className="sidebar-footer">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', overflow: 'hidden' }}>
               <img
                 src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
                 alt="Er. Rajesh Baruah"
-                className="w-9 h-9 rounded-full object-cover border border-slate-200 dark:border-slate-700"
+                style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover' }}
               />
-              <div className="flex-1 min-w-0">
-                <div className="text-xs font-bold text-slate-900 dark:text-white truncate">
+              <div style={{ overflow: 'hidden' }}>
+                <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-primary)', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
                   Er. Rajesh Baruah
                 </div>
-                <div className="text-[10px] text-slate-500 dark:text-slate-400 truncate">
+                <div style={{ fontSize: '10.5px', color: 'var(--text-muted)', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
                   Chief Safety Officer
                 </div>
               </div>
-
-              <a
-                href="http://localhost:8000/docs"
-                target="_blank"
-                rel="noreferrer"
-                title="FastAPI Swagger Reference"
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800 transition"
-              >
-                <Cpu className="w-4 h-4 text-amber-500" />
-              </a>
             </div>
+
+            <a
+              href="http://localhost:8000/docs"
+              target="_blank"
+              rel="noreferrer"
+              title="FastAPI Swagger Reference"
+              className="icon-btn"
+            >
+              <Cpu style={{ width: '16px', height: '16px', color: '#F59E0B' }} />
+            </a>
           </div>
         </div>
       </aside>
 
-      {/* Backdrop for Mobile Sidebar */}
-      {mobileMenuOpen && (
-        <div
-          onClick={() => setMobileMenuOpen(false)}
-          className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 md:hidden"
-        />
-      )}
-
       {/* ====================================================================
-          2. MAIN STAGE WRAPPER (Offset by sidebar width on desktop)
+          2. MAIN STAGE WRAPPER
           ==================================================================== */}
-      <div className="flex-1 md:pl-64 flex flex-col min-w-0">
-        {/* Top Header Bar */}
-        <header className="sticky top-0 z-30 h-16 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 px-6 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
+      <div className="main-stage">
+        {/* Sticky Top Header */}
+        <header className="top-header">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="md:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+              className="icon-btn"
+              style={{ display: window.innerWidth > 768 ? 'none' : 'flex' }}
             >
-              <Menu className="w-5 h-5" />
+              <Menu style={{ width: '18px', height: '18px' }} />
             </button>
 
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-extrabold text-sm md:text-base text-slate-900 dark:text-white tracking-tight capitalize">
-                  {activeTab}
-                </span>
-                <span className="text-[10px] px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold hidden sm:inline-block">
-                  Upper Assam Operations
-                </span>
-              </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '15px', fontWeight: 800, textTransform: 'capitalize' }}>
+                {activeTab}
+              </span>
+              <span
+                style={{
+                  fontSize: '10.5px',
+                  fontWeight: 700,
+                  backgroundColor: 'var(--sidebar-active)',
+                  color: 'var(--accent-blue)',
+                  padding: '2px 8px',
+                  borderRadius: '9999px',
+                  border: '1px solid rgba(37, 99, 235, 0.2)',
+                }}
+              >
+                Upper Assam Basin
+              </span>
             </div>
           </div>
 
-          {/* Search & Actions Bar */}
-          <div className="flex items-center gap-3">
+          <div className="header-actions">
             {/* Search Pill */}
-            <div className="relative hidden md:block w-64">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
+            <div className="search-pill-box">
+              <Search
+                style={{
+                  position: 'absolute',
+                  left: '12px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  width: '14px',
+                  height: '14px',
+                  color: 'var(--text-dim)',
+                  pointerEvents: 'none',
+                }}
+              />
               <input
                 type="text"
-                placeholder="Search incidents, rigs, equipment..."
+                placeholder="Search incidents, rigs, barrier tags..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-xl pl-9 pr-3 py-1.5 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition"
+                className="search-pill-input"
               />
             </div>
 
             {/* Theme Switcher Toggle */}
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-xl text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+              className="icon-btn"
               title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
             >
               {theme === 'light' ? (
-                <Moon className="w-4 h-4" />
+                <Moon style={{ width: '16px', height: '16px' }} />
               ) : (
-                <Sun className="w-4 h-4 text-amber-400" />
+                <Sun style={{ width: '16px', height: '16px', color: '#F59E0B' }} />
               )}
             </button>
 
             {/* Notifications Button */}
             <button
               onClick={() => setActiveTab('queue')}
-              className="p-2 rounded-xl text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition relative"
-              title="Notifications"
+              className="icon-btn"
+              title="Audit & Incident Alerts"
+              style={{ position: 'relative' }}
             >
-              <Bell className="w-4 h-4" />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500" />
+              <Bell style={{ width: '16px', height: '16px' }} />
+              <span
+                style={{
+                  position: 'absolute',
+                  top: '6px',
+                  right: '6px',
+                  width: '7px',
+                  height: '7px',
+                  backgroundColor: '#EF4444',
+                  borderRadius: '50%',
+                }}
+              />
             </button>
 
             {/* Primary Action Button */}
             <button
               onClick={() => setActiveTab('intake')}
-              className="hidden sm:inline-flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 text-xs font-bold px-3.5 py-2 rounded-xl transition shadow-sm"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                backgroundColor: '#0F172A',
+                color: '#FFFFFF',
+                fontSize: '12px',
+                fontWeight: 700,
+                padding: '8px 14px',
+                borderRadius: '10px',
+                border: 'none',
+                cursor: 'pointer',
+              }}
             >
-              <Plus className="w-3.5 h-3.5" />
+              <Plus style={{ width: '14px', height: '14px' }} />
               <span>New Incident</span>
             </button>
           </div>
         </header>
 
-        {/* Main Content Body */}
-        <main className="flex-1 p-6 md:p-8 max-w-7xl w-full mx-auto">
+        {/* Viewport Content */}
+        <main className="content-viewport">
           {activeTab === 'dashboard' && (
             <ExecutiveDashboard
               onNavigateToIntake={() => setActiveTab('intake')}
@@ -411,17 +407,15 @@ export const App: React.FC = () => {
           )}
 
           {activeTab === 'intake' && (
-            <div className="space-y-6">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
               <ReportIngestion onTriageComplete={handleTriageComplete} />
               {latestReport && (
-                <div className="pt-2">
-                  <AIResultView
-                    report={latestReport}
-                    onGoToReview={() => setActiveTab('queue')}
-                    onGoToAction={() => setActiveTab('actions')}
-                    onSelectReportId={handleSelectReportId}
-                  />
-                </div>
+                <AIResultView
+                  report={latestReport}
+                  onGoToReview={() => setActiveTab('queue')}
+                  onGoToAction={() => setActiveTab('actions')}
+                  onSelectReportId={handleSelectReportId}
+                />
               )}
             </div>
           )}
