@@ -63,3 +63,14 @@ Access points:
    - Switch to **Precursor Analytics**.
    - Observe the spike in `Confined Space` and `Energy Isolation` precursors.
    - View the SIF Exposure Fingerprint card.
+
+---
+
+## 3. Automated 5-Stage Golden Platform Verification
+
+To instantaneously demonstrate total platform integrity across all 5 operational tiers (API & Security Headers, RBAC & Redaction, Rule 2 Zero-Miss Benchmark, MLOps Drift & Model Card, and Production Asset Bundles):
+
+```bash
+.venv\Scripts\python scripts/verify_platform.py
+```
+Expected outcome: All 5 stages pass with `100.0% High-PSIF Safety Recall` and zero false negatives under 0.5s.

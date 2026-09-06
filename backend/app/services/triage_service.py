@@ -41,10 +41,12 @@ class SafetyTriageService:
 
     def normalize_text(self, text: str) -> str:
         """
-        Normalizes incident text, standardizes abbreviations, and redacts PII.
+        Normalizes incident text, sanitizes malicious input, standardizes abbreviations, and redacts PII.
         """
+        from backend.app.core.security import sanitize_narrative
+        sanitized = sanitize_narrative(text)
         # Redact phone numbers
-        sanitized = re.sub(r"\b\d{3}[-.\s]??\d{3}[-.\s]??\d{4}\b", "[PHONE_REDACTED]", text)
+        sanitized = re.sub(r"\b\d{3}[-.\s]??\d{3}[-.\s]??\d{4}\b", "[PHONE_REDACTED]", sanitized)
         # Redact email addresses
         sanitized = re.sub(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b", "[EMAIL_REDACTED]", sanitized)
         # Clean extra whitespace

@@ -18,6 +18,7 @@ from backend.app.api.v1.endpoints import (
     iogp,
     rules,
     decision,
+    security,
 )
 
 api_router = APIRouter()
@@ -38,4 +39,5 @@ api_router.include_router(models.router, prefix="/models", tags=["Contextual Mod
 api_router.include_router(iogp.router, prefix="/iogp", tags=["IOGP Life-Saving Rules"])
 api_router.include_router(rules.router, prefix="/rules", tags=["Deterministic Safety Rules"])
 api_router.include_router(decision.router, prefix="/decision", tags=["Hybrid Decision Engine"])
+api_router.include_router(security.router, prefix="/security", tags=["Security & RBAC Governance"])
 
