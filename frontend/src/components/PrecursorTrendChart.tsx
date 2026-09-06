@@ -77,64 +77,101 @@ export const PrecursorTrendChart: React.FC = () => {
   const activePoint = hoveredIdx !== null ? points[hoveredIdx] : null;
 
   return (
-    <div className="w-full">
-      {/* Chart Header & Timeframe Pills (matching Nexa / Insights references) */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 gap-3 border-b border-slate-100 dark:border-slate-800/60 mb-4">
+    <div style={{ width: '100%' }}>
+      {/* Chart Header & Timeframe Pills (matching NEXA / Insights references) */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '12px',
+          paddingBottom: '16px',
+          borderBottom: '1px solid var(--border-color)',
+          marginBottom: '16px',
+        }}
+      >
         <div>
-          <div className="flex items-center gap-2">
-            <h4 className="text-base font-bold text-slate-900 dark:text-slate-100">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <h4 style={{ fontSize: '16px', fontWeight: 800, color: 'var(--text-primary)' }}>
               Precursor Ingestion vs Mitigated Barriers
             </h4>
-            <span className="text-[11px] px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 font-semibold">
-              Live Trend
+            <span
+              style={{
+                fontSize: '11px',
+                fontWeight: 700,
+                padding: '2px 8px',
+                borderRadius: '9999px',
+                backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                color: '#2563EB',
+              }}
+            >
+              Live Trajectory
             </span>
           </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '2px' }}>
             12-month precursor frequency trajectory calibrated with IOGP Life-Saving Rules
           </p>
         </div>
 
-        {/* Segmented Control Pills */}
-        <div className="flex items-center gap-2">
-          <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-0.5 rounded-lg border border-slate-200/80 dark:border-slate-700/80">
+        {/* Controls & Legend */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          {/* Legend */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', fontSize: '12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#2563EB' }} />
+              <span style={{ color: 'var(--text-secondary)', fontWeight: 600 }}>Precursors</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#10B981' }} />
+              <span style={{ color: 'var(--text-secondary)', fontWeight: 600 }}>Mitigated</span>
+            </div>
+          </div>
+
+          {/* Timeframe Segmented Control (matching NEXA 1W | 6M | 1Y) */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              backgroundColor: 'var(--bg-input)',
+              padding: '3px',
+              borderRadius: '8px',
+              border: '1px solid var(--border-color)',
+            }}
+          >
             {(['1M', '6M', '1Y'] as const).map((t) => (
               <button
                 key={t}
                 onClick={() => setTimeframe(t)}
-                className={`text-xs px-3 py-1 rounded-md font-semibold transition ${
-                  timeframe === t
-                    ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
-                    : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
-                }`}
+                style={{
+                  padding: '4px 10px',
+                  borderRadius: '6px',
+                  border: 'none',
+                  fontSize: '11.5px',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  backgroundColor: timeframe === t ? '#0F172A' : 'transparent',
+                  color: timeframe === t ? '#FFFFFF' : 'var(--text-secondary)',
+                  transition: 'all 0.15s ease',
+                }}
               >
                 {t}
               </button>
             ))}
           </div>
-
-          <div className="hidden md:flex items-center gap-4 text-xs pl-2 border-l border-slate-200 dark:border-slate-700">
-            <div className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block" />
-              <span className="text-slate-600 dark:text-slate-400 font-medium">Precursors</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block" />
-              <span className="text-slate-600 dark:text-slate-400 font-medium">Mitigated</span>
-            </div>
-          </div>
         </div>
       </div>
 
       {/* SVG Canvas */}
-      <div className="relative w-full overflow-x-auto">
+      <div style={{ position: 'relative', width: '100%', overflowX: 'auto' }}>
         <svg
           viewBox={`0 0 ${width} ${height}`}
-          className="w-full h-auto min-w-[600px] select-none"
+          style={{ width: '100%', height: 'auto', minWidth: '600px', userSelect: 'none' }}
         >
           <defs>
             <linearGradient id="precursorGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.18" />
-              <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.0" />
+              <stop offset="0%" stopColor="#2563EB" stopOpacity="0.18" />
+              <stop offset="100%" stopColor="#2563EB" stopOpacity="0.0" />
             </linearGradient>
             <linearGradient id="mitigatedGrad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#10B981" stopOpacity="0.12" />
@@ -152,18 +189,17 @@ export const PrecursorTrendChart: React.FC = () => {
                   y1={y}
                   x2={width - paddingX}
                   y2={y}
-                  stroke="#E2E8F0"
+                  stroke="var(--border-color)"
                   strokeDasharray="4 4"
                   strokeWidth="1"
-                  className="dark:stroke-slate-800"
                 />
                 <text
                   x={paddingX - 10}
                   y={y + 3}
                   textAnchor="end"
                   fontSize="10"
-                  fill="#94A3B8"
-                  fontFamily="Inter, sans-serif"
+                  fill="var(--text-dim)"
+                  fontFamily="var(--font-sans)"
                 >
                   {val}
                 </text>
@@ -185,7 +221,7 @@ export const PrecursorTrendChart: React.FC = () => {
           <path
             d={linePath}
             fill="none"
-            stroke="#3B82F6"
+            stroke="#2563EB"
             strokeWidth="2.5"
             strokeLinecap="round"
           />
@@ -194,7 +230,7 @@ export const PrecursorTrendChart: React.FC = () => {
           {points.map((pt, i) => (
             <g
               key={i}
-              className="cursor-pointer"
+              style={{ cursor: 'pointer' }}
               onMouseEnter={() => setHoveredIdx(i)}
             >
               {/* Invisible wide trigger */}
@@ -213,9 +249,8 @@ export const PrecursorTrendChart: React.FC = () => {
                 textAnchor="middle"
                 fontSize="11"
                 fontWeight={hoveredIdx === i ? '700' : '500'}
-                fill={hoveredIdx === i ? '#0F172A' : '#64748B'}
-                className="transition-colors dark:fill-slate-400"
-                fontFamily="Inter, sans-serif"
+                fill={hoveredIdx === i ? 'var(--text-primary)' : 'var(--text-muted)'}
+                fontFamily="var(--font-sans)"
               >
                 {pt.month}
               </text>
@@ -228,7 +263,7 @@ export const PrecursorTrendChart: React.FC = () => {
                     y1={paddingY}
                     x2={pt.x}
                     y2={height - paddingY}
-                    stroke="#3B82F6"
+                    stroke="#2563EB"
                     strokeWidth="1.5"
                     strokeDasharray="3 3"
                     opacity="0.6"
@@ -237,10 +272,9 @@ export const PrecursorTrendChart: React.FC = () => {
                     cx={pt.x}
                     cy={pt.y}
                     r="6"
-                    fill="#3B82F6"
+                    fill="#2563EB"
                     stroke="#FFFFFF"
                     strokeWidth="2.5"
-                    className="shadow-md"
                   />
                   <circle
                     cx={pt.x}
@@ -259,18 +293,46 @@ export const PrecursorTrendChart: React.FC = () => {
         {/* Floating Tooltip (matching the Insights $80,012 badge in Reference 3) */}
         {activePoint && (
           <div
-            className="absolute pointer-events-none -translate-x-1/2 -translate-y-full pb-2 transition-all duration-150"
             style={{
+              position: 'absolute',
+              pointerEvents: 'none',
+              transform: 'translate(-50%, -100%)',
+              paddingBottom: '10px',
               left: `${(activePoint.x / width) * 100}%`,
               top: `${(activePoint.y / height) * 100}%`,
+              transition: 'all 0.1s ease',
+              zIndex: 10,
             }}
           >
-            <div className="bg-slate-900 text-white dark:bg-white dark:text-slate-900 text-xs font-bold py-1.5 px-3 rounded-lg shadow-xl flex flex-col items-center whitespace-nowrap">
-              <span>{activePoint.precursors} Precursors</span>
-              <span className="text-[10px] font-medium text-amber-300 dark:text-amber-600">
-                {activePoint.highPsif} High-PSIF • {activePoint.mitigated} Closed
+            <div
+              style={{
+                backgroundColor: '#0F172A',
+                color: '#FFFFFF',
+                fontSize: '12px',
+                fontWeight: 700,
+                padding: '6px 12px',
+                borderRadius: '8px',
+                boxShadow: '0 8px 20px rgba(0,0,0,0.25)',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              <span>{activePoint.precursors} Precursors Ingested</span>
+              <span style={{ fontSize: '10px', fontWeight: 600, color: '#F59E0B', marginTop: '2px' }}>
+                {activePoint.highPsif} High-PSIF • {activePoint.mitigated} Barriers Mitigated
               </span>
-              <div className="w-2 h-2 bg-slate-900 dark:bg-white rotate-45 -mb-1 mt-1" />
+              <div
+                style={{
+                  width: '8px',
+                  height: '8px',
+                  backgroundColor: '#0F172A',
+                  transform: 'rotate(45deg)',
+                  marginBottom: '-4px',
+                  marginTop: '4px',
+                }}
+              />
             </div>
           </div>
         )}

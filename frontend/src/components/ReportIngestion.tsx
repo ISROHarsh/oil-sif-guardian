@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Send, Sparkles, FileText, AlertTriangle, ShieldCheck, RefreshCw } from 'lucide-react';
+import { Send, Sparkles, FileText, AlertTriangle, ShieldCheck, RefreshCw, Layers } from 'lucide-react';
 import { api } from '../services/api';
 import { ReportResponse } from '../types';
 
@@ -9,7 +9,7 @@ interface ReportIngestionProps {
 
 const DEMO_PRESETS = [
   {
-    label: 'Tank Confined Space (Canonical Golden Demo)',
+    label: 'Tank Confined Space (High-PSIF)',
     site: 'Duliajan Production Installation',
     location: 'Separator Station #4',
     department: 'Mechanical Maintenance',
@@ -20,7 +20,7 @@ const DEMO_PRESETS = [
       'During maintenance, a contractor entered the tank to inspect an internal valve. Gas testing was not recorded, the entry permit had expired, and no attendant was positioned outside.',
   },
   {
-    label: 'Live Gas Line Flange Removal (Energy Isolation)',
+    label: 'Live Gas Flange Bleed (Energy Isolation)',
     site: 'Moran Gathering Station',
     location: 'Manifold Skid B',
     department: 'Pipeline Operations',
@@ -31,7 +31,7 @@ const DEMO_PRESETS = [
       'Mechanical technician attempted to unbolt a pressurized gas line flange before closing isolation block valves. Stored energy was present without LOTO verification.',
   },
   {
-    label: 'Crane Slewing Over Drill Floor (Line of Fire)',
+    label: 'Crane Drop Zone Breach (Line of Fire)',
     site: 'Drilling Rig OIL-45',
     location: 'Drill Floor / Catwalk',
     department: 'Drilling Services',
@@ -42,7 +42,7 @@ const DEMO_PRESETS = [
       'During rig operations, a roustabout was walking underneath the suspended load while the crane was slewing a 3-ton casing joint across the drill floor.',
   },
   {
-    label: 'Routine Housekeeping (Low SIF Potential)',
+    label: 'Routine Housekeeping (Low SIF)',
     site: 'Digboi Central Store',
     location: 'Warehouse Bay 3',
     department: 'Materials Management',
@@ -108,60 +108,89 @@ export const ReportIngestion: React.FC<ReportIngestionProps> = ({ onTriageComple
   };
 
   return (
-    <div className="space-y-6">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {/* Preset Scenario Selector Banner */}
-      <div className="glass-panel p-5 border border-amber-500/30 bg-amber-500/5">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-amber-400" />
-            <span className="text-sm font-semibold uppercase tracking-wider text-amber-300">
-              Live Precursor Test Scenarios
+      <div
+        className="card-panel"
+        style={{
+          background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, rgba(37, 99, 235, 0.02) 100%)',
+          borderColor: 'rgba(245, 158, 11, 0.25)',
+          padding: '20px 24px',
+          marginBottom: '0px',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Sparkles style={{ width: '18px', height: '18px', color: '#D97706' }} />
+            <span style={{ fontSize: '13px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#D97706' }}>
+              Canonical SIF Test Scenarios
             </span>
           </div>
-          <span className="text-xs text-slate-400">Click to instantly populate canonical scenarios</span>
+          <span style={{ fontSize: '11.5px', color: 'var(--text-muted)' }}>
+            Select to pre-populate verified industrial test narratives
+          </span>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '10px' }}>
           {DEMO_PRESETS.map((p, idx) => (
             <button
               key={idx}
               type="button"
               onClick={() => handlePresetSelect(p)}
-              className="text-left p-2.5 rounded bg-slate-900/80 hover:bg-slate-800 border border-slate-700/60 hover:border-amber-500/50 text-xs transition group"
+              style={{
+                textAlign: 'left',
+                padding: '12px 14px',
+                borderRadius: '10px',
+                backgroundColor: narrative === p.narrative ? '#0F172A' : 'var(--bg-surface)',
+                color: narrative === p.narrative ? '#FFFFFF' : 'var(--text-primary)',
+                border: narrative === p.narrative ? '1px solid #0F172A' : '1px solid var(--border-color)',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+              }}
             >
-              <div className="font-semibold text-slate-200 group-hover:text-amber-300 truncate">
+              <div style={{ fontSize: '12px', fontWeight: 700 }}>
                 {p.label}
               </div>
-              <div className="text-[11px] text-slate-400 truncate mt-0.5">{p.activity}</div>
+              <div
+                style={{
+                  fontSize: '11px',
+                  color: narrative === p.narrative ? 'rgba(255,255,255,0.7)' : 'var(--text-muted)',
+                  marginTop: '4px',
+                }}
+              >
+                {p.site}
+              </div>
             </button>
           ))}
         </div>
       </div>
 
       {/* Main Ingestion Form */}
-      <form onSubmit={handleSubmit} className="glass-panel p-6 space-y-5">
-        <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+      <form onSubmit={handleSubmit} className="card-panel" style={{ marginBottom: '0px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--border-color)', paddingBottom: '18px', marginBottom: '20px' }}>
           <div>
-            <h2 className="text-lg font-bold flex items-center gap-2 text-slate-100">
-              <FileText className="w-5 h-5 text-amber-400" />
+            <h2 style={{ fontSize: '18px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <FileText style={{ width: '20px', height: '20px', color: '#2563EB' }} />
               HSSE Incident & Precursor Intake
             </h2>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Submit free-text incident narratives for automated SIF precursor extraction and Life-Saving Rules mapping.
+            <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '4px' }}>
+              Submit operational narratives for multi-label SIF classification and statutory compliance verification.
             </p>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="badge badge-iogp text-xs">P0 Data Governance</span>
-          </div>
+          <span className="pill-status pill-blue">
+            Rule 2 Shield Active
+          </span>
         </div>
 
         {error && (
-          <div className="p-3 bg-red-500/15 border border-red-500/40 rounded-lg text-sm text-red-300 flex items-center gap-2">
-            <AlertTriangle className="w-4 h-4 flex-shrink-0" />
+          <div style={{ padding: '12px 16px', backgroundColor: '#FEF2F2', border: '1px solid #FECACA', borderRadius: '10px', color: '#DC2626', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
+            <AlertTriangle style={{ width: '16px', height: '16px', flexShrink: 0 }} />
             <span>{error}</span>
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Form Fields Row 1 */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px', marginBottom: '16px' }}>
           <div className="form-group">
             <label className="form-label">Operational Asset / Site *</label>
             <input
@@ -174,7 +203,7 @@ export const ReportIngestion: React.FC<ReportIngestionProps> = ({ onTriageComple
           </div>
 
           <div className="form-group">
-            <label className="form-label">Location / Platform</label>
+            <label className="form-label">Location / Platform Area</label>
             <input
               type="text"
               className="form-input"
@@ -199,7 +228,8 @@ export const ReportIngestion: React.FC<ReportIngestionProps> = ({ onTriageComple
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Form Fields Row 2 */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px', marginBottom: '16px' }}>
           <div className="form-group">
             <label className="form-label">Operational Activity</label>
             <input
@@ -234,16 +264,18 @@ export const ReportIngestion: React.FC<ReportIngestionProps> = ({ onTriageComple
           </div>
         </div>
 
-        <div className="form-group">
-          <div className="flex items-center justify-between mb-1.5">
-            <label className="form-label">Safety Incident Free-Text Narrative *</label>
-            <span className="text-[11px] text-slate-400">
-              PII automatically masked • Raw text preserved immutably
+        {/* Free-text Narrative Area */}
+        <div className="form-group" style={{ marginBottom: '20px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+            <label className="form-label" style={{ marginBottom: 0 }}>Safety Incident Free-Text Narrative *</label>
+            <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+              PII automatically masked • Immutable audit trail
             </span>
           </div>
           <textarea
-            rows={4}
-            className="form-textarea font-mono text-sm leading-relaxed"
+            rows={5}
+            className="form-textarea"
+            style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', lineHeight: 1.6 }}
             value={narrative}
             onChange={(e) => setNarrative(e.target.value)}
             placeholder="Describe what occurred, personnel positioning, energy sources, barriers present, and control failures..."
@@ -251,25 +283,27 @@ export const ReportIngestion: React.FC<ReportIngestionProps> = ({ onTriageComple
           />
         </div>
 
-        <div className="flex items-center justify-between pt-2">
-          <div className="flex items-center gap-2 text-xs text-slate-400">
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
+        {/* Submit Bar */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '16px', borderTop: '1px solid var(--border-color)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: 'var(--text-muted)' }}>
+            <ShieldCheck style={{ width: '16px', height: '16px', color: '#10B981' }} />
             <span>Adheres to OIL Canonical Safety Schema & IOGP Rule Taxonomy</span>
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="btn btn-primary px-6"
+            className="btn-primary"
+            style={{ padding: '10px 24px' }}
           >
             {loading ? (
               <>
-                <RefreshCw className="w-4 h-4 animate-spin" />
-                <span>Running Hybrid Triage...</span>
+                <RefreshCw style={{ width: '15px', height: '15px' }} className="animate-spin" />
+                <span>Running Hybrid AI Triage...</span>
               </>
             ) : (
               <>
-                <Send className="w-4 h-4" />
+                <Send style={{ width: '15px', height: '15px' }} />
                 <span>Analyze Incident Precursor</span>
               </>
             )}
