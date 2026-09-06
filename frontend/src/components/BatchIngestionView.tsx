@@ -30,9 +30,11 @@ export const BatchIngestionView: React.FC<BatchIngestionViewProps> = ({ onSelect
   const [isDragOver, setIsDragOver] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  const apiBase = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/v1` : '/api/v1';
+
   const fetchQualitySummary = async () => {
     try {
-      const res = await fetch('http://localhost:8000/api/v1/reports/quality-summary');
+      const res = await fetch(`${apiBase}/reports/quality-summary`);
       if (res.ok) {
         const data = await res.json();
         setQualitySummary(data);
@@ -76,7 +78,7 @@ export const BatchIngestionView: React.FC<BatchIngestionViewProps> = ({ onSelect
     formData.append('file', file);
 
     try {
-      const response = await fetch('http://localhost:8000/api/v1/reports/upload-csv', {
+      const response = await fetch(`${apiBase}/reports/upload-csv`, {
         method: 'POST',
         body: formData,
       });

@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 from typing import Dict, Any, List, Tuple
 from rules.safety.deterministic_rules import DeterministicSafetyRuleEngine
+from ml.extraction.safety_ner import SafetyNER, SafetyEntityCategory
 from backend.app.schemas.prediction import (
     SafetyTriageResponse,
     PSIFSchema,
@@ -20,6 +21,7 @@ from backend.app.schemas.prediction import (
 class SafetyTriageService:
     def __init__(self):
         self.rules_engine = DeterministicSafetyRuleEngine()
+        self.ner_engine = SafetyNER()
         self._load_dictionaries()
 
     def _load_dictionaries(self):
@@ -159,6 +161,25 @@ class SafetyTriageService:
             if any(w in lower_text for w in ["bypass", "override", "jumper", "gagged", "defeated"]):
                 control_failures.append("Safety-critical interlock or trip device defeated")
 
+        # Enrich entities directly from 8-category SafetyNER model
+        ner_spans = self.ner_engine.extract_entities(text)
+        for span in ner_spans:
+            val = span.text.strip()
+            if not val:
+                continue
+            if span.label == SafetyEntityCategory.HAZARD:
+                hazards.append(val)
+            elif span.label == SafetyEntityCategory.HAZARDOUS_ENERGY:
+                energy_sources.append(val)
+            elif span.label == SafetyEntityCategory.WORKER_EXPOSURE:
+                exposures.append(val)
+            elif span.label == SafetyEntityCategory.CRITICAL_CONTROL:
+                controls.append(val)
+            elif span.label == SafetyEntityCategory.CONTROL_FAILURE:
+                control_failures.append(val)
+            elif span.label == SafetyEntityCategory.CREDIBLE_CONSEQUENCE:
+                consequences.append(val)
+
         return EntitiesSchema(
             hazards=list(dict.fromkeys(hazards)),
             energy_sources=list(dict.fromkeys(energy_sources)),
@@ -170,17 +191,31 @@ class SafetyTriageService:
 
     def extract_evidence_spans(self, text: str) -> List[EvidenceSpanSchema]:
         """
-        Locates key risk evidence spans with exact character offsets in the narrative.
+        Locates key risk evidence spans with exact character offsets in the narrative,
+        combining the 8-category Safety NER engine with domain regex patterns and resolving overlaps.
         """
-        spans = []
+        raw_spans: List[EvidenceSpanSchema] = []
+
+        # 1. 8-Category Safety NER Engine Spans
+        ner_entities = self.ner_engine.extract_entities(text)
+        for s in ner_entities:
+            cat = "EXPOSURE" if s.label == "WORKER_EXPOSURE" else s.label
+            raw_spans.append(EvidenceSpanSchema(
+                text=s.text,
+                start_char=s.start_char,
+                end_char=s.end_char,
+                category=cat
+            ))
+
+        # 2. Contextual High-Risk Patterns
         patterns = [
-            (r"\b(entered\s+the\s+tank|inside\s+the\s+vessel|entered\s+to\s+inspect|stepped\s+inside)\b", "EXPOSURE"),
+            (r"\b(entered\s+the\s+tank|inside\s+the\s+vessel|entered\s+to\s+inspect|stepped\s+inside|worker\s+entered)\b", "EXPOSURE"),
             (r"\b(under(neath)?\s+(the\s+)?suspended\s+load|in\s+line\s+of\s+fire|drop\s+zone)\b", "EXPOSURE"),
             (r"\b(working\s+at\s+height|on\s+the\s+derrick|on\s+scaffold|monkey\s+board)\b", "EXPOSURE"),
             (r"\b(gas\s+testing\s+was\s+not\s+recorded|without\s+continuous\s+atmospheric\s+gas\s+testing|no\s+gas\s+test|without\s+gas\s+test)\b", "CONTROL_FAILURE"),
-            (r"\b(permit\s+(had\s+)?expired|expired\s+permit|without\s+(a\s+)?(ptw|permit))\b", "CONTROL_FAILURE"),
+            (r"\b(permit\s+(had\s+)?expired|expired\s+permit|without\s+(a\s+)?(ptw|permit)|unsigned\s+by)\b", "CONTROL_FAILURE"),
             (r"\b(standby\s+attendant\s+was\s+absent|no\s+attendant|unattended|attendant\s+had\s+left)\b", "CONTROL_FAILURE"),
-            (r"\b(isolation\s+failed|not\s+isolated|without\s+loto|no\s+loto|before\s+closing\s+isolation)\b", "CONTROL_FAILURE"),
+            (r"\b(isolation\s+failed|not\s+isolated|without\s+loto|no\s+loto|before\s+closing\s+isolation|positive\s+isolation\s+blind)\b", "CONTROL_FAILURE"),
             (r"\b(without\s+safety\s+harness|harness\s+not\s+anchored|unclipped|unhooked)\b", "CONTROL_FAILURE"),
             (r"\b(pressurized\s+gas\s+line|stored\s+energy|high\s+pressure|\d+\s*psi|\d+\s*bar)\b", "HAZARD"),
             (r"\b(welding|hot\s+work|torch|grinding)\b", "HAZARD"),
@@ -190,14 +225,24 @@ class SafetyTriageService:
 
         for pattern, category in patterns:
             for match in re.finditer(pattern, text, re.IGNORECASE):
-                spans.append(EvidenceSpanSchema(
+                raw_spans.append(EvidenceSpanSchema(
                     text=match.group(0),
                     start_char=match.start(),
                     end_char=match.end(),
                     category=category
                 ))
 
-        return spans
+        # 3. Sort by start_char ascending, then length descending, and resolve overlapping spans
+        raw_spans.sort(key=lambda s: (s.start_char, -(s.end_char - s.start_char)))
+
+        non_overlapping: List[EvidenceSpanSchema] = []
+        last_end = -1
+        for candidate in raw_spans:
+            if candidate.start_char >= last_end:
+                non_overlapping.append(candidate)
+                last_end = candidate.end_char
+
+        return non_overlapping
 
     def predict_iogp_rules(self, text: str, suggested_rules: List[str], is_benign: bool = False) -> List[IOGPRulePredictionSchema]:
         """

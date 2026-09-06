@@ -33,6 +33,13 @@ export const SpatialRiskCanvas: React.FC = () => {
     };
     window.addEventListener('resize', handleResize);
 
+    const resizeObserver = new ResizeObserver(() => {
+      handleResize();
+    });
+    if (canvas.parentElement) {
+      resizeObserver.observe(canvas.parentElement);
+    }
+
     // Initial 3D Spatial Precursor Nodes across OIL Assets
     const nodes: Node3D[] = [
       { x: -90, y: -40, z: 20, name: 'Duliajan V-102', category: 'Separator Vessel', status: 'critical', score: 88, size: 7 },
@@ -211,6 +218,7 @@ export const SpatialRiskCanvas: React.FC = () => {
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', handleResize);
+      resizeObserver.disconnect();
       canvas.removeEventListener('mousemove', onMouseMove);
     };
   }, [mousePos]);

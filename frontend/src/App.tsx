@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import {
   LayoutDashboard,
   FilePlus,
@@ -33,18 +33,44 @@ import {
 } from 'lucide-react';
 import { ReportIngestion } from './components/ReportIngestion';
 import { AIResultView } from './components/AIResultView';
-import { BatchIngestionView } from './components/BatchIngestionView';
-import { AnnotationBenchmarkView } from './components/AnnotationBenchmarkView';
-import { PrecursorClusterView } from './components/PrecursorClusterView';
-import { EntityExtractionView } from './components/EntityExtractionView';
-import { ModelStudioView } from './components/ModelStudioView';
-import { IOGPMultiLabelView } from './components/IOGPMultiLabelView';
-import { DeterministicRulesView } from './components/DeterministicRulesView';
-import { HybridDecisionStudioView } from './components/HybridDecisionStudioView';
-import { HSEReviewQueue } from './components/HSEReviewQueue';
-import { CorrectiveActionsView } from './components/CorrectiveActionsView';
 import { ExecutiveDashboard } from './components/ExecutiveDashboard';
-import { RAGSafetyAssistantView } from './components/RAGSafetyAssistantView';
+
+// Route-level dynamic code-splitting
+const BatchIngestionView = lazy(() => import('./components/BatchIngestionView').then(m => ({ default: m.BatchIngestionView })));
+const AnnotationBenchmarkView = lazy(() => import('./components/AnnotationBenchmarkView').then(m => ({ default: m.AnnotationBenchmarkView })));
+const PrecursorClusterView = lazy(() => import('./components/PrecursorClusterView').then(m => ({ default: m.PrecursorClusterView })));
+const EntityExtractionView = lazy(() => import('./components/EntityExtractionView').then(m => ({ default: m.EntityExtractionView })));
+const ModelStudioView = lazy(() => import('./components/ModelStudioView').then(m => ({ default: m.ModelStudioView })));
+const IOGPMultiLabelView = lazy(() => import('./components/IOGPMultiLabelView').then(m => ({ default: m.IOGPMultiLabelView })));
+const DeterministicRulesView = lazy(() => import('./components/DeterministicRulesView').then(m => ({ default: m.DeterministicRulesView })));
+const HybridDecisionStudioView = lazy(() => import('./components/HybridDecisionStudioView').then(m => ({ default: m.HybridDecisionStudioView })));
+const HSEReviewQueue = lazy(() => import('./components/HSEReviewQueue').then(m => ({ default: m.HSEReviewQueue })));
+const CorrectiveActionsView = lazy(() => import('./components/CorrectiveActionsView').then(m => ({ default: m.CorrectiveActionsView })));
+const RAGSafetyAssistantView = lazy(() => import('./components/RAGSafetyAssistantView').then(m => ({ default: m.RAGSafetyAssistantView })));
+
+const ViewSkeletonLoader: React.FC = () => (
+  <div style={{
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: '400px',
+    gap: '14px',
+    color: 'var(--text-muted)'
+  }}>
+    <div style={{
+      width: '36px',
+      height: '36px',
+      border: '3px solid rgba(245, 158, 11, 0.15)',
+      borderTop: '3px solid #F59E0B',
+      borderRadius: '50%',
+      animation: 'spin 0.7s linear infinite'
+    }} />
+    <span style={{ fontSize: '13px', fontWeight: 600, letterSpacing: '0.02em' }}>
+      Loading Safety Module...
+    </span>
+  </div>
+);
 import { ReportResponse } from './types';
 import { api } from './services/api';
 
@@ -420,54 +446,56 @@ export const App: React.FC = () => {
 
         {/* Viewport Content */}
         <main className="content-viewport">
-          {activeTab === 'dashboard' && (
-            <ExecutiveDashboard
-              onNavigateToIntake={() => setActiveTab('intake')}
-              onNavigateToQueue={() => setActiveTab('queue')}
-              onNavigateToActions={() => setActiveTab('actions')}
-              onTriageComplete={handleTriageComplete}
-            />
-          )}
+          <Suspense fallback={<ViewSkeletonLoader />}>
+            {activeTab === 'dashboard' && (
+              <ExecutiveDashboard
+                onNavigateToIntake={() => setActiveTab('intake')}
+                onNavigateToQueue={() => setActiveTab('queue')}
+                onNavigateToActions={() => setActiveTab('actions')}
+                onTriageComplete={handleTriageComplete}
+              />
+            )}
 
-          {activeTab === 'intake' && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-              <ReportIngestion onTriageComplete={handleTriageComplete} />
-              {latestReport && (
-                <AIResultView
-                  report={latestReport}
-                  onGoToReview={() => setActiveTab('queue')}
-                  onGoToAction={() => setActiveTab('actions')}
-                  onSelectReportId={handleSelectReportId}
-                />
-              )}
-            </div>
-          )}
+            {activeTab === 'intake' && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                <ReportIngestion onTriageComplete={handleTriageComplete} />
+                {latestReport && (
+                  <AIResultView
+                    report={latestReport}
+                    onGoToReview={() => setActiveTab('queue')}
+                    onGoToAction={() => setActiveTab('actions')}
+                    onSelectReportId={handleSelectReportId}
+                  />
+                )}
+              </div>
+            )}
 
-          {activeTab === 'queue' && (
-            <HSEReviewQueue onSelectReport={handleSelectReportFromQueue} />
-          )}
+            {activeTab === 'queue' && (
+              <HSEReviewQueue onSelectReport={handleSelectReportFromQueue} />
+            )}
 
-          {activeTab === 'actions' && <CorrectiveActionsView />}
+            {activeTab === 'actions' && <CorrectiveActionsView />}
 
-          {activeTab === 'rules' && <DeterministicRulesView />}
+            {activeTab === 'rules' && <DeterministicRulesView />}
 
-          {activeTab === 'clusters' && <PrecursorClusterView />}
+            {activeTab === 'clusters' && <PrecursorClusterView />}
 
-          {activeTab === 'models' && <ModelStudioView />}
+            {activeTab === 'models' && <ModelStudioView />}
 
-          {activeTab === 'batch' && (
-            <BatchIngestionView onSelectReportId={handleSelectReportId} />
-          )}
+            {activeTab === 'batch' && (
+              <BatchIngestionView onSelectReportId={handleSelectReportId} />
+            )}
 
-          {activeTab === 'annotation' && <AnnotationBenchmarkView />}
+            {activeTab === 'annotation' && <AnnotationBenchmarkView />}
 
-          {activeTab === 'extraction' && <EntityExtractionView />}
+            {activeTab === 'extraction' && <EntityExtractionView />}
 
-          {activeTab === 'decision' && <HybridDecisionStudioView />}
+            {activeTab === 'decision' && <HybridDecisionStudioView />}
 
-          {activeTab === 'iogp' && <IOGPMultiLabelView />}
+            {activeTab === 'iogp' && <IOGPMultiLabelView />}
 
-          {activeTab === 'rag' && <RAGSafetyAssistantView />}
+            {activeTab === 'rag' && <RAGSafetyAssistantView />}
+          </Suspense>
         </main>
       </div>
     </div>
