@@ -19,7 +19,8 @@ import {
   BookOpen,
   CheckCheck,
   XCircle,
-  Clock
+  Clock,
+  Zap
 } from 'lucide-react';
 import {
   GoldenBenchmarkRecord,
@@ -28,9 +29,10 @@ import {
   AdjudicationResponse,
   AnnotationPairInput
 } from '../types';
+import { api } from '../services/api';
 
 export const AnnotationBenchmarkView: React.FC = () => {
-  const [activeSection, setActiveSection] = useState<'benchmark' | 'agreement' | 'adjudication'>('benchmark');
+  const [activeSection, setActiveSection] = useState<'benchmark' | 'agreement' | 'adjudication' | 'active_learning'>('benchmark');
 
   // Benchmark State
   const [benchmarkRecords, setBenchmarkRecords] = useState<GoldenBenchmarkRecord[]>([]);
@@ -53,6 +55,41 @@ export const AnnotationBenchmarkView: React.FC = () => {
   const [selectedLeadRule, setSelectedLeadRule] = useState('Confined Space');
   const [isResolving, setIsResolving] = useState(false);
   const [adjudicationSuccess, setAdjudicationSuccess] = useState<string | null>(null);
+
+  // Active Learning State (Phase 20)
+  const [activeLearningCandidates, setActiveLearningCandidates] = useState<any[]>([]);
+  const [isLoadingAL, setIsLoadingAL] = useState(false);
+  const [alSuccessMsg, setAlSuccessMsg] = useState<string | null>(null);
+
+  const fetchActiveLearningQueue = async () => {
+    setIsLoadingAL(true);
+    try {
+      const queue = await api.getActiveLearningQueue(20, 0.05);
+      setActiveLearningCandidates(queue);
+    } catch (err) {
+      console.error('Failed to load active learning queue:', err);
+    } finally {
+      setIsLoadingAL(false);
+    }
+  };
+
+  const handleSubmitAL = async (candidate: any, isPsif: boolean, priority: string) => {
+    try {
+      await api.submitActiveLearningLabel({
+        report_id: candidate.report_id,
+        expert_id: 'Er. Rajesh Baruah (Chief Safety Officer)',
+        is_psif: isPsif,
+        priority: priority,
+        primary_rule: candidate.rule_priority !== 'NONE' ? candidate.rule_priority : 'Confined Space',
+        rationale: `Active learning expert annotation: ${candidate.sampling_reasons.join('; ')}`
+      });
+      setAlSuccessMsg(`Successfully committed expert label for ${candidate.report_id} to active pool.`);
+      setActiveLearningCandidates(prev => prev.filter(c => c.report_id !== candidate.report_id));
+      setTimeout(() => setAlSuccessMsg(null), 4000);
+    } catch (err) {
+      console.error('Failed to submit active learning label:', err);
+    }
+  };
 
   // Fetch locked benchmark records
   const fetchBenchmark = async () => {
@@ -248,6 +285,7 @@ export const AnnotationBenchmarkView: React.FC = () => {
     fetchBenchmark();
     calculateSampleAgreement();
     loadDisputeSample();
+    fetchActiveLearningQueue();
     // Auto-run benchmark evaluation initially
     runEvaluation();
   }, []);
@@ -349,6 +387,18 @@ export const AnnotationBenchmarkView: React.FC = () => {
           >
             <Users className="w-4 h-4" />
             <span>Lead Specialist Adjudication</span>
+          </button>
+
+          <button
+            onClick={() => setActiveSection('active_learning')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition ${
+              activeSection === 'active_learning'
+                ? 'bg-amber-500 text-slate-950 shadow-md'
+                : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+            }`}
+          >
+            <Zap className="w-4 h-4" />
+            <span>Phase 20 Active Learning ({activeLearningCandidates.length})</span>
           </button>
         </div>
       </div>
@@ -881,6 +931,190 @@ export const AnnotationBenchmarkView: React.FC = () => {
                   </div>
                 )}
               </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* SECTION 4: ACTIVE LEARNING PRIORITIZATION (PHASE 20) */}
+      {activeSection === 'active_learning' && (
+        <div className="space-y-6">
+          {/* Active Learning Overview Banner */}
+          <div className="card-cyber p-6 border-l-4 border-l-amber-500 bg-slate-900/90">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="badge badge-iogp text-[10px] py-0.5 px-2">PHASE 20 ACTIVE LEARNING</span>
+                  <span className="text-xs text-emerald-400 font-semibold flex items-center gap-1">
+                    <Sparkles className="w-3.5 h-3.5" /> High-Information Uncertainty Sampling
+                  </span>
+                </div>
+                <h2 className="text-lg font-bold text-white mt-1">
+                  Expert Annotation Optimization Queue
+                </h2>
+                <p className="text-xs text-slate-400 max-w-3xl mt-1 leading-relaxed">
+                  Instead of labeling routine, obvious incidents, expert HSE engineers prioritize borderline cases
+                  (0.40 &le; p &le; 0.60), model/rule disagreements, rare equipment, and new vocabulary.
+                  Human adjudications are fed directly into the model retraining pool.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={fetchActiveLearningQueue}
+                  disabled={isLoadingAL}
+                  className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${isLoadingAL ? 'animate-spin' : ''}`} />
+                  <span>Refresh Queue</span>
+                </button>
+              </div>
+            </div>
+
+            {alSuccessMsg && (
+              <div className="mt-4 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>{alSuccessMsg}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Active Learning Candidates List */}
+          {isLoadingAL ? (
+            <div className="card-cyber p-12 text-center text-slate-400">
+              <RefreshCw className="w-8 h-8 animate-spin mx-auto text-amber-500 mb-3" />
+              <p className="text-sm font-medium text-slate-300">Scanning incident pool for high-information candidates...</p>
+            </div>
+          ) : activeLearningCandidates.length === 0 ? (
+            <div className="card-cyber p-12 text-center text-slate-400 border border-slate-800">
+              <CheckCircle2 className="w-10 h-10 text-emerald-400 mx-auto mb-3" />
+              <h3 className="text-base font-bold text-white mb-1">Queue Fully Adjudicated</h3>
+              <p className="text-xs text-slate-400 max-w-md mx-auto">
+                No active uncertainty or model/rule disagreement candidates currently require expert intervention.
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between text-xs text-slate-400 px-1">
+                <span>Displaying {activeLearningCandidates.length} high-information candidates prioritized for expert review</span>
+                <span>Sorted by Information Value Score &darr;</span>
+              </div>
+
+              {activeLearningCandidates.map((c) => (
+                <div key={c.report_id} className="card-cyber p-5 border border-slate-800 hover:border-amber-500/40 transition">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
+                    <div className="flex items-center gap-3">
+                      <span className="font-mono text-xs font-bold text-amber-400 bg-amber-500/10 px-2 py-1 rounded-lg border border-amber-500/30">
+                        {c.report_id}
+                      </span>
+                      <span className="text-xs text-slate-300 font-medium">
+                        {c.location || 'OIL Operational Facility'}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-slate-400">Info Value:</span>
+                      <span className="font-mono text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
+                        {(c.information_value * 100).toFixed(1)}%
+                      </span>
+                      <span className="text-xs text-slate-400 ml-2">PSIF Prob:</span>
+                      <span className={`font-mono text-xs font-bold px-2 py-0.5 rounded border ${
+                        c.model_psif_prob >= 0.70 ? 'text-rose-400 bg-rose-500/10 border-rose-500/30' :
+                        c.model_psif_prob >= 0.40 ? 'text-amber-400 bg-amber-500/10 border-amber-500/30' :
+                        'text-slate-400 bg-slate-800 border-slate-700'
+                      }`}>
+                        {(c.model_psif_prob * 100).toFixed(1)}%
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Sampling Reasons Badges */}
+                  <div className="flex flex-wrap items-center gap-2 mt-3">
+                    {c.sampling_reasons.map((r: string, idx: number) => {
+                      const isDisagreement = r.includes('DISAGREEMENT');
+                      const isRare = r.includes('RARE');
+                      const isUncertainty = r.includes('UNCERTAINTY');
+                      return (
+                        <span
+                          key={idx}
+                          className={`text-[11px] font-semibold px-2 py-0.5 rounded-md border ${
+                            isDisagreement
+                              ? 'bg-rose-500/15 text-rose-300 border-rose-500/30'
+                              : isRare
+                              ? 'bg-purple-500/15 text-purple-300 border-purple-500/30'
+                              : isUncertainty
+                              ? 'bg-amber-500/15 text-amber-300 border-amber-500/30'
+                              : 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30'
+                          }`}
+                        >
+                          {r}
+                        </span>
+                      );
+                    })}
+                  </div>
+
+                  {/* Incident Narrative */}
+                  <div className="mt-3 p-3 rounded-xl bg-slate-950/60 border border-slate-800/60 text-xs text-slate-300 leading-relaxed font-sans">
+                    {c.narrative}
+                  </div>
+
+                  {/* Rule details & Triggered Rules */}
+                  <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    <div className="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800 flex items-center justify-between">
+                      <span className="text-slate-400">Deterministic Safety Rule Priority:</span>
+                      <span className={`font-bold ${
+                        c.rule_priority === 'HIGH' ? 'text-rose-400' :
+                        c.rule_priority === 'REVIEW' ? 'text-amber-400' : 'text-slate-400'
+                      }`}>
+                        {c.rule_priority}
+                      </span>
+                    </div>
+
+                    <div className="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800 flex items-center justify-between">
+                      <span className="text-slate-400">Triggered Rules:</span>
+                      <span className="text-slate-200 font-mono">
+                        {c.triggered_rules && c.triggered_rules.length > 0
+                          ? c.triggered_rules.join(', ')
+                          : 'None'}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Expert Decision Action Buttons */}
+                  <div className="mt-4 pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3">
+                    <span className="text-xs text-slate-400 flex items-center gap-1.5">
+                      <Scale className="w-3.5 h-3.5 text-amber-400" />
+                      Provide expert ground-truth binding decision:
+                    </span>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => handleSubmitAL(c, true, 'HIGH')}
+                        className="px-3 py-1.5 rounded-lg text-xs font-bold bg-rose-600 hover:bg-rose-500 text-white shadow-sm transition flex items-center gap-1.5"
+                      >
+                        <AlertTriangle className="w-3 h-3" />
+                        <span>Confirm High-PSIF</span>
+                      </button>
+
+                      <button
+                        onClick={() => handleSubmitAL(c, true, 'REVIEW')}
+                        className="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-600 hover:bg-amber-500 text-white shadow-sm transition flex items-center gap-1.5"
+                      >
+                        <Clock className="w-3 h-3" />
+                        <span>Flag for Review</span>
+                      </button>
+
+                      <button
+                        onClick={() => handleSubmitAL(c, false, 'LOW')}
+                        className="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition flex items-center gap-1.5"
+                      >
+                        <CheckCheck className="w-3 h-3" />
+                        <span>Mark Routine Low</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </div>

@@ -148,6 +148,10 @@ class CorrectiveActionModel(Base):
     notes = Column(Text, nullable=True)
     created_at = Column(DateTime(timezone=True), default=utc_now)
     closed_at = Column(DateTime(timezone=True), nullable=True)
+    verified_by = Column(String(128), nullable=True)
+    verified_at = Column(DateTime(timezone=True), nullable=True)
+    verification_notes = Column(Text, nullable=True)
+    effectiveness_rating = Column(String(32), nullable=True, default="EFFECTIVE")  # EFFECTIVE, PARTIALLY_EFFECTIVE, RECURRENT_HAZARD
 
     report = relationship("ReportModel", back_populates="corrective_actions")
 

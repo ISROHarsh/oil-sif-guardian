@@ -26,6 +26,7 @@ from ml.models.sequence_classifier import ContextualSequenceClassifier, IOGP_NIN
 from ml.models.token_attribution import TokenAttributionEngine
 from ml.evaluation.ensemble_arbitrator import EnsembleArbitrator
 from ml.evaluation.drift_detector import DriftDetector
+from ml.evaluation.comprehensive_evaluator import comprehensive_safety_evaluator
 
 router = APIRouter()
 
@@ -280,3 +281,18 @@ def get_model_governance() -> Dict[str, Any]:
             "downgrade_authorization": "Restricted to CHIEF_SAFETY_OFFICER and HSE_LEAD roles"
         }
     }
+
+
+@router.get("/evaluation-suite", summary="Multi-dimensional safety evaluation suite (Phases 28-32)")
+def get_comprehensive_evaluation_suite() -> Dict[str, Any]:
+    """
+    Returns full evaluation suite across:
+    - Phase 28: Multi-Model Baseline Comparison
+    - Phase 29: Safety False-Negative Review & Root Cause Analysis
+    - Phase 30: Temporal Retrospective & Prospective Stream Stability
+    - Phase 31: Cross-Site Generalization Testing
+    - Phase 32: Controlled Human Validation Study Simulation
+    """
+    report = comprehensive_safety_evaluator.generate_report()
+    return report.model_dump()
+

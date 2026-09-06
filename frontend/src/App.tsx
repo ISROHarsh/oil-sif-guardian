@@ -28,7 +28,8 @@ import {
   FileText,
   TrendingUp,
   Shield,
-  Plus
+  Plus,
+  BookOpen
 } from 'lucide-react';
 import { ReportIngestion } from './components/ReportIngestion';
 import { AIResultView } from './components/AIResultView';
@@ -43,6 +44,7 @@ import { HybridDecisionStudioView } from './components/HybridDecisionStudioView'
 import { HSEReviewQueue } from './components/HSEReviewQueue';
 import { CorrectiveActionsView } from './components/CorrectiveActionsView';
 import { ExecutiveDashboard } from './components/ExecutiveDashboard';
+import { RAGSafetyAssistantView } from './components/RAGSafetyAssistantView';
 import { ReportResponse } from './types';
 import { api } from './services/api';
 
@@ -58,7 +60,8 @@ type TabType =
   | 'annotation'
   | 'extraction'
   | 'decision'
-  | 'iogp';
+  | 'iogp'
+  | 'rag';
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('dashboard');
@@ -244,6 +247,26 @@ export const App: React.FC = () => {
               <div className="sidebar-item-left">
                 <Tag style={{ width: '16px', height: '16px', color: '#F59E0B' }} />
                 <span>Entity Extraction (NER)</span>
+              </div>
+            </button>
+
+            <button
+              onClick={() => { setActiveTab('rag'); setMobileMenuOpen(false); }}
+              className={`sidebar-item ${activeTab === 'rag' ? 'active' : ''}`}
+            >
+              <div className="sidebar-item-left">
+                <BookOpen style={{ width: '16px', height: '16px', color: '#06B6D4' }} />
+                <span>Standards RAG (Phase 21)</span>
+              </div>
+            </button>
+
+            <button
+              onClick={() => { setActiveTab('annotation'); setMobileMenuOpen(false); }}
+              className={`sidebar-item ${activeTab === 'annotation' ? 'active' : ''}`}
+            >
+              <div className="sidebar-item-left">
+                <Target style={{ width: '16px', height: '16px', color: '#10B981' }} />
+                <span>Active Learning & Benchmark</span>
               </div>
             </button>
           </div>
@@ -443,6 +466,8 @@ export const App: React.FC = () => {
           {activeTab === 'decision' && <HybridDecisionStudioView />}
 
           {activeTab === 'iogp' && <IOGPMultiLabelView />}
+
+          {activeTab === 'rag' && <RAGSafetyAssistantView />}
         </main>
       </div>
     </div>

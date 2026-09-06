@@ -52,18 +52,40 @@ export const CorrectiveActionsView: React.FC = () => {
   const [activeAction, setActiveAction] = useState<CorrectiveAction | null>(null);
   const [newStatus, setNewStatus] = useState<'OPEN' | 'IN_PROGRESS' | 'VERIFIED_CLOSED'>('IN_PROGRESS');
   const [verificationNotes, setVerificationNotes] = useState('');
-  const [verifiedBy, setVerifiedBy] = useState('HSE-LEAD-OIL-01');
+  const [verifiedBy, setVerifiedBy] = useState('Er. Rajesh Baruah (Chief Safety Officer)');
+  const [effectivenessRating, setEffectivenessRating] = useState<'EFFECTIVE' | 'PARTIALLY_EFFECTIVE' | 'RECURRENT_HAZARD'>('EFFECTIVE');
   const [updatingStatus, setUpdatingStatus] = useState(false);
+
+  // Recurrence analytics state
+  const [recurrenceData, setRecurrenceData] = useState<{
+    total_closed_actions: number;
+    actions_with_recurrence: number;
+    recurrence_rate: number;
+    barrier_degradation_alarm: boolean;
+    time_window_days: number;
+    installation_breakdown: Record<string, number>;
+    recurrence_records: Array<{
+      action_id: string;
+      report_id: string;
+      action_title: string;
+      installation: string;
+      recurrence_count: number;
+      recurring_report_ids: string[];
+      recurrence_status: string;
+    }>;
+  } | null>(null);
 
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [acts, repList] = await Promise.all([
+      const [acts, repList, rec] = await Promise.all([
         api.getActions(filterStatus || undefined),
-        api.listReports({ limit: 100 })
+        api.listReports({ limit: 100 }),
+        api.getRecurrenceAnalytics(90).catch(() => null)
       ]);
       setActions(acts);
       setReports(repList.items);
+      if (rec) setRecurrenceData(rec);
 
       // Compute stats
       const total = acts.length;
@@ -133,6 +155,7 @@ export const CorrectiveActionsView: React.FC = () => {
     setActiveAction(act);
     setNewStatus(act.status as any);
     setVerificationNotes('');
+    setEffectivenessRating('EFFECTIVE');
   };
 
   const handleUpdateStatus = async (e: React.FormEvent) => {
@@ -141,18 +164,24 @@ export const CorrectiveActionsView: React.FC = () => {
 
     setUpdatingStatus(true);
     try {
-      const updated = await api.updateAction(activeAction.action_id, {
-        status: newStatus,
-        notes: activeAction.notes,
-        ...(newStatus === 'VERIFIED_CLOSED'
-          ? {
-              notes: `${activeAction.notes || ''}\n[Verified Closed by ${verifiedBy}]: ${verificationNotes}`
-            }
-          : {})
-      });
-      setActions((prev) =>
-        prev.map((a) => (a.action_id === updated.action_id ? updated : a))
-      );
+      if (newStatus === 'VERIFIED_CLOSED') {
+        const verified = await api.verifyAction(activeAction.action_id, {
+          verified_by: verifiedBy,
+          verification_notes: verificationNotes || 'Formal barrier verification completed and approved.',
+          effectiveness_rating: effectivenessRating
+        });
+        setActions((prev) =>
+          prev.map((a) => (a.action_id === verified.action_id ? verified : a))
+        );
+      } else {
+        const updated = await api.updateAction(activeAction.action_id, {
+          status: newStatus,
+          notes: activeAction.notes
+        });
+        setActions((prev) =>
+          prev.map((a) => (a.action_id === updated.action_id ? updated : a))
+        );
+      }
       setActiveAction(null);
       fetchData();
     } catch (err) {
@@ -236,6 +265,46 @@ export const CorrectiveActionsView: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Phase 19: Precursor Recurrence & Barrier Degradation Banner */}
+      {recurrenceData && (
+        <div className="card-nexa p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-l-4 border-l-amber-500 bg-amber-500/5">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-lg bg-amber-500/10 text-amber-400">
+              <RefreshCw className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">
+                  Phase 19 Precursor Recurrence Intelligence
+                </span>
+                {recurrenceData.barrier_degradation_alarm ? (
+                  <span className="badge-high text-[10px]">Barrier Degradation Alarm</span>
+                ) : (
+                  <span className="badge-low text-[10px]">No Systematic Recurrence</span>
+                )}
+              </div>
+              <p className="text-xs text-muted mt-0.5">
+                Measures whether identical precursor patterns reappear after action closure across Oil India installations ({recurrenceData.time_window_days}-day window).
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-6 font-mono text-xs">
+            <div>
+              <span className="text-muted block text-[10px]">Closed Actions:</span>
+              <span className="font-bold text-foreground text-sm">{recurrenceData.total_closed_actions}</span>
+            </div>
+            <div>
+              <span className="text-muted block text-[10px]">With Recurrence:</span>
+              <span className="font-bold text-amber-400 text-sm">{recurrenceData.actions_with_recurrence}</span>
+            </div>
+            <div>
+              <span className="text-muted block text-[10px]">Recurrence Rate:</span>
+              <span className="font-bold text-foreground text-sm">{(recurrenceData.recurrence_rate * 100).toFixed(1)}%</span>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Control & Filter Bar */}
       <div className="glass-panel p-4 flex flex-wrap items-center justify-between gap-3">
@@ -547,6 +616,33 @@ export const CorrectiveActionsView: React.FC = () => {
                       required
                       className="form-input text-xs bg-slate-950 border-slate-700"
                     />
+                  </div>
+                  <div>
+                    <label className="form-label text-[11px]">Barrier Effectiveness Rating *</label>
+                    <div className="grid grid-cols-3 gap-1.5 pt-1">
+                      {[
+                        { key: 'EFFECTIVE', label: 'EFFECTIVE' },
+                        { key: 'PARTIALLY_EFFECTIVE', label: 'PARTIAL' },
+                        { key: 'RECURRENT_HAZARD', label: 'RECURRENT' }
+                      ].map((r) => (
+                        <button
+                          key={r.key}
+                          type="button"
+                          onClick={() => setEffectivenessRating(r.key as any)}
+                          className={`py-1 px-1.5 rounded text-center text-[10px] font-bold border transition ${
+                            effectivenessRating === r.key
+                              ? r.key === 'RECURRENT_HAZARD'
+                                ? 'bg-rose-500/20 text-rose-300 border-rose-500'
+                                : r.key === 'PARTIALLY_EFFECTIVE'
+                                ? 'bg-amber-500/20 text-amber-300 border-amber-500'
+                                : 'bg-emerald-500/20 text-emerald-300 border-emerald-500'
+                              : 'bg-slate-900 text-slate-400 border-slate-800'
+                          }`}
+                        >
+                          {r.label}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                   <div>
                     <label className="form-label text-[11px]">Field Verification Evidence *</label>

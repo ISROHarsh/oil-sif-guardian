@@ -68,6 +68,18 @@ def init_db():
                 if "recalibration_flag" not in rev_cols:
                     conn.execute(text("ALTER TABLE reviews ADD COLUMN recalibration_flag BOOLEAN DEFAULT 0"))
 
+                # Corrective actions table migrations
+                act_res = conn.execute(text("PRAGMA table_info(corrective_actions)"))
+                act_cols = [row[1] for row in act_res.fetchall()]
+                if "verified_by" not in act_cols:
+                    conn.execute(text("ALTER TABLE corrective_actions ADD COLUMN verified_by VARCHAR(128)"))
+                if "verified_at" not in act_cols:
+                    conn.execute(text("ALTER TABLE corrective_actions ADD COLUMN verified_at DATETIME"))
+                if "verification_notes" not in act_cols:
+                    conn.execute(text("ALTER TABLE corrective_actions ADD COLUMN verification_notes TEXT"))
+                if "effectiveness_rating" not in act_cols:
+                    conn.execute(text("ALTER TABLE corrective_actions ADD COLUMN effectiveness_rating VARCHAR(32) DEFAULT 'EFFECTIVE'"))
+
                 conn.commit()
             except Exception:
                 pass

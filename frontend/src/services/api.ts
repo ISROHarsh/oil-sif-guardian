@@ -561,5 +561,92 @@ export const api = {
     const res = await fetch(`${API_BASE}/decision/status`);
     if (!res.ok) throw new Error('Failed to fetch decision engine status');
     return await res.json();
+  },
+
+  // Phase 19: Corrective Action Verification & Precursor Recurrence
+  async verifyAction(actionId: string, payload: {
+    verified_by: string;
+    verification_notes: string;
+    effectiveness_rating?: string;
+  }) {
+    const res = await fetch(`${API_BASE}/actions/${encodeURIComponent(actionId)}/verify`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) throw new Error('Failed to formally verify corrective action');
+    return await res.json();
+  },
+
+  async getRecurrenceAnalytics(windowDays: number = 90) {
+    const res = await fetch(`${API_BASE}/actions/recurrence?window_days=${windowDays}`);
+    if (!res.ok) throw new Error('Failed to fetch precursor recurrence intelligence');
+    return await res.json();
+  },
+
+  // Phase 20: Active Learning Prioritization Queue
+  async getActiveLearningQueue(limit: number = 20, minScore: number = 0.10) {
+    const res = await fetch(`${API_BASE}/active-learning/queue?limit=${limit}&min_score=${minScore}`);
+    if (!res.ok) throw new Error('Failed to fetch active learning candidate queue');
+    return await res.json();
+  },
+
+  async submitActiveLearningLabel(payload: {
+    report_id: string;
+    expert_id: string;
+    is_psif: boolean;
+    priority: string;
+    primary_rule?: string;
+    rationale: string;
+  }) {
+    const res = await fetch(`${API_BASE}/active-learning/submit`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) throw new Error('Failed to submit active learning label');
+    return await res.json();
+  },
+
+  // Phase 21 & 22: Grounded RAG Safety Assistant & Citations
+  async synthesizeInvestigation(payload: {
+    narrative: string;
+    installation?: string;
+    psif_priority?: string;
+    primary_rules?: string[];
+    failed_controls?: string[];
+    report_id?: string;
+  }) {
+    const res = await fetch(`${API_BASE}/rag/synthesize-investigation`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) throw new Error('Failed to synthesize investigation brief');
+    return await res.json();
+  },
+
+  async askSafetyQA(query: string) {
+    const res = await fetch(`${API_BASE}/rag/safety-qa`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query })
+    });
+    if (!res.ok) throw new Error('Failed to process safety standard query');
+    return await res.json();
+  },
+
+  async getApprovedStandards() {
+    const res = await fetch(`${API_BASE}/rag/standards`);
+    if (!res.ok) throw new Error('Failed to fetch approved standards catalog');
+    return await res.json();
+  },
+
+  // Phases 28-32: Multi-Dimensional Safety Evaluation Suite
+  async getEvaluationSuite() {
+    const res = await fetch(`${API_BASE}/models/evaluation-suite`);
+    if (!res.ok) throw new Error('Failed to fetch evaluation suite battery');
+    return await res.json();
   }
 };
+
