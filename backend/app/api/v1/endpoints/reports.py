@@ -1,7 +1,6 @@
-from typing import Optional, List
+from typing import Optional
 from datetime import datetime, timezone
 import json
-import uuid
 import os
 from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile, File, status
 from sqlalchemy.orm import Session
@@ -9,11 +8,7 @@ from backend.app.core.database import get_db
 from backend.app.models.report import (
     ReportModel,
     PredictionModel,
-    IOGPPredictionModel,
-    ReportEntityModel,
-    EvidenceSpanModel,
-    ReviewModel,
-    AuditEventModel
+    ReviewModel
 )
 from backend.app.schemas.report import (
     ReportCreate,
@@ -35,10 +30,25 @@ from backend.app.schemas.prediction import (
 )
 from backend.app.schemas.review import ReviewResponse
 from backend.app.schemas.action import CorrectiveActionResponse
-from backend.app.services.triage_service import triage_service
 from backend.app.services.ingestion_service import ingestion_service
+from ml.search.similarity_engine import similarity_engine
 
 router = APIRouter()
+
+
+def _get_benchmark_path() -> Optional[str]:
+    """Resolves golden benchmark dataset path across varied execution environments."""
+    candidates = [
+        os.path.join("data", "evaluation", "golden_benchmark.json"),
+        os.path.join(os.path.dirname(__file__), "..", "..", "..", "..", "..", "data", "evaluation", "golden_benchmark.json"),
+        os.path.join(os.getcwd(), "data", "evaluation", "golden_benchmark.json"),
+        os.path.join(os.getcwd(), "..", "data", "evaluation", "golden_benchmark.json"),
+    ]
+    for p in candidates:
+        abs_p = os.path.abspath(p)
+        if os.path.exists(abs_p):
+            return abs_p
+    return None
 
 
 def _build_report_response(report: ReportModel) -> ReportResponse:
@@ -125,6 +135,13 @@ def _build_report_response(report: ReportModel) -> ReportResponse:
         except Exception:
             equip = [report.equipment]
 
+    triggered = []
+    if pred and pred.iogp_rules:
+        triggered = [
+            f"Rule: {r.rule_name} (DGMS/OISD Invariant)"
+            for r in pred.iogp_rules if r.is_primary or r.probability >= 0.80
+        ]
+
     return ReportResponse(
         id=report.id,
         report_id=report.report_id,
@@ -144,7 +161,7 @@ def _build_report_response(report: ReportModel) -> ReportResponse:
         life_saving_rules=iogp_rules,
         entities=entities_data,
         evidence_spans=evidence_spans,
-        triggered_rules=[],
+        triggered_rules=triggered,
         safety_reasoning=reasoning,
         exposure_fingerprint=fingerprint,
         review=review_data,
@@ -300,7 +317,7 @@ def list_reports(
     """
     Returns paginated list of safety reports with filtering capabilities.
     """
-    query = db.query(ReportModel).join(ReportModel.prediction).join(ReportModel.review)
+    query = db.query(ReportModel).outerjoin(ReportModel.prediction).outerjoin(ReportModel.review)
 
     if priority:
         query = query.filter(PredictionModel.priority == priority.upper())
@@ -350,8 +367,6 @@ def search_similar_by_narrative(
     """
     Finds semantically similar historical incidents for ad-hoc narrative text.
     """
-    from ml.search.similarity_engine import similarity_engine
-
     narrative = payload.narrative
     top_k = payload.top_k
     min_score = payload.min_score
@@ -386,9 +401,8 @@ def get_report(report_id: str, db: Session = Depends(get_db)):
     ).first()
 
     if not report:
-        # Check golden benchmark repository fallback
-        benchmark_path = os.path.join("data", "evaluation", "golden_benchmark.json")
-        if os.path.exists(benchmark_path):
+        benchmark_path = _get_benchmark_path()
+        if benchmark_path and os.path.exists(benchmark_path):
             try:
                 with open(benchmark_path, "r", encoding="utf-8") as f:
                     benchmarks = json.load(f)
@@ -417,16 +431,13 @@ def get_similar_reports(
     Returns top semantically similar historical precursor incidents.
     Fallbacks to golden benchmark corpus if report is an indexed benchmark case.
     """
-    from ml.search.similarity_engine import similarity_engine
-
     report = db.query(ReportModel).filter(
         (ReportModel.id == report_id) | (ReportModel.report_id == report_id)
     ).first()
 
     if not report:
-        # Check golden benchmark repository fallback
-        benchmark_path = os.path.join("data", "evaluation", "golden_benchmark.json")
-        if os.path.exists(benchmark_path):
+        benchmark_path = _get_benchmark_path()
+        if benchmark_path and os.path.exists(benchmark_path):
             try:
                 with open(benchmark_path, "r", encoding="utf-8") as f:
                     benchmarks = json.load(f)
