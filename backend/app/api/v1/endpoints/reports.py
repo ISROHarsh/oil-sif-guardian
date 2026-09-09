@@ -1,35 +1,28 @@
-from typing import Optional
-from datetime import datetime, timezone
 import json
 import os
-from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile, File, status
+from datetime import datetime, timezone
+from typing import Optional
+
+from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile, status
 from sqlalchemy.orm import Session
+
 from backend.app.core.database import get_db
-from backend.app.models.report import (
-    ReportModel,
-    PredictionModel,
-    ReviewModel
-)
+from backend.app.models.report import PredictionModel, ReportModel, ReviewModel
+from backend.app.schemas.action import CorrectiveActionResponse
+from backend.app.schemas.prediction import EntitiesSchema, EvidenceSpanSchema, IOGPRulePredictionSchema, PSIFSchema
 from backend.app.schemas.report import (
-    ReportCreate,
-    ReportResponse,
-    ReportListResponse,
-    ReportListItem,
-    BatchReportCreate,
     BatchIngestResponse,
+    BatchReportCreate,
     DataQualitySummaryResponse,
+    ReportCreate,
+    ReportListItem,
+    ReportListResponse,
+    ReportResponse,
+    ReportSimilarityResponse,
     SimilaritySearchRequest,
     SimilaritySearchResponse,
-    ReportSimilarityResponse
-)
-from backend.app.schemas.prediction import (
-    PSIFSchema,
-    IOGPRulePredictionSchema,
-    EntitiesSchema,
-    EvidenceSpanSchema
 )
 from backend.app.schemas.review import ReviewResponse
-from backend.app.schemas.action import CorrectiveActionResponse
 from backend.app.services.ingestion_service import ingestion_service
 from ml.search.similarity_engine import similarity_engine
 
