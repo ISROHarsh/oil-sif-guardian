@@ -2295,4 +2295,297 @@ h1, h2, h3, h4, h5, h6 {
   background: #254F46;
 }
 
+/* ==========================================================================
+   OPERATIONAL PRECURSOR TRIAGE DOSSIER (AIResultView)
+   ========================================================================== */
+
+.triage-dossier-hero {
+  border-radius: var(--radius-card);
+  padding: 24px 28px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--card-shadow);
+}
+
+.priority-glow-high {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.07) 0%, rgba(15, 23, 42, 0.02) 100%);
+  border: 1.5px solid rgba(239, 68, 68, 0.32);
+}
+.dark .priority-glow-high {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.16) 0%, rgba(15, 23, 42, 0.8) 100%);
+  border-color: rgba(239, 68, 68, 0.45);
+  box-shadow: 0 12px 35px -8px rgba(239, 68, 68, 0.22);
+}
+
+.priority-glow-review {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.07) 0%, rgba(15, 23, 42, 0.02) 100%);
+  border: 1.5px solid rgba(245, 158, 11, 0.32);
+}
+.dark .priority-glow-review {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.16) 0%, rgba(15, 23, 42, 0.8) 100%);
+  border-color: rgba(245, 158, 11, 0.45);
+  box-shadow: 0 12px 35px -8px rgba(245, 158, 11, 0.22);
+}
+
+.priority-glow-low {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.07) 0%, rgba(15, 23, 42, 0.02) 100%);
+  border: 1.5px solid rgba(16, 185, 129, 0.32);
+}
+.dark .priority-glow-low {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.16) 0%, rgba(15, 23, 42, 0.8) 100%);
+  border-color: rgba(16, 185, 129, 0.45);
+  box-shadow: 0 12px 35px -8px rgba(16, 185, 129, 0.22);
+}
+
+/* Bento Metrics Grid */
+.dossier-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.dossier-metric-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-card);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  box-shadow: var(--card-shadow);
+  transition: all 0.25s ease;
+}
+
+.dossier-metric-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-color-hover);
+  box-shadow: var(--card-shadow-hover);
+}
+
+/* Supervisor Editorial Evidence Reader */
+.supervisor-evidence-reader {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-card);
+  padding: 24px 28px;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.evidence-narrative-box {
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color-subtle);
+  border-radius: 16px;
+  padding: 22px 24px;
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  letter-spacing: 0.01em;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+/* High-Contrast Glowing Entity Chips */
+.evidence-entity-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  margin: 0 3px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 700;
+  vertical-align: baseline;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.evidence-entity-chip:hover {
+  transform: translateY(-1px) scale(1.02);
+  filter: brightness(1.1);
+}
+
+.chip-control-failure {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.45);
+  color: #DC2626;
+  box-shadow: 0 0 10px -2px rgba(239, 68, 68, 0.2);
+}
+.dark .chip-control-failure {
+  background: rgba(239, 68, 68, 0.22);
+  border-color: rgba(239, 68, 68, 0.6);
+  color: #FCA5A5;
+  box-shadow: 0 0 12px -2px rgba(239, 68, 68, 0.35);
+}
+
+.chip-hazardous-exposure {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  color: #D97706;
+  box-shadow: 0 0 10px -2px rgba(245, 158, 11, 0.2);
+}
+.dark .chip-hazardous-exposure {
+  background: rgba(245, 158, 11, 0.22);
+  border-color: rgba(245, 158, 11, 0.6);
+  color: #FCD34D;
+  box-shadow: 0 0 12px -2px rgba(245, 158, 11, 0.35);
+}
+
+.chip-unsafe-condition {
+  background: rgba(6, 182, 212, 0.12);
+  border: 1px solid rgba(6, 182, 212, 0.45);
+  color: #0891B2;
+  box-shadow: 0 0 10px -2px rgba(6, 182, 212, 0.2);
+}
+.dark .chip-unsafe-condition {
+  background: rgba(6, 182, 212, 0.22);
+  border-color: rgba(6, 182, 212, 0.6);
+  color: #67E8F9;
+  box-shadow: 0 0 12px -2px rgba(6, 182, 212, 0.35);
+}
+
+.chip-protective-barrier {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  color: #059669;
+  box-shadow: 0 0 10px -2px rgba(16, 185, 129, 0.2);
+}
+.dark .chip-protective-barrier {
+  background: rgba(16, 185, 129, 0.22);
+  border-color: rgba(16, 185, 129, 0.6);
+  color: #6EE7B7;
+  box-shadow: 0 0 12px -2px rgba(16, 185, 129, 0.35);
+}
+
+.chip-category-tag {
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.12);
+}
+.dark .chip-category-tag {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Evidence Legend Filter Bar */
+.evidence-legend-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.evidence-filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-surface);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.evidence-filter-btn.active {
+  border-color: var(--accent-teal);
+  background-color: rgba(13, 148, 136, 0.1);
+  color: var(--accent-teal);
+}
+
+/* Similar Precursor Bento Cards */
+.similar-precursors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.similar-precursor-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-card);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  box-shadow: var(--card-shadow);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.similar-precursor-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(139, 92, 246, 0.4);
+  box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.12);
+}
+
+/* Interactive Precursor Inspection Modal */
+.precursor-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.precursor-modal-content {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  max-width: 760px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 28px;
+  animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.fingerprint-code-strip {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color-subtle);
+  border-radius: 8px;
+  padding: 6px 12px;
+  word-break: break-all;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+
 
